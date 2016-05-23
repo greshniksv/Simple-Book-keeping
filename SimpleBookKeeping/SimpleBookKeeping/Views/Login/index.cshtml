@@ -1,0 +1,41 @@
+﻿@using System.Web.Optimization
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    
+    @Styles.Render("~/Css/Login")
+    @Styles.Render("~/Css/jquery.mobile")
+    @Scripts.Render("~/bundles/jquery.full")
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <title> Login page </title>
+</head>
+<body>
+    <div data-role="header">
+        <h1> SimpleBookKeeping </h1>
+    </div>
+
+    <div class="title">
+        <p> For enter to the simple smart bookkeeping system, you mast enter the login and password. <br/> Have a nice day. </p>
+    </div>
+
+    <div class="login-block">
+        <div class="login">
+             <input type="text" placeholder="Login"/>
+        </div>
+
+        <div class="password">
+            <input type="password" placeholder="Password"/>
+        </div>
+
+        <div class="password">
+            <input type="submit" value="Enter"/>
+        </div>
+    </div>
+</body>
+</html>

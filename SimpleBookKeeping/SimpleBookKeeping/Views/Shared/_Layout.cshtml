@@ -1,0 +1,27 @@
+﻿@using System.Web.Optimization
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    @Styles.Render("~/Css/jquery.mobile")
+    @Scripts.Render("~/bundles/jquery.full")
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <title> @ViewBag.Title </title>
+</head>
+<body>
+<div data-role="header">
+    <a href="index.html" data-icon="grid">Settings</a>
+    <h1> @ViewBag.Title </h1>
+    <a href="index.html" data-icon="check">Save</a>
+</div>
+
+    @RenderBody()
+
+</body>
+</html>
