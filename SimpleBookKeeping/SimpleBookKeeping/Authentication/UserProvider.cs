@@ -9,39 +9,28 @@ namespace SimpleBookKeeping.Authentication
 {
     public class UserProvider : IPrincipal
     {
-        private UserIndentity userIdentity { get; set; }
+        private UserIndentity UserIdentity { get; set; }
 
-        #region IPrincipal Members
-
-        public IIdentity Identity
-        {
-            get
-            {
-                return userIdentity;
-            }
-        }
+        public IIdentity Identity => UserIdentity;
 
         public bool IsInRole(string role)
         {
-            if (userIdentity.User == null)
+            if (UserIdentity.User == null)
             {
                 return false;
             }
             return true;
         }
 
-        #endregion
-
-
-        public UserProvider(string name, ISession session)
+        public UserProvider(string id, ISession session)
         {
-            userIdentity = new UserIndentity();
-            userIdentity.Init(name, session);
+            UserIdentity = new UserIndentity();
+            UserIdentity.Init(id, session);
         }
 
         public override string ToString()
         {
-            return userIdentity.Name;
+            return UserIdentity.Name;
         }
     }
 }

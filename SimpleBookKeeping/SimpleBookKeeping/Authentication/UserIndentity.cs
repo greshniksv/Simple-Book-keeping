@@ -13,21 +13,9 @@ namespace SimpleBookKeeping.Authentication
     {
         public User User { get; set; }
 
-        public string AuthenticationType
-        {
-            get
-            {
-                return typeof(User).ToString();
-            }
-        }
+        public string AuthenticationType => typeof(User).ToString();
 
-        public bool IsAuthenticated
-        {
-            get
-            {
-                return User != null;
-            }
-        }
+        public bool IsAuthenticated => User != null;
 
         public string Name
         {
@@ -42,12 +30,12 @@ namespace SimpleBookKeeping.Authentication
             }
         }
 
-        public void Init(string name, ISession session)
+        public void Init(string id, ISession session)
         {
-            if (!string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(id))
             {
                 ICriteria criteria = session.CreateCriteria(typeof(User));
-                criteria.Add(Restrictions.Eq("Name", name));
+                criteria.Add(Restrictions.Eq("Id", new Guid("id")));
                 IList<User> matchingObjects = criteria.List<User>();
 
                 User = matchingObjects.First();

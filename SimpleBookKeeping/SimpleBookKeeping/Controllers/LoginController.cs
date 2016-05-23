@@ -7,7 +7,9 @@ using Ninject;
 using SimpleBookKeeping.Authentication;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
+using SimpleBookKeeping.Models;
 using SimpleBookKeeping.Unility.Interfaces;
+using JsonResult = SimpleBookKeeping.Models.JsonResult;
 
 namespace SimpleBookKeeping.Controllers
 {
@@ -38,13 +40,19 @@ namespace SimpleBookKeeping.Controllers
         }
 
         [HttpGet]
-        public ActionResult Login(string user, string password)
+        public ActionResult Authorize(string login, string password)
         {
             var auth = MvcApp.Kernel.Get<IAuthentication>();
             auth.HttpContext = System.Web.HttpContext.Current;
-            auth.Login(user, password, true);
+            var user = auth.Login(login, password, true);
+            JsonResult jsonResult = new JsonResult { Result = JsonResultType.Success };
 
-            return View("index");
+            if (user == null)
+            {
+                jsonResult = new JsonResult { Result = JsonResultType.Error, Message = "User not found" };
+            }
+
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
 
     }

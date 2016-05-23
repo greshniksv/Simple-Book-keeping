@@ -4,7 +4,6 @@ namespace SimpleBookKeeping
 {
     public class BundleConfig
     {
-        // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery.full").Include(
@@ -27,8 +26,14 @@ namespace SimpleBookKeeping
             bundles.Add(new StyleBundle("~/Css/Login").Include(
                       "~/Content/site/login.less"));
 
-
-
+            RegisterSiteBundle(bundles);
         }
+
+        public static void RegisterSiteBundle(BundleCollection bundles)
+        {
+            bundles.Add(new StyleBundle("~/login.js").Include(
+                      "~/Scripts/Site/Login.js"));
+        }
+
     }
 }

@@ -381,6 +381,7 @@
     <None Include="scripts\jquery.validate-vsdoc.js" />
     <Content Include="scripts\jquery.validate.js" />
     <Content Include="scripts\jquery.validate.min.js" />
+    <Content Include="scripts\Site\Login.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -397,9 +398,11 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Database\DBHelper.cs" />
     <Compile Include="Database\Entities\User.cs" />
+    <Compile Include="Exceptions\CookieDecryptException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\JsonResult.cs" />
     <Compile Include="Modules\AuthHttpModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unility\Interfaces\IHashCalculator.cs" />
@@ -408,9 +411,6 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Views\Login\index.cshtml" />
     <Content Include="scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Database\Index.cshtml" />
@@ -423,7 +423,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

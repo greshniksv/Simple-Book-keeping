@@ -8,18 +8,17 @@ using NHibernate.Criterion;
 using Ninject;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
+using SimpleBookKeeping.Exceptions;
 
 namespace SimpleBookKeeping.Authentication
 {
     public class CustomAuthentication : IAuthentication
     {
-
-        private const string cookieName = "__AUTH_COOKIE";
+        private const string CookieName = "__AUTH_COOKIE";
 
         public HttpContext HttpContext { get; set; }
         
-        #region IAuthentication Members
-
+        
         public User Login(string userName, string password, bool isPersistent)
         {
             var session = DBHelper.OpenSession();
@@ -27,29 +26,19 @@ namespace SimpleBookKeeping.Authentication
             criteria.Add(Restrictions.Eq("Login", userName));
             criteria.Add(Restrictions.Eq("Password", password));
 
-            User retUser = criteria.List<User>().First();
+            User retUser = criteria.List<User>().FirstOrDefault();
             if (retUser != null)
             {
-                CreateCookie(userName, isPersistent);
+                CreateCookie(retUser.Id.ToString(), isPersistent);
             }
             return retUser;
         }
 
-        //public User Login(string userName)
-        //{
-        //    User retUser = Repository.Users.FirstOrDefault(p => string.Compare(p.Email, userName, true) == 0);
-        //    if (retUser != null)
-        //    {
-        //        CreateCookie(userName);
-        //    }
-        //    return retUser;
-        //}
-
-        private void CreateCookie(string userName, bool isPersistent = false)
+        private void CreateCookie(string userId, bool isPersistent = false)
         {
             var ticket = new FormsAuthenticationTicket(
                   1,
-                  userName,
+                  userId,
                   DateTime.Now,
                   DateTime.Now.Add(FormsAuthentication.Timeout),
                   isPersistent,
@@ -60,19 +49,18 @@ namespace SimpleBookKeeping.Authentication
             var encTicket = FormsAuthentication.Encrypt(ticket);
 
             // Create the cookie.
-            var AuthCookie = new HttpCookie(cookieName)
+            var authCookie = new HttpCookie(CookieName)
             {
                 Value = encTicket,
                 Expires = DateTime.Now.Add(FormsAuthentication.Timeout)
             };
-            
 
-            HttpContext.Response.Cookies.Set(AuthCookie);
+            HttpContext.Response.Cookies.Set(authCookie);
         }
 
         public void LogOut()
         {
-            var httpCookie = HttpContext.Response.Cookies[cookieName];
+            var httpCookie = HttpContext.Response.Cookies[CookieName];
             if (httpCookie != null)
             {
                 httpCookie.Value = string.Empty;
@@ -89,10 +77,14 @@ namespace SimpleBookKeeping.Authentication
                 {
                     try
                     {
-                        HttpCookie authCookie = HttpContext.Request.Cookies.Get(cookieName);
+                        HttpCookie authCookie = HttpContext.Request.Cookies.Get(CookieName);
                         if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
                         {
                             var ticket = FormsAuthentication.Decrypt(authCookie.Value);
+                            if (ticket == null)
+                            {
+                                throw new CookieDecryptException($"Cookie value: {authCookie.Value}");
+                            }
                             _currentUser = new UserProvider(ticket.Name, DBHelper.OpenSession());
                         }
                         else
@@ -108,6 +100,6 @@ namespace SimpleBookKeeping.Authentication
                 return _currentUser;
             }
         }
-        #endregion
+        
     }
 }
