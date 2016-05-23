@@ -9,13 +9,13 @@ using Ninject;
 
 namespace SimpleBookKeeping
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApp : System.Web.HttpApplication
     {
-        public static IKernel AppKernel;
+        public static IKernel Kernel;
 
         protected void Application_Start()
         {
-            AppKernel = new StandardKernel(new NinjectConfig());
+            Kernel = new StandardKernel(new NinjectConfig());
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
