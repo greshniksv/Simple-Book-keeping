@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@model SimpleBookKeeping.Models.LoginModel
 @{
     Layout = null;
 }
@@ -10,9 +11,12 @@
 
     @Styles.Render("~/Css/Login")
     @Styles.Render("~/Css/jquery.mobile")
-    @Scripts.Render("~/bundles/jquery.full")
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    @*@Scripts.Render("~/bundles/jquery.full")*@
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery.mobile")
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <title> Login page </title>
 </head>
 <body>
@@ -21,14 +25,13 @@
     </div>
 
     <div class="title">
-        <p> For enter to the simple smart bookkeeping system, you mast enter the login and password. <br/> Have a nice day. </p>
+        <p> For enter to the simple smart bookkeeping system, you mast enter the login and password. <br /> Have a nice day. </p>
     </div>
 
-    @using (Html.BeginForm("Authorize", "Login"))
-    {
+    <form action="/Login/Authorize" method="POST" data-ajax="false">
         <div class="login-block">
             <div class="login">
-                <input name="login" type="text" placeholder="Login" />
+                <input name="login" type="text" value="@(Model?.Login)" placeholder="Login" />
             </div>
 
             <div class="password">
@@ -36,15 +39,15 @@
             </div>
 
             <div class="result message-warning">
-                <p>@ViewData["Error"]</p>
+                <p>@(ViewBag.Error)</p>
             </div>
 
             <div class="submit">
                 <input type="submit" value="Enter" />
             </div>
         </div>
-    }
-    
+    </form>
+
 </body>
 </html>
 

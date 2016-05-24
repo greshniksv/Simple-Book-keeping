@@ -13,8 +13,8 @@ namespace SimpleBookKeeping.Modules
         public void Init(HttpApplication context)
         {
             context.AuthenticateRequest += new EventHandler(this.Authenticate);
-            context.BeginRequest += (new EventHandler(this.Application_BeginRequest));
-            context.EndRequest += (new EventHandler(this.Application_EndRequest));
+            //context.BeginRequest += (new EventHandler(this.Application_BeginRequest));
+            //context.EndRequest += (new EventHandler(this.Application_EndRequest));
         }
 
         private void Authenticate(Object source, EventArgs e)

@@ -34,22 +34,30 @@ namespace SimpleBookKeeping.Controllers
             return View();
         }
 
-        public ActionResult Authorize(string login, string password)
+        public ActionResult Authorize(LoginModel model)
         {
-            if (!(string.IsNullOrEmpty(login) && string.IsNullOrEmpty(password)))
+            Response response = new Response
+            {
+                Result = ResponseType.Success
+            };
+
+            if (!(string.IsNullOrEmpty(model.Login) && string.IsNullOrEmpty(model.Password)))
             {
                 var auth = MvcApp.Kernel.Get<IAuthentication>();
                 auth.HttpContext = System.Web.HttpContext.Current;
-                var user = auth.Login(login, password, true);
+                var user = auth.Login(model.Login, model.Password, true);
 
                 if (user == null)
                 {
-                    ViewData["Error"] = "Login or password incorrect";
-                    //ViewBag.Error = "Login or password incorrect";
+                    ViewBag.Error = "Login or password incorrect";
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
-            return View("index");
+            return View("index", model);
         }
 
     }
