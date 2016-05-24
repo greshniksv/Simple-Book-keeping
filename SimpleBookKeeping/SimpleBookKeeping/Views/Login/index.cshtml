@@ -7,7 +7,7 @@
 
 <html>
 <head>
-    
+
     @Styles.Render("~/Css/Login")
     @Styles.Render("~/Css/jquery.mobile")
     @Scripts.Render("~/bundles/jquery.full")
@@ -24,23 +24,28 @@
         <p> For enter to the simple smart bookkeeping system, you mast enter the login and password. <br/> Have a nice day. </p>
     </div>
 
-    <div class="login-block">
-        <div class="login">
-             <input type="text" placeholder="Login"/>
-        </div>
+    @using (Html.BeginForm("Authorize", "Login"))
+    {
+        <div class="login-block">
+            <div class="login">
+                <input name="login" type="text" placeholder="Login" />
+            </div>
 
-        <div class="password">
-            <input type="password" placeholder="Password"/>
-        </div>
-        
-        <div class="submit">
-            <input type="submit" value="Enter"/>
-        </div>
-        
-        <div data-role="dialog" id="dialog"> Bla bla bla </div>
+            <div class="password">
+                <input name="password" type="password" placeholder="Password" />
+            </div>
 
-    </div>
+            <div class="result message-warning">
+                <p>@ViewData["Error"]</p>
+            </div>
+
+            <div class="submit">
+                <input type="submit" value="Enter" />
+            </div>
+        </div>
+    }
+    
 </body>
 </html>
 
-@*@Scripts.Render("~/login.js")*@ 
+@Scripts.Render("~/login.js")

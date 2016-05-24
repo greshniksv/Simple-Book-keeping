@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
 using System.Web.Mvc;
-using NHibernate;
-using NHibernate.Criterion;
-using NHibernate.Util;
 using Ninject;
 using SimpleBookKeeping.Authentication;
-using SimpleBookKeeping.Database;
-using SimpleBookKeeping.Database.Entities;
 using SimpleBookKeeping.Models;
 using SimpleBookKeeping.Unility.Interfaces;
-using JsonResult = SimpleBookKeeping.Models.JsonResult;
 
 namespace SimpleBookKeeping.Controllers
 {
@@ -39,20 +34,22 @@ namespace SimpleBookKeeping.Controllers
             return View();
         }
 
-        [HttpGet]
         public ActionResult Authorize(string login, string password)
         {
-            var auth = MvcApp.Kernel.Get<IAuthentication>();
-            auth.HttpContext = System.Web.HttpContext.Current;
-            var user = auth.Login(login, password, true);
-            JsonResult jsonResult = new JsonResult { Result = JsonResultType.Success };
-
-            if (user == null)
+            if (!(string.IsNullOrEmpty(login) && string.IsNullOrEmpty(password)))
             {
-                jsonResult = new JsonResult { Result = JsonResultType.Error, Message = "User not found" };
+                var auth = MvcApp.Kernel.Get<IAuthentication>();
+                auth.HttpContext = System.Web.HttpContext.Current;
+                var user = auth.Login(login, password, true);
+
+                if (user == null)
+                {
+                    ViewData["Error"] = "Login or password incorrect";
+                    //ViewBag.Error = "Login or password incorrect";
+                }
             }
 
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+            return View("index");
         }
 
     }

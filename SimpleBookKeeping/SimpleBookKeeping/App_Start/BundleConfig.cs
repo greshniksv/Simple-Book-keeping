@@ -2,7 +2,7 @@
 
 namespace SimpleBookKeeping
 {
-    public class BundleConfig
+    public static class BundleConfig
     {
         public static void RegisterBundles(BundleCollection bundles)
         {
@@ -21,15 +21,16 @@ namespace SimpleBookKeeping
                       "~/Scripts/jquery.mobile-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/Css/jquery.mobile").Include(
-                 "~/Content/jquery.mobile-1.4.5.css"));
+                 "~/Content/jquery.mobile-{version}.css",
+                 "~/Content/messages.less"));
 
             bundles.Add(new StyleBundle("~/Css/Login").Include(
                       "~/Content/site/login.less"));
-
+            
             RegisterSiteBundle(bundles);
         }
 
-        public static void RegisterSiteBundle(BundleCollection bundles)
+        private static void RegisterSiteBundle(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/login.js").Include(
                       "~/Scripts/Site/Login.js"));

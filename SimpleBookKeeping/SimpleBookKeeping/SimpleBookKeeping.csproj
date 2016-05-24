@@ -369,19 +369,20 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="scripts\ai.0.22.9-build00167.js" />
-    <Content Include="scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\ai.0.22.9-build00167.js" />
+    <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Content\site\login.less" />
-    <None Include="scripts\jquery-2.2.3.intellisense.js" />
-    <Content Include="scripts\jquery-2.2.3.js" />
-    <Content Include="scripts\jquery-2.2.3.min.js" />
-    <Content Include="scripts\jquery.mobile-1.4.5.js" />
-    <Content Include="scripts\jquery.mobile-1.4.5.min.js" />
-    <Content Include="scripts\jquery.mobile-1.4.5.min.map" />
-    <None Include="scripts\jquery.validate-vsdoc.js" />
-    <Content Include="scripts\jquery.validate.js" />
-    <Content Include="scripts\jquery.validate.min.js" />
-    <Content Include="scripts\Site\Login.js" />
+    <Content Include="Content\messages.less" />
+    <None Include="Scripts\jquery-2.2.3.intellisense.js" />
+    <Content Include="Scripts\jquery-2.2.3.js" />
+    <Content Include="Scripts\jquery-2.2.3.min.js" />
+    <Content Include="Scripts\jquery.mobile-1.4.5.js" />
+    <Content Include="Scripts\jquery.mobile-1.4.5.min.js" />
+    <Content Include="Scripts\jquery.mobile-1.4.5.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\Site\Login.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -402,7 +403,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\JsonResult.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Modules\AuthHttpModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unility\Interfaces\IHashCalculator.cs" />
@@ -412,7 +413,7 @@
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="Views\Login\index.cshtml" />
-    <Content Include="scripts\jquery-2.2.3.min.map" />
+    <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Database\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
