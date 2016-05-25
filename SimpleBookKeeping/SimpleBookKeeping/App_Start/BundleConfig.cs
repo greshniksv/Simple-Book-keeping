@@ -23,9 +23,6 @@ namespace SimpleBookKeeping
             bundles.Add(new ScriptBundle("~/Css/jquery.mobile").Include(
                  "~/Content/jquery.mobile-{version}.css",
                  "~/Content/messages.less"));
-
-            bundles.Add(new StyleBundle("~/Css/Login").Include(
-                      "~/Content/site/login.less"));
             
             RegisterSiteBundle(bundles);
         }
@@ -34,6 +31,12 @@ namespace SimpleBookKeeping
         {
             bundles.Add(new StyleBundle("~/login.js").Include(
                       "~/Scripts/Site/Login.js"));
+
+            bundles.Add(new StyleBundle("~/Css/Login").Include(
+                      "~/Content/site/login.less"));
+
+            bundles.Add(new StyleBundle("~/Css/Layout").Include(
+                      "~/Content/site/layout.less"));
         }
 
     }
