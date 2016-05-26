@@ -361,7 +361,16 @@
     <Content Include="Content\jquery.mobile.structure-1.4.5.min.css" />
     <Content Include="Content\jquery.mobile.theme-1.4.5.css" />
     <Content Include="Content\jquery.mobile.theme-1.4.5.min.css" />
-    <EmbeddedResource Include="Database\Mappings\Users.hbm.xml">
+    <EmbeddedResource Include="DatabaseConfig\Mappings\Users.hbm.xml">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DatabaseConfig\Mappings\Plans.hbm.xml">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DatabaseConfig\Mappings\Costs.hbm.xml">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DatabaseConfig\Mappings\CostDetails.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <Content Include="Global.asax" />
@@ -400,8 +409,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Database\DBHelper.cs" />
-    <Compile Include="Database\Entities\User.cs" />
+    <Compile Include="DatabaseConfig\Database.cs" />
+    <Compile Include="DatabaseConfig\DBHelper.cs" />
+    <Compile Include="DatabaseConfig\Entities\Cost.cs" />
+    <Compile Include="DatabaseConfig\Entities\CostDetail.cs" />
+    <Compile Include="DatabaseConfig\Entities\Interfaces\IDeleteMarker.cs" />
+    <Compile Include="DatabaseConfig\Entities\Plan.cs" />
+    <Compile Include="DatabaseConfig\Entities\User.cs" />
     <Compile Include="Exceptions\CookieDecryptException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

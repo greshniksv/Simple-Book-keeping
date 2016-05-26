@@ -25,6 +25,7 @@ namespace SimpleBookKeeping.Controllers
             catch (Exception ex)
             {
                 ViewBag.Response = ex.ToString();
+                return View("index");
             }
 
             ViewBag.Response = "Database created";

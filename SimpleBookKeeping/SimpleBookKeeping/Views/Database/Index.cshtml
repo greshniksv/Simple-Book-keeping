@@ -1,17 +1,17 @@
 ﻿@{
-    Layout = null;
+    ViewBag.Title = "База данных";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!DOCTYPE html>
+<input onclick="Redirect('/Database/CreateDatabase')" type="button" value="Создать БД">
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title></title>
-</head>
-<body>
-    <div>
-    
-    </div>
-</body>
-</html>
+<br/>
+<br/>
+
+@if (!string.IsNullOrEmpty(ViewBag.Response))
+{
+    <table border="1">
+        <tr> <th> Result: </th></tr>
+        <tr> <td> @ViewBag.Response </td></tr>
+    </table>
+}

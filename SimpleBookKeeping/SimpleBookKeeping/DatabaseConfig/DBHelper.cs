@@ -49,7 +49,13 @@ namespace SimpleBookKeeping.Database
             configuration.AddAssembly(typeof(User).Assembly);
             var schemaExport = new SchemaExport(configuration);
             schemaExport.Create(false, true);
+
+            TestData();
         }
 
+        private static void TestData()
+        {
+
+        }
     }
 }

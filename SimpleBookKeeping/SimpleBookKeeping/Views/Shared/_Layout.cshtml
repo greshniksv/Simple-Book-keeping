@@ -16,35 +16,38 @@
 
 <div class='json-overlay'></div>
 
+    
+
 <div data-role="page">
-    <div data-role="panel" id="mypanel" data-position="left" data-display="push">
-        <ul data-role="listview">
-            <li data-role="list-divider"> # </li>
-            <li><a href="#" onclick="Redirect('/Settings/Index')" >Главная</a></li>
-            <li data-role="list-divider"> # Типы расходов </li>
-            <li><a href="audi.html">Няня Аня</a></li>
-            <li><a href="audi.html">Няня Оксана</a></li>
-
-            <li data-role="list-divider"> # Движения </li>
-            <li data-role="list-divider"> ## Старые </li>
-            <li><a href="audi.html">Просмотреть</a></li>
-
-            <li data-role="list-divider"> ## Активное </li>
-            <li><a href="audi.html">Просмотреть</a></li>
-
-            <li data-role="list-divider"> --- </li>
-            <li><a href="#" onclick="Redirect('/Settings/Index')">Настройки</a></li>
-
-        </ul>
-    </div>
-
     <div data-role="header">
         <a onclick="Panel()" data-icon="grid">Меню</a>
         <h1> @ViewBag.Title </h1>
         <a id="save" onclick="SaveDone()" href="#" data-icon="check">Сохр</a>
     </div>
 
+
     @RenderBody()
+
+
+    <div data-role="panel" id="mypanel" data-position="left" data-display="overlay">
+        <ul data-role="listview">
+            <li data-role="list-divider"> # </li>
+            <li><a href="#" onclick="Redirect('/Home/Index')">Главная</a></li>
+
+            <li data-role="list-divider"> # Расходы </li>
+            <li><a href="audi.html">Няня Аня</a></li>
+            <li><a href="audi.html">Няня Оксана</a></li>
+            <li><a href="audi.html">Юля</a></li>
+
+            <li data-role="list-divider"> # План </li>
+            <li><a href="audi.html">11.04 - 11.05</a></li>
+            <li><a href="audi.html">Старые планы</a></li>
+
+            <li data-role="list-divider"> --- </li>
+            <li><a href="#" onclick="Redirect('/Settings/Index')">Настройки</a></li>
+
+        </ul>
+    </div>
 
 </div>
 
@@ -57,7 +60,6 @@
 
     function Panel() {
         $("#mypanel").panel("open");
-        ShowSaveButton();
     }
 
     function ShowSaveButton() {
@@ -76,6 +78,10 @@
 
     function ShowLoading() {
         $(".json-overlay").fadeIn(1000);
+    }
+
+    function HideLoading() {
+        $(".json-overlay").fadeOut(1000);
     }
 
     function Redirect(url) {

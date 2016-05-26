@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="SimpleBookKeeping" namespace="SimpleBookKeeping.Database.Entities">
+
+  <class name="Plan" table="plans" lazy="true">
+    <id name="Id" column="id">
+      <generator class="guid" />
+    </id>
+
+    <property name="Name" column="name"  type="String" />
+    <property name="Start" column="startDate" type="DateTime" index="idx_start" />
+    <property name="End" column="endDate" type="DateTime" index="idx_end" />
+    <property name="Balance" column="Balance"  type="Int16" />
+    <property name="Deleted" column="deleted" type="Boolean" index="idx_deleted" />
+
+    <many-to-one name="User" class="User" column="user_id" cascade="all" />
+    
+    <bag name="Costs" cascade="all-delete-orphan" lazy="true">
+      <key column="plan_id" />
+      <one-to-many class="Cost" />
+    </bag>
+
+  </class>
+
+</hibernate-mapping>
+
