@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-using System.Web;
 using NHibernate;
-using NHibernate.Criterion;
 using SimpleBookKeeping.Database.Entities;
 
 namespace SimpleBookKeeping.Authentication
@@ -34,9 +32,8 @@ namespace SimpleBookKeeping.Authentication
         {
             if (!string.IsNullOrEmpty(id))
             {
-                ICriteria criteria = session.CreateCriteria(typeof(User));
-                criteria.Add(Restrictions.Eq("Id", new Guid("id")));
-                IList<User> matchingObjects = criteria.List<User>();
+                IList<User> matchingObjects = 
+                    session.QueryOver<User>().Where(x => x.Id == new Guid(id)).List<User>();
 
                 User = matchingObjects.First();
             }
