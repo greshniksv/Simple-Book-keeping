@@ -3,15 +3,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<a data-role="button" class="margin10" onclick="Redirect('/Database/CreateDatabase')">Создать БД</a>
+<a data-role="button" class="margin10" onclick="redirect('/Database/CreateDatabase')">Создать БД</a>
 
-<br/>
-<br/>
-
-@if (!string.IsNullOrEmpty(ViewBag.Response))
+@if (!string.IsNullOrEmpty(ViewBag.Error))
 {
-    <table border="1">
-        <tr> <th> Result: </th></tr>
-        <tr> <td> @ViewBag.Response </td></tr>
-    </table>
+    <div class="timer-fadein bs-callout bs-callout-danger">
+        <h4> Database error </h4>
+        <p> @ViewBag.Error </p>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Info))
+{
+    <div class="timer-fadein bs-callout bs-callout-info">
+        <h4> Database information </h4>
+        <p> @ViewBag.Info </p>
+    </div>
 }

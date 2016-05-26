@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Web.Mvc;
-using NHibernate.Cfg;
-using NHibernate.Tool.hbm2ddl;
 using SimpleBookKeeping.Database;
-using SimpleBookKeeping.Database.Entities;
 
 namespace SimpleBookKeeping.Controllers
 {
@@ -24,13 +21,27 @@ namespace SimpleBookKeeping.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Response = ex.ToString();
-                return View("index");
+                return RedirectToAction("CreateResult",
+                    new { message = ex.ToString(), success = false });
+            }
+            
+            return RedirectToAction("CreateResult", 
+                new { message = "Database created successful", success = true });
+        }
+
+        public ActionResult CreateResult(string message, bool success)
+        {
+            if (success)
+            {
+                ViewBag.Info = message;
+            }
+            else
+            {
+                ViewBag.Error = message;
             }
 
-            ViewBag.Response = "Database created";
-
-            return View("index");
+            return View("Index");
         }
+
     }
 }

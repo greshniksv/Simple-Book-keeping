@@ -20,7 +20,7 @@ namespace SimpleBookKeeping
             bundles.Add(new ScriptBundle("~/bundles/jquery.mobile").Include(
                       "~/Scripts/jquery.mobile-{version}.js"));
 
-            bundles.Add(new ScriptBundle("~/Css/jquery.mobile").Include(
+            bundles.Add(new ScriptBundle("~/jquery.mobile.css").Include(
                  "~/Content/jquery.mobile-{version}.css",
                  "~/Content/messages.less"));
             
@@ -29,14 +29,38 @@ namespace SimpleBookKeeping
 
         private static void RegisterSiteBundle(BundleCollection bundles)
         {
-            bundles.Add(new StyleBundle("~/login.js").Include(
+            // Login
+
+            bundles.Add(new ScriptBundle("~/login.js").Include(
                       "~/Scripts/Site/Login.js"));
 
-            bundles.Add(new StyleBundle("~/Css/Login").Include(
+            bundles.Add(new StyleBundle("~/login.css").Include(
                       "~/Content/site/login.less"));
 
-            bundles.Add(new StyleBundle("~/Css/Layout").Include(
+            // Layout
+
+            bundles.Add(new ScriptBundle("~/layout.js").Include(
+                     "~/Scripts/Site/layout.js"));
+
+            bundles.Add(new StyleBundle("~/layout.css").Include(
                       "~/Content/site/layout.less"));
+
+            // Animate
+            bundles.Add(new ScriptBundle("~/animate.js").Include(
+                     "~/Scripts/Site/animate.js"));
+
+            // JQuery module datebox
+            bundles.Add(new ScriptBundle("~/jqm.datebox.js").Include(
+                     "~/Scripts/jqm-datebox/jquery.mobile.datebox.js",
+                     "~/Scripts/jqm-datebox/jqm-datebox.*",
+                     "~/Scripts/jqm-datebox/i18n/jquery.mobile.datebox.i18n.ru.utf8.js"));
+
+            bundles.Add(new StyleBundle("~/jqm.datebox.css").Include(
+                      "~/Content/jquery.mobile.datebox.css"));
+
+            // Plan
+            bundles.Add(new StyleBundle("~/plan.css").Include(
+                      "~/Content/site/plan.less"));
         }
 
     }
