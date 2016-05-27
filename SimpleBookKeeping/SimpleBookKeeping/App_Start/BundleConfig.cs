@@ -61,6 +61,11 @@ namespace SimpleBookKeeping
             // Plan
             bundles.Add(new StyleBundle("~/plan.css").Include(
                       "~/Content/site/plan.less"));
+
+            // Common
+            bundles.Add(new StyleBundle("~/common.css").Include(
+                      "~/Content/site/common.less"));
+
         }
 
     }

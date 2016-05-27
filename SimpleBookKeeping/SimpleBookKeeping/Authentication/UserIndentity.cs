@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using NHibernate;
 using SimpleBookKeeping.Database.Entities;
+using SimpleBookKeeping.Exceptions;
 
 namespace SimpleBookKeeping.Authentication
 {
@@ -34,6 +35,11 @@ namespace SimpleBookKeeping.Authentication
             {
                 IList<User> matchingObjects = 
                     session.QueryOver<User>().Where(x => x.Id == new Guid(id)).List<User>();
+
+                if (!matchingObjects.Any())
+                {
+                    throw new UserNotFoundException($"Not found user with id: {id}");
+                }
 
                 User = matchingObjects.First();
             }

@@ -5,6 +5,7 @@
 <html>
 <head>
 
+    @Styles.Render("~/common.css")
     @Styles.Render("~/jquery.mobile.css")
     @Styles.Render("~/layout.css")
     @Scripts.Render("~/bundles/jquery.full")
@@ -14,9 +15,8 @@
 </head>
 <body>
 
-<div class='json-overlay'></div>
+<div class='wait-overlay'></div>
 
-    
 
 <div data-role="page">
     <div data-role="header">
@@ -33,13 +33,20 @@
             <li><a href="#" onclick="redirect('/Home/Index')">Главная</a></li>
 
             <li data-role="list-divider"> # Расходы </li>
+            <li data-role="list-divider"> ## Название плана 1 </li>
             <li><a href="audi.html">Няня Аня</a></li>
             <li><a href="audi.html">Няня Оксана</a></li>
             <li><a href="audi.html">Юля</a></li>
 
-            <li data-role="list-divider"> # План </li>
-            <li><a href="audi.html">11.04 - 11.05</a></li>
-            <li><a href="audi.html">Старые планы</a></li>
+            <li data-role="list-divider"> ## Название плана 2 </li>
+            <li><a href="audi.html">Няня Аня</a></li>
+            <li><a href="audi.html">Няня Оксана</a></li>
+            <li><a href="audi.html">Юля</a></li>
+
+
+            <li data-role="list-divider"> # Активные планы </li>
+            <li><a href="audi.html">Название плана 1</a></li>
+            <li><a href="audi.html">Название плана 2</a></li>
 
             <li data-role="list-divider"> --- </li>
             <li><a href="#" onclick="redirect('/Settings/Index')">Настройки</a></li>

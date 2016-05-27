@@ -20,11 +20,11 @@ function saveDone() {
 }
 
 function showLoading() {
-    $(".json-overlay").fadeIn(1000);
+    $(".wait-overlay").fadeIn(1000);
 }
 
 function hideLoading() {
-    $(".json-overlay").fadeOut(1000);
+    $(".wait-overlay").fadeOut(1000);
 }
 
 function redirect(url) {

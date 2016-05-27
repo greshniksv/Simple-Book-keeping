@@ -9,6 +9,7 @@
 <html>
 <head>
 
+    @Styles.Render("~/common.css")
     @Styles.Render("~/login.css")
     @Styles.Render("~/jquery.mobile.css")
     @Scripts.Render("~/bundles/jquery.full")
@@ -28,11 +29,13 @@
     <form action="/Login/Authorize" method="POST" data-ajax="false">
         <div class="login-block">
             <div class="login">
-                <input name="login" type="text" value="@(Model?.Login)" placeholder="Login" />
+                <input name="login" type="text" value="@(Model?.Login)" placeholder="Login"/>
+                @Html.ValidationMessageFor(model => model.Login)
             </div>
 
             <div class="password">
-                <input name="password" type="password" placeholder="Password" />
+                <input name="password" type="password" placeholder="Password"/>
+                @Html.ValidationMessageFor(model => model.Password)
             </div>
 
             <div class="result message-warning">

@@ -6,7 +6,6 @@
       <generator class="guid" />
     </id>
 
-    <property name="Name" column="name"  type="String" />
     <property name="Date" column="datetime"  type="DateTime" index="idx_date" />
     <property name="Value" column="value"  type="Int16" />
     <property name="Deleted" column="deleted" type="Boolean" index="idx_deleted" />

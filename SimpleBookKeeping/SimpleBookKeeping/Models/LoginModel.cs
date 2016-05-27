@@ -4,12 +4,12 @@ namespace SimpleBookKeeping.Models
 {
     public class LoginModel
     {
-        [Required(ErrorMessage = "Login field is required")]
-        [StringLength(30, ErrorMessage = "Login is to big")]
+        [Required(ErrorMessage = "Нужно указало логин ")]
+        [StringLength(30, ErrorMessage = "Логин слишком большой")]
         public string Login { get; set; }
 
-        [Required(ErrorMessage = "Password field is required")]
-        [StringLength(30, ErrorMessage = "Password is to big")]
+        [Required(ErrorMessage = "Нужно указать пароль")]
+        [StringLength(maximumLength: 30, MinimumLength = 5, ErrorMessage = "Пароль должен быть от 5 до 30 символов")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

@@ -19,7 +19,7 @@ namespace SimpleBookKeeping.Controllers
             //    hashCalculator = MvcApp.Kernel.Get<IHashCalculator>();
             //    ViewBag.Hash = hashCalculator.GetHash("Bla bla");
 
-            //var session = DBHelper.OpenSession();
+            //var session = Db.Session();
             //using (ITransaction transaction = session.BeginTransaction())
             //{
             //    ICriteria criteria = session.CreateCriteria(typeof(User));
@@ -36,24 +36,22 @@ namespace SimpleBookKeeping.Controllers
 
         public ActionResult Authorize(LoginModel model)
         {
-            Response response = new Response
+            if (ModelState.IsValid)
             {
-                Result = ResponseType.Success
-            };
-
-            if (!(string.IsNullOrEmpty(model.Login) && string.IsNullOrEmpty(model.Password)))
-            {
-                var auth = MvcApp.Kernel.Get<IAuthentication>();
-                auth.HttpContext = System.Web.HttpContext.Current;
-                var user = auth.Login(model.Login, model.Password, true);
-
-                if (user == null)
+                if (!(string.IsNullOrEmpty(model.Login) && string.IsNullOrEmpty(model.Password)))
                 {
-                    ViewBag.Error = "Login or password incorrect";
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
+                    var auth = MvcApp.Kernel.Get<IAuthentication>();
+                    auth.HttpContext = System.Web.HttpContext.Current;
+                    var user = auth.Login(model.Login, model.Password, true);
+
+                    if (user == null)
+                    {
+                        ViewBag.Error = "Login or password incorrect";
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
             }
 

@@ -48,6 +48,10 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\packages\Iesi.Collections.4.0.0.4000\lib\net40\Iesi.Collections.dll</HintPath>
       <Private>True</Private>
@@ -366,7 +370,7 @@
     <EmbeddedResource Include="Database\Mappings\Users.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Mappings\Plans.hbm.xml">
+    <EmbeddedResource Include="Database\Mappings\CostPlans.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Mappings\Costs.hbm.xml">
@@ -386,6 +390,8 @@
     <Content Include="Content\messages.less" />
     <Content Include="Content\site\layout.less" />
     <Content Include="Content\site\plan.less" />
+    <Content Include="Content\site\common.less" />
+    <Content Include="Content\site\error.less" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\jqm-datebox\i18n\jquery.mobile.datebox.i18n.af.asc.js" />
     <Content Include="Scripts\jqm-datebox\i18n\jquery.mobile.datebox.i18n.af.utf8.js" />
@@ -487,9 +493,12 @@
     <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutoMapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\GlobalFiltersConfig.cs" />
     <Compile Include="App_Start\NinjectConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attributes\HandleErrorAttribute.cs" />
     <Compile Include="Authentication\CustomAuthentication.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
     <Compile Include="Authentication\UserIndentity.cs" />
@@ -499,18 +508,20 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PlanController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
-    <Compile Include="Database\DBHelper.cs" />
+    <Compile Include="Database\Db.cs" />
     <Compile Include="Database\Entities\Cost.cs" />
     <Compile Include="Database\Entities\CostDetail.cs" />
     <Compile Include="Database\Entities\Interfaces\IDeleteMarker.cs" />
-    <Compile Include="Database\Entities\Plan.cs" />
+    <Compile Include="Database\Entities\CostPlan.cs" />
     <Compile Include="Database\Entities\User.cs" />
     <Compile Include="Exceptions\CookieDecryptException.cs" />
+    <Compile Include="Exceptions\PlanNotFoundException.cs" />
+    <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Response.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PlanModel.cs" />
     <Compile Include="Modules\AuthHttpModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unility\Interfaces\IHashCalculator.cs" />
@@ -525,7 +536,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Plan\Index.cshtml" />
-    <Content Include="Views\Plan\CreatePlan.cshtml" />
+    <Content Include="Views\Plan\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

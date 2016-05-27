@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace SimpleBookKeeping.Exceptions
 {
+    [Serializable]
     public class CookieDecryptException : Exception
     {
         public CookieDecryptException()

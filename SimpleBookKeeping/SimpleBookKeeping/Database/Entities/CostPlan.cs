@@ -4,7 +4,7 @@ using SimpleBookKeeping.DatabaseConfig.Entities.Interfaces;
 
 namespace SimpleBookKeeping.Database.Entities
 {
-    public class Plan : IDeleteMarker
+    public class CostPlan : IDeleteMarker
     {
         private User _user;
         IList<Cost> _costs = new List<Cost>();

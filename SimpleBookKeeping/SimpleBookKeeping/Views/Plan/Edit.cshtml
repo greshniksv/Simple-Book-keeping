@@ -1,0 +1,36 @@
+﻿@using System.Web.Optimization
+@model SimpleBookKeeping.Models.PlanModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/jqm.datebox.css")
+@Styles.Render("~/plan.css")
+
+<div class="create-plan">
+
+    <h3> Создание плана </h3>
+
+    <form action="/Plan/Create" method="POST" data-ajax="false">
+
+        <input name="start" placeholder="Дата начала" type="date" value="@Model.Start.ToString("dd/MM/yyyy")" 
+            data-role="datebox" data-options='{"mode": "flipbox", "overrideDateFormat": "%d/%m/%Y"}'/>
+        @Html.ValidationMessageFor(model => model.Start)
+
+        <input name="end" placeholder="Дата завершения" type="date" value="@Model.End.ToString("dd/MM/yyyy")"
+               data-role="datebox" data-options='{"mode": "flipbox", "overrideDateFormat": "%d/%m/%Y"}'/>
+        @Html.ValidationMessageFor(model => model.End)
+
+        <input name="name" type="text" value="@Model.Name" placeholder="Наименование"/>
+        @Html.ValidationMessageFor(model => model.Name)
+
+        <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс" />
+        @Html.ValidationMessageFor(model => model.Balance)
+
+        <input type="submit" value="Создать"/>
+
+    </form>
+
+</div>
+
+@Scripts.Render("~/jqm.datebox.js")

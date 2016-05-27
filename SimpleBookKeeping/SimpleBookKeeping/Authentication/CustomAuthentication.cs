@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
 using System.Web.Security;
 using NHibernate.Criterion;
-using Ninject;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
 using SimpleBookKeeping.Exceptions;
@@ -21,7 +19,7 @@ namespace SimpleBookKeeping.Authentication
         
         public User Login(string userName, string password, bool isPersistent)
         {
-            var session = DBHelper.OpenSession();
+            var session = Db.Session;
             var criteria = session.CreateCriteria<User>();
             criteria.Add(Restrictions.Eq("Login", userName));
             criteria.Add(Restrictions.Eq("Password", password));
@@ -78,24 +76,33 @@ namespace SimpleBookKeeping.Authentication
                     try
                     {
                         HttpCookie authCookie = HttpContext.Request.Cookies.Get(CookieName);
-                        if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
+                        if (!string.IsNullOrEmpty(authCookie?.Value))
                         {
                             var ticket = FormsAuthentication.Decrypt(authCookie.Value);
                             if (ticket == null)
                             {
                                 throw new CookieDecryptException($"Cookie value: {authCookie.Value}");
                             }
-                            _currentUser = new UserProvider(ticket.Name, DBHelper.OpenSession());
+                            _currentUser = new UserProvider(ticket.Name, Db.Session);
                         }
                         else
                         {
-                            _currentUser = new UserProvider(null, null);
+                            _currentUser = null;
                         }
                     }
-                    catch (Exception ex)
+                    catch (UserNotFoundException)
                     {
-                        _currentUser = new UserProvider(null, null);
+                        _currentUser = null;
                     }
+                    catch (Exception)
+                    {
+                        _currentUser = null;
+                    }
+                }
+
+                if (_currentUser == null)
+                {
+                    LogOut();
                 }
                 return _currentUser;
             }

@@ -1,7 +1,26 @@
 ﻿@using System.Web.Optimization
+@model  IList<SimpleBookKeeping.Database.Entities.CostPlan>
 @{
+    ViewBag.Title = "Планы";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @Styles.Render("~/plan.css")
 
+<div class="paln-list">
+    <ul class="margin10 custom-list" data-role="listview" data-inset="true">
+        <li data-role="list-divider"> Планы: </li>
+
+        @foreach (var plan in Model)
+        {
+            <li><a href="#" onclick="redirect('/Plan/EditById?id=@plan.Id')">
+                    @plan.Name
+                    <span class="ui-li-count ui-body-inherit">@plan.Balance</span>
+                </a>
+            </li>
+        }
+
+    </ul>
+</div>
+
+<a data-role="button" class="margin10" onclick="redirect('/Database/Index')">Создать новый</a>

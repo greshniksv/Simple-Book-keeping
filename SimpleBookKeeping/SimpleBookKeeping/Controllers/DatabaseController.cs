@@ -12,23 +12,22 @@ namespace SimpleBookKeeping.Controllers
             return View();
         }
 
-
         public ActionResult CreateDatabase()
         {
             try
             {
-               DBHelper.CreateDb();
+               Db.CreateDb();
             }
             catch (Exception ex)
             {
                 return RedirectToAction("CreateResult",
-                    new { message = ex.ToString(), success = false });
+                    new { message = ex.Message, success = false });
             }
             
             return RedirectToAction("CreateResult", 
                 new { message = "Database created successful", success = true });
         }
-
+        
         public ActionResult CreateResult(string message, bool success)
         {
             if (success)

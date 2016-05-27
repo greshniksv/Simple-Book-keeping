@@ -6,8 +6,8 @@ namespace SimpleBookKeeping.Database.Entities
 {
     public class Cost : IDeleteMarker
     {
-        private Plan _plan;
-        IList<Cost> _costDetails = new List<Cost>();
+        private CostPlan _costPlan;
+        IList<CostDetail> _costDetails = new List<CostDetail>();
 
         public virtual Guid Id
         {
@@ -20,13 +20,13 @@ namespace SimpleBookKeeping.Database.Entities
             set;
         }
 
-        public virtual Plan Plan
+        public virtual CostPlan CostPlan
         {
-            get { return _plan; }
-            set { _plan = value; }
+            get { return _costPlan; }
+            set { _costPlan = value; }
         }
 
-        public virtual IList<Cost> CostDetails
+        public virtual IList<CostDetail> CostDetails
         {
             get
             {

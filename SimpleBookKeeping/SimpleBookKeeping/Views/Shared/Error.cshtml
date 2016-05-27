@@ -1,9 +1,16 @@
 ﻿@model System.Web.Mvc.HandleErrorInfo
-
 @{
     ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
+<div class="error-page">
+    <div class="timer-fadein bs-callout bs-callout-danger">
+        <h4> @Model.ControllerName . @Model.ActionName </h4>
+        <p>
+            @Model.Exception.GetType().Name => @Model.Exception.Message
+            <br/><br/>
+            StackTrace: @Model.Exception.StackTrace
+        </p>
+    </div>
+</div>
