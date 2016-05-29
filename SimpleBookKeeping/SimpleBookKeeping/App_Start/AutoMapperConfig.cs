@@ -14,8 +14,16 @@ namespace SimpleBookKeeping
         public static void RegisterMaps()
         {
             Configuration = new MapperConfiguration(cfg => {
-                cfg.CreateMap<CostPlan, PlanModel>();
-                cfg.CreateMap<PlanModel, CostPlan>();
+
+                cfg.CreateMap<Plan, PlanModel>();
+                cfg.CreateMap<PlanModel, Plan>();
+
+                cfg.CreateMap<Cost, CostModel>();
+                cfg.CreateMap<CostModel, Cost>();
+
+                cfg.CreateMap<CostDetail, CostDetailModel>();
+                cfg.CreateMap<CostDetailModel, CostDetail>();
+
             });
 
             Mapper = Configuration.CreateMapper();

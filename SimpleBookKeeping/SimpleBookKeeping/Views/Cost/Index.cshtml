@@ -1,0 +1,33 @@
+﻿@using System.Diagnostics
+@using System.Web.Optimization
+@model SimpleBookKeeping.Models.CostModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@Styles.Render("~/cost.css")
+
+<div class="cost-page margin10">
+    <input type="text" placeholder="Название расходов" 
+        value="@(Model== null ? string.Empty : Model.Name)"/>
+
+    <table>
+
+        <tr><th> Дата </th><th> Сумма </th></tr>
+
+        @foreach (var costDetailModel in Model?.CostDetails)
+        {
+            <tr>
+                <td> @costDetailModel.Date.ToString("dd-MM") </td>
+                <td>
+                    <input type="text" value="@(costDetailModel.Value == 0 ? 
+                                                     string.Empty : costDetailModel.Value.ToString())"/>
+                </td>
+            </tr>
+        }
+
+    </table>
+
+</div>
+
+

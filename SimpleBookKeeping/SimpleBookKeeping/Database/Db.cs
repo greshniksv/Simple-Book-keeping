@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
@@ -53,7 +52,7 @@ namespace SimpleBookKeeping.Database
                 Password = "123456",
             };
           
-            var costPlan = new CostPlan
+            var costPlan = new Plan
             {
                 Name = "Test plan",
                 Start = DateTime.Now.AddDays(-10),
@@ -67,7 +66,7 @@ namespace SimpleBookKeeping.Database
             {
                 Name = "Nanny",
                 Deleted = false,
-                CostPlan = costPlan
+                Plan = costPlan
             };
 
             for (int i = 10; i > 0; i--)
@@ -82,15 +81,14 @@ namespace SimpleBookKeeping.Database
             }
 
             costPlan.Costs.Add(cost);
-            user.CostPlans.Add(costPlan);
+            user.Plans.Add(costPlan);
 
-            var session = Db.Session;
+            using (var session = Db.Session)
             using (ITransaction transaction = session.BeginTransaction())
             {
                 session.Save(user);
                 transaction.Commit();
             }
         }
-
     }
 }

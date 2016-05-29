@@ -8,6 +8,8 @@ namespace SimpleBookKeeping.Models
 {
     public class PlanModel
     {
+        public Guid Id { get; set; }
+
         [Required(ErrorMessage = "Начало должно быть указано")]
         public DateTime Start { get; set; }
 

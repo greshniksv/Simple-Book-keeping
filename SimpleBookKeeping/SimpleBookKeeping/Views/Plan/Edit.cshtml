@@ -11,26 +11,28 @@
 
     <h3> Создание плана </h3>
 
-    <form action="/Plan/Create" method="POST" data-ajax="false">
+    <form action="/Plan/Save" method="POST" data-ajax="false">
 
-        <input name="start" placeholder="Дата начала" type="date" value="@Model.Start.ToString("dd/MM/yyyy")" 
-            data-role="datebox" data-options='{"mode": "flipbox", "overrideDateFormat": "%d/%m/%Y"}'/>
+        <input name="id" value="@Model.Id" type="hidden"/>
+
+        <input name="start" placeholder="Дата начала" type="date" value="@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("dd-MM-yyyy"))"
+               data-role="datebox" data-options='{"mode": "datebox", "overrideDateFormat": "%d/%m/%Y"}'/>
         @Html.ValidationMessageFor(model => model.Start)
 
-        <input name="end" placeholder="Дата завершения" type="date" value="@Model.End.ToString("dd/MM/yyyy")"
-               data-role="datebox" data-options='{"mode": "flipbox", "overrideDateFormat": "%d/%m/%Y"}'/>
+        <input name="end" placeholder="Дата завершения" type="date" value="@(Model.End == DateTime.MinValue ? "" : Model.End.ToString("dd-MM-yyyy"))"
+               data-role="datebox" data-options='{"mode": "datebox", "overrideDateFormat": "%d-%m-%Y"}'/>
         @Html.ValidationMessageFor(model => model.End)
 
         <input name="name" type="text" value="@Model.Name" placeholder="Наименование"/>
         @Html.ValidationMessageFor(model => model.Name)
 
-        <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс" />
+        <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс"/>
         @Html.ValidationMessageFor(model => model.Balance)
 
-        <input type="submit" value="Создать"/>
+        <input class="margin10" type="submit" value="@(@Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
 
     </form>
-
+  
 </div>
 
 @Scripts.Render("~/jqm.datebox.js")

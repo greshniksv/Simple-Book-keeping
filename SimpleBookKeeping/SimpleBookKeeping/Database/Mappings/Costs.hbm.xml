@@ -8,7 +8,7 @@
 
     <property name="Name" column="name"  type="String" />
     <property name="Deleted" column="deleted" type="Boolean" index="idx_deleted" />
-    <many-to-one name="CostPlan" class="CostPlan" column="plan_id" cascade="all" />
+    <many-to-one name="Plan" class="Plan" column="plan_id" cascade="all" />
 
     <bag name="CostDetails" cascade="all-delete-orphan" lazy="true">
       <key column="cost_id" />

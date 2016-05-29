@@ -370,7 +370,7 @@
     <EmbeddedResource Include="Database\Mappings\Users.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Mappings\CostPlans.hbm.xml">
+    <EmbeddedResource Include="Database\Mappings\Plans.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Mappings\Costs.hbm.xml">
@@ -392,6 +392,7 @@
     <Content Include="Content\site\plan.less" />
     <Content Include="Content\site\common.less" />
     <Content Include="Content\site\error.less" />
+    <Content Include="Content\site\cost.less" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\jqm-datebox\i18n\jquery.mobile.datebox.i18n.af.asc.js" />
     <Content Include="Scripts\jqm-datebox\i18n\jquery.mobile.datebox.i18n.af.utf8.js" />
@@ -503,6 +504,7 @@
     <Compile Include="Authentication\IAuthentication.cs" />
     <Compile Include="Authentication\UserIndentity.cs" />
     <Compile Include="Authentication\UserProvider.cs" />
+    <Compile Include="Controllers\CostController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
@@ -512,7 +514,7 @@
     <Compile Include="Database\Entities\Cost.cs" />
     <Compile Include="Database\Entities\CostDetail.cs" />
     <Compile Include="Database\Entities\Interfaces\IDeleteMarker.cs" />
-    <Compile Include="Database\Entities\CostPlan.cs" />
+    <Compile Include="Database\Entities\Plan.cs" />
     <Compile Include="Database\Entities\User.cs" />
     <Compile Include="Exceptions\CookieDecryptException.cs" />
     <Compile Include="Exceptions\PlanNotFoundException.cs" />
@@ -520,6 +522,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CostDetailModel.cs" />
+    <Compile Include="Models\CostModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PlanModel.cs" />
     <Compile Include="Modules\AuthHttpModule.cs" />
@@ -537,6 +541,7 @@
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Plan\Index.cshtml" />
     <Content Include="Views\Plan\Edit.cshtml" />
+    <Content Include="Views\Cost\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

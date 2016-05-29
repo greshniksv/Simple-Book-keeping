@@ -18,7 +18,7 @@ namespace SimpleBookKeeping.Controllers
         // GET: Plan
         public ActionResult Index()
         {
-            var plans = Db.Session.QueryOver<CostPlan>().List<CostPlan>();
+            var plans = Db.Session.QueryOver<Plan>().List<Plan>();
 
             return View(plans);
         }
@@ -26,7 +26,7 @@ namespace SimpleBookKeeping.Controllers
         // GET: Edit
         public ActionResult EditById(Guid id)
         {
-            var plans = Db.Session.QueryOver<CostPlan>().Where(p=>p.Id == id).List();
+            var plans = Db.Session.QueryOver<Plan>().Where(p=>p.Id == id).List();
 
             if (!plans.Any())
             {
@@ -42,7 +42,7 @@ namespace SimpleBookKeeping.Controllers
         public ActionResult Edit(PlanModel model)
         {
             var tempModel = TempData["model"] as PlanModel;
-            if (tempModel != null)
+            if (model.Start == DateTime.MinValue && tempModel != null)
             {
                 model = tempModel;
                 ModelState.Clear();
@@ -51,12 +51,37 @@ namespace SimpleBookKeeping.Controllers
             return View("Edit", model);
         }
 
-        public ActionResult Create(PlanModel model)
+        public ActionResult Save(PlanModel model)
         {
+            if (model.Start >= model.End)
+            {
+                ModelState
+                    .AddModelError(nameof(model.Start),
+                            "Дата начала должна быть меньше даты конца");
+            }
+
             if (ModelState.IsValid)
             {
-                CostPlan plan = AutoMapperConfig.Mapper.Map<CostPlan>(model);
-                Db.Session.Save(plan);
+                Plan plan;
+                using (var session = Db.Session)
+                {
+                    plan = session.QueryOver<Plan>()
+                   .Where(p => p.Id == model.Id).List().FirstOrDefault();
+                }
+
+                if (plan == null)
+                {
+                    plan = new Plan();
+                }
+                AutoMapperConfig.Mapper.Map(model, plan);
+
+                using (var sessionInsert = Db.Session)
+                using (var transaction = sessionInsert.BeginTransaction())
+                {
+                    sessionInsert.SaveOrUpdate(plan);
+                    transaction.Commit();
+                }
+                
                 return RedirectToAction("Index");
             }
 

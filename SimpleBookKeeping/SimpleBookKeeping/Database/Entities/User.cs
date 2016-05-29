@@ -5,7 +5,7 @@ namespace SimpleBookKeeping.Database.Entities
 {
     public class User
     {
-        IList<CostPlan> _palns = new List<CostPlan>();
+        IList<Plan> _palns = new List<Plan>();
         public virtual Guid Id
         {
             get;
@@ -27,7 +27,7 @@ namespace SimpleBookKeeping.Database.Entities
             set;
         }
 
-        public virtual IList<CostPlan> CostPlans
+        public virtual IList<Plan> Plans
         {
             get
             {

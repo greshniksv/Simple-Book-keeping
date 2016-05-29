@@ -65,6 +65,9 @@ namespace SimpleBookKeeping
             // Common
             bundles.Add(new StyleBundle("~/common.css").Include(
                       "~/Content/site/common.less"));
+            // Cost
+            bundles.Add(new StyleBundle("~/cost.css").Include(
+                      "~/Content/site/cost.less"));
 
         }
 

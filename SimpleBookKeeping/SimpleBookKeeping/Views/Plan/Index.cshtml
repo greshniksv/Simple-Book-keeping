@@ -1,5 +1,5 @@
 ﻿@using System.Web.Optimization
-@model  IList<SimpleBookKeeping.Database.Entities.CostPlan>
+@model  IList<SimpleBookKeeping.Database.Entities.Plan>
 @{
     ViewBag.Title = "Планы";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,7 +14,7 @@
         @foreach (var plan in Model)
         {
             <li><a href="#" onclick="redirect('/Plan/EditById?id=@plan.Id')">
-                    @plan.Name
+                    @plan.Name : @plan.Start.ToString("dd.MM") - @plan.End.ToString("dd.MM")
                     <span class="ui-li-count ui-body-inherit">@plan.Balance</span>
                 </a>
             </li>
@@ -23,4 +23,4 @@
     </ul>
 </div>
 
-<a data-role="button" class="margin10" onclick="redirect('/Database/Index')">Создать новый</a>
+<a data-role="button" class="margin10" onclick="redirect('/Plan/Edit')">Создать новый</a>
