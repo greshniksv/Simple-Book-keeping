@@ -1,5 +1,4 @@
-﻿@using System.Diagnostics
-@using System.Web.Optimization
+﻿@using System.Web.Optimization
 @model IList<SimpleBookKeeping.Models.CostModel>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,7 +13,7 @@
         @foreach (var cost in Model)
         {
             <li>
-                <a href="#" onclick="redirect('/Cost/EditById?id=@cost.Id')">
+                <a href="#" onclick="redirect('/Cost/View?id=@cost.Id')">
                     @cost.Name 
                     <span class="ui-li-count ui-body-inherit">@cost.CostDetails.Sum(x=>x.Value)</span>
                 </a>
@@ -24,7 +23,7 @@
     </ul>
 </div>
 
-<a data-role="button" class="margin10" onclick="redirect('/Cost/Edit')">Создать новые</a>
+<a data-role="button" class="margin10" onclick="redirect('/Cost/Create?planId=@ViewBag.PlanId')">Создать новые</a>
 
 <script type="text/javascript">
     backUrl = "/Plan/EditById?id=@ViewBag.PlanId"

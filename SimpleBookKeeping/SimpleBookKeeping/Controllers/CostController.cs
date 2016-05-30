@@ -31,15 +31,22 @@ namespace SimpleBookKeeping.Controllers
                     costModels.Add(item);
                 }
             }
-            
+
             ViewBag.PlanId = planId;
             return View("Index", costModels);
         }
 
-        public ActionResult EditById(Guid id)
+        public ActionResult Create(Guid planId)
+        {
+            var model = CreateNew(planId);
+            return View("Edit", model);
+        }
+
+        public ActionResult View(Guid id)
         {
             Cost cost;
             CostModel item;
+            
             using (var session = Db.Session)
             {
                 cost = session.QueryOver<Cost>()
@@ -54,23 +61,21 @@ namespace SimpleBookKeeping.Controllers
                 AutoMapperConfig.Mapper.Map(cost, item);
             }
 
-            TempData["model"] = item;
-            return RedirectToAction("Edit");
+            return View("Edit", item);
         }
 
-        public ActionResult Edit(CostModel model)
+        public ActionResult Save(CostModel model)
         {
-            var tempModel = TempData["model"] as CostModel;
-            if (model.Id == Guid.Empty && tempModel != null)
+            if (ModelState.IsValid)
             {
-                model = tempModel;
-                ModelState.Clear();
+                SaveModel(model);
+                return RedirectToAction("Index", new { planId = model.PlanId });
             }
 
             return View("Edit", model);
         }
 
-        public ActionResult Save(CostModel model)
+        private void SaveModel(CostModel model)
         {
             Cost cost;
             Plan plan;
@@ -80,35 +85,35 @@ namespace SimpleBookKeeping.Controllers
                 plan = session.QueryOver<Plan>()
                .Where(p => p.Id == model.PlanId).List().FirstOrDefault();
             }
-           
+
             if (model.Id != Guid.Empty)
             {
                 using (var session = Db.Session)
                 {
                     cost = session.QueryOver<Cost>()
                         .Where(x => x.Id == model.Id).List().FirstOrDefault();
+
+                    if (cost == null)
+                    {
+                        throw new CostNotFoundException(model.Id.ToString());
+                    }
+
+                    cost.CostDetails.Clear();
                 }
 
-                if (cost == null)
+                using (var session = Db.Session)
+                using (var transaction = session.BeginTransaction())
                 {
-                    throw new CostNotFoundException(model.Id.ToString());
+                    session.SaveOrUpdate(cost);
+                    transaction.Commit();
                 }
             }
             else
             {
-                cost = new Cost();
+                cost = new Cost { Plan = plan };
             }
-            
-            AutoMapperConfig.Mapper.Map(model, cost);
-            cost.Plan = plan;
 
-            foreach (var costDetailModel in model.CostDetails)
-            {
-                var detail = new CostDetail();
-                AutoMapperConfig.Mapper.Map(costDetailModel, detail);
-                detail.Cost = cost;
-                cost.CostDetails.Add(detail);
-            }
+            AutoMapperConfig.Mapper.Map(model, cost);
 
             using (var session = Db.Session)
             using (var transaction = session.BeginTransaction())
@@ -116,8 +121,21 @@ namespace SimpleBookKeeping.Controllers
                 session.SaveOrUpdate(cost);
                 transaction.Commit();
             }
-           
-            return View("Index");
+
+            using (var session = Db.Session)
+            using (var transaction = session.BeginTransaction())
+            {
+
+                foreach (var costDetailModel in model.CostDetails)
+                {
+                    var detail = new CostDetail();
+                    AutoMapperConfig.Mapper.Map(costDetailModel, detail);
+                    detail.Cost = cost;
+                    session.SaveOrUpdate(detail);
+                }
+
+                transaction.Commit();
+            }
         }
 
         private CostModel CreateNew(Guid planId)
