@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using Microsoft.Ajax.Utilities;
 using SimpleBookKeeping.Attributes;
+using SimpleBookKeeping.Authentication;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
 using SimpleBookKeeping.Exceptions;
@@ -63,15 +64,23 @@ namespace SimpleBookKeeping.Controllers
             if (ModelState.IsValid)
             {
                 Plan plan;
+                User currentUser;
                 using (var session = Db.Session)
                 {
                     plan = session.QueryOver<Plan>()
                    .Where(p => p.Id == model.Id).List().FirstOrDefault();
+
+                    currentUser =
+                        session.QueryOver<User>()
+                            .Where(x => x.Id == ((UserIndentity) HttpContext.User.Identity).Id).List().FirstOrDefault();
                 }
 
                 if (plan == null)
                 {
-                    plan = new Plan();
+                    plan = new Plan
+                    {
+                        User = currentUser
+                    };
                 }
                 AutoMapperConfig.Mapper.Map(model, plan);
 

@@ -1,5 +1,6 @@
 ﻿
-var saveFunction;
+var saveFunc;
+var backUrl;
 
 function panel() {
     $("#mypanel").panel("open");
@@ -9,11 +10,17 @@ function showSaveButton() {
     $("#save").fadeIn(1000);
 }
 
-function saveDone() {
+function doBack() {
+    if (typeof backUrl != "undefined") {
+        redirect(backUrl);
+    }
+}
+
+function doSave() {
     showLoading();
 
-    if (typeof saveFunction != "undefined") {
-        saveFunction();
+    if (typeof saveFunc != "undefined") {
+        saveFunc();
     }
 
     $("#save").fadeOut(1000);

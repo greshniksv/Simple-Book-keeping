@@ -16,7 +16,7 @@
         <input name="id" value="@Model.Id" type="hidden"/>
 
         <input name="start" placeholder="Дата начала" type="date" value="@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("dd-MM-yyyy"))"
-               data-role="datebox" data-options='{"mode": "datebox", "overrideDateFormat": "%d/%m/%Y"}'/>
+               data-role="datebox" data-options='{"mode": "datebox", "overrideDateFormat": "%d-%m-%Y"}'/>
         @Html.ValidationMessageFor(model => model.Start)
 
         <input name="end" placeholder="Дата завершения" type="date" value="@(Model.End == DateTime.MinValue ? "" : Model.End.ToString("dd-MM-yyyy"))"
@@ -29,10 +29,16 @@
         <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс"/>
         @Html.ValidationMessageFor(model => model.Balance)
 
-        <input class="margin10" type="submit" value="@(@Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
+        <input class="margin10" type="submit" value="@(Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
 
     </form>
-  
+
+    <a data-role="button" class="margin10" onclick="redirect('/Cost/Index?planId=@Model.Id')">Управление расходами</a>
+
 </div>
+
+<script type="text/javascript">
+    backUrl = "/Plan/Index"
+</script>
 
 @Scripts.Render("~/jqm.datebox.js")

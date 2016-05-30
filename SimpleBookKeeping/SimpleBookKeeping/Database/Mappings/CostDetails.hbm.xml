@@ -7,7 +7,7 @@
     </id>
 
     <property name="Date" column="datetime"  type="DateTime" index="idx_date" />
-    <property name="Value" column="value"  type="Int16" />
+    <property name="Value" column="value"  type="Int32" />
     <property name="Deleted" column="deleted" type="Boolean" index="idx_deleted" />
     <many-to-one name="Cost" class="Cost" column="cost_id" cascade="all" />
 

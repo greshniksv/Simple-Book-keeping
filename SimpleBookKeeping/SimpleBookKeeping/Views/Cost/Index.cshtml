@@ -1,33 +1,31 @@
 ﻿@using System.Diagnostics
 @using System.Web.Optimization
-@model SimpleBookKeeping.Models.CostModel
+@model IList<SimpleBookKeeping.Models.CostModel>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @Styles.Render("~/cost.css")
 
-<div class="cost-page margin10">
-    <input type="text" placeholder="Название расходов" 
-        value="@(Model== null ? string.Empty : Model.Name)"/>
+<div class="cost-list">
+    <ul class="margin10 custom-list" data-role="listview" data-inset="true">
+        <li data-role="list-divider"> Расходы: </li>
 
-    <table>
-
-        <tr><th> Дата </th><th> Сумма </th></tr>
-
-        @foreach (var costDetailModel in Model?.CostDetails)
+        @foreach (var cost in Model)
         {
-            <tr>
-                <td> @costDetailModel.Date.ToString("dd-MM") </td>
-                <td>
-                    <input type="text" value="@(costDetailModel.Value == 0 ? 
-                                                     string.Empty : costDetailModel.Value.ToString())"/>
-                </td>
-            </tr>
+            <li>
+                <a href="#" onclick="redirect('/Cost/EditById?id=@cost.Id')">
+                    @cost.Name 
+                    <span class="ui-li-count ui-body-inherit">@cost.CostDetails.Sum(x=>x.Value)</span>
+                </a>
+            </li>
         }
 
-    </table>
-
+    </ul>
 </div>
 
+<a data-role="button" class="margin10" onclick="redirect('/Cost/Edit')">Создать новые</a>
 
+<script type="text/javascript">
+    backUrl = "/Plan/EditById?id=@ViewBag.PlanId"
+</script>

@@ -16,6 +16,8 @@ namespace SimpleBookKeeping.Authentication
 
         public bool IsAuthenticated => User != null;
 
+        public Guid Id => User.Id;
+
         public string Name
         {
             get

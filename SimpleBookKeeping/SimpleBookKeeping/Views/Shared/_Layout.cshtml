@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using SimpleBookKeeping.Authentication
 
 <!DOCTYPE html>
 
@@ -22,11 +23,13 @@
     <div data-role="header">
         <a onclick="panel()" data-icon="grid">Меню</a>
         <h1> @ViewBag.Title </h1>
-        <a id="save" onclick="saveDone()" href="#" data-icon="check">Сохр</a>
+        <a id="save" onclick="doSave()" href="#" data-icon="check">Сохр</a>
     </div>
 
-    @RenderBody()
-
+    <div class="content">
+        @RenderBody()    
+    </div>
+    
     <div data-role="panel" id="mypanel" data-position="left" data-display="overlay">
         <ul data-role="listview">
             <li data-role="list-divider"> # </li>
@@ -50,7 +53,8 @@
     </div>
 
     <div data-role="footer">
-        <a onclick="panel()" data-icon="grid">Меню</a>
+        <a onclick="doBack()" data-icon="grid">Назад</a>
+        <div class="user-name"> @(HttpContext.Current?.User?.Identity.Name) </div>
     </div>
 
 </div>

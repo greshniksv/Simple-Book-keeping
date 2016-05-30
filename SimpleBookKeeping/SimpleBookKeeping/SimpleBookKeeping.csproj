@@ -517,6 +517,7 @@
     <Compile Include="Database\Entities\Plan.cs" />
     <Compile Include="Database\Entities\User.cs" />
     <Compile Include="Exceptions\CookieDecryptException.cs" />
+    <Compile Include="Exceptions\CostNotFoundException.cs" />
     <Compile Include="Exceptions\PlanNotFoundException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
     <Compile Include="Global.asax.cs">
@@ -542,6 +543,7 @@
     <Content Include="Views\Plan\Index.cshtml" />
     <Content Include="Views\Plan\Edit.cshtml" />
     <Content Include="Views\Cost\Index.cshtml" />
+    <Content Include="Views\Cost\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
