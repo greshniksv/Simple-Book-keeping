@@ -1,6 +1,7 @@
 ﻿@using System.Web.Optimization
 @model SimpleBookKeeping.Models.PlanModel
 @{
+    ViewBag.Title = "План";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -29,7 +30,7 @@
         <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс"/>
         @Html.ValidationMessageFor(model => model.Balance)
 
-        <input class="margin10" type="submit" value="@(Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
+        <input class="margin10" data-icon="check" type="submit" value="@(Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
 
     </form>
     @if (Model.Id != Guid.Empty)

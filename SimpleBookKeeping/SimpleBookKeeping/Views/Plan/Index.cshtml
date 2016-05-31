@@ -13,8 +13,8 @@
 
         @foreach (var plan in Model)
         {
-            <li><a href="#" onclick="redirect('/Plan/EditById?id=@plan.Id')">
-                    @plan.Name : @plan.Start.ToString("dd.MM") - @plan.End.ToString("dd.MM")
+            <li><a href="#" onclick="redirect('/Plan/View?id=@plan.Id')">
+                    <b>@plan.Name</b> : @plan.Start.ToString("dd.MM") - @plan.End.ToString("dd.MM")
                     <span class="ui-li-count ui-body-inherit">@plan.Balance</span>
                 </a>
             </li>
@@ -23,7 +23,7 @@
     </ul>
 </div>
 
-<a data-role="button" class="margin10" data-icon="check" onclick="redirect('/Plan/Edit')">Создать новый</a>
+<a data-role="button" class="margin10" data-icon="check" onclick="redirect('/Plan/Create')">Создать новый</a>
 
 <script type="text/javascript">
     backUrl = "/Settings/Index"

@@ -542,9 +542,9 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Settings\Index.cshtml" />
     <Content Include="Views\Plan\Index.cshtml" />
-    <Content Include="Views\Plan\Edit.cshtml" />
+    <Content Include="Views\Plan\View.cshtml" />
     <Content Include="Views\Cost\Index.cshtml" />
-    <Content Include="Views\Cost\Edit.cshtml" />
+    <Content Include="Views\Cost\View.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

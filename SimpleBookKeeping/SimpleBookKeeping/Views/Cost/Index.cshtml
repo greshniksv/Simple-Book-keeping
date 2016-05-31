@@ -1,6 +1,7 @@
 ﻿@using System.Web.Optimization
 @model IList<SimpleBookKeeping.Models.CostModel>
 @{
+    ViewBag.Title = "Расходы";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -26,5 +27,5 @@
 <a data-role="button" class="margin10" onclick="redirect('/Cost/Create?planId=@ViewBag.PlanId')">Создать новые</a>
 
 <script type="text/javascript">
-    backUrl = "/Plan/EditById?id=@ViewBag.PlanId"
+    backUrl = "/Plan/View?id=@ViewBag.PlanId"
 </script>

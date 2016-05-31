@@ -19,15 +19,23 @@ namespace SimpleBookKeeping.Controllers
         // GET: Plan
         public ActionResult Index()
         {
-            var plans = Db.Session.QueryOver<Plan>().List<Plan>();
+            IList<Plan> plans;
+            using (var session = Db.Session)
+            {
+                plans = session.QueryOver<Plan>().List();
+            }
 
             return View(plans);
         }
 
-        // GET: Edit
-        public ActionResult EditById(Guid id)
+        // GET: View
+        public ActionResult View(Guid id)
         {
-            var plans = Db.Session.QueryOver<Plan>().Where(p=>p.Id == id).List();
+            IList<Plan> plans;
+            using (var session = Db.Session)
+            {
+                plans = session.QueryOver<Plan>().Where(p => p.Id == id).List();
+            }
 
             if (!plans.Any())
             {
@@ -36,20 +44,50 @@ namespace SimpleBookKeeping.Controllers
 
             PlanModel model = AutoMapperConfig.Mapper.Map<PlanModel>(plans.First());
 
-            TempData["model"] = model;
-            return RedirectToAction("Edit");
+            return View("View", model);
         }
 
-        public ActionResult Edit(PlanModel model)
+        // GET: Create
+        public ActionResult Create()
         {
-            var tempModel = TempData["model"] as PlanModel;
-            if (model.Start == DateTime.MinValue && tempModel != null)
+            PlanModel model = new PlanModel
             {
-                model = tempModel;
-                ModelState.Clear();
+                Balance = 0,
+                Start = DateTime.Now,
+                End = DateTime.Now.AddMonths(1),
+                Name = string.Empty
+            };
+
+            return View("View", model);
+        }
+
+        // GET: Remove
+        public ActionResult Remove(Guid id)
+        {
+            Plan plan;
+            using (var session = Db.Session)
+            {
+                plan = session.QueryOver<Plan>().Where(p => p.Id == id).List().FirstOrDefault();
+                if (plan == null)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                plan.User = null;
+                plan.Costs.Clear();
             }
 
-            return View("Edit", model);
+            using (var session = Db.Session)
+            using (var transaction = session.BeginTransaction())
+            {
+
+                   
+                session.Delete(plan);
+
+                transaction.Commit();
+            }
+
+            return RedirectToAction("Index");
         }
 
         public ActionResult Save(PlanModel model)
@@ -72,7 +110,8 @@ namespace SimpleBookKeeping.Controllers
 
                     currentUser =
                         session.QueryOver<User>()
-                            .Where(x => x.Id == ((UserIndentity) HttpContext.User.Identity).Id).List().FirstOrDefault();
+                            .Where(x => x.Id == ((UserIndentity) HttpContext.User.Identity).Id)
+                            .List().FirstOrDefault();
                 }
 
                 if (plan == null)
@@ -94,8 +133,7 @@ namespace SimpleBookKeeping.Controllers
                 return RedirectToAction("Index");
             }
 
-            TempData["model"] = model;
-            return RedirectToAction("Edit");
+            return View("View", model);
         }
 
 

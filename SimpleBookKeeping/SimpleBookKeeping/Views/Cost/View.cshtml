@@ -2,6 +2,7 @@
 @using SimpleBookKeeping.Extensions
 @model SimpleBookKeeping.Models.CostModel
 @{
+    ViewBag.Title = "Расход";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -48,7 +49,7 @@
 </form>
 
 <script type="text/javascript">
-    backUrl = "/Plan/Index";
+    backUrl = "/Cost/Index?@Model.PlanId";
 
     $(document).ready(function () {
         saveFunc = function() {

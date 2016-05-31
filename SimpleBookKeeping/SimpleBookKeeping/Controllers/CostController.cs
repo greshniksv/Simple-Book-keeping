@@ -39,7 +39,7 @@ namespace SimpleBookKeeping.Controllers
         public ActionResult Create(Guid planId)
         {
             var model = CreateNew(planId);
-            return View("Edit", model);
+            return View("View", model);
         }
 
         public ActionResult View(Guid id)
@@ -60,7 +60,7 @@ namespace SimpleBookKeeping.Controllers
                 AutoMapperConfig.Mapper.Map(cost, item);
             }
 
-            return View("Edit", item);
+            return View("View", item);
         }
 
         public ActionResult Save(CostModel model)
@@ -77,7 +77,7 @@ namespace SimpleBookKeeping.Controllers
                 return RedirectToAction("Index", new { planId = model.PlanId });
             }
 
-            return View("Edit", model);
+            return View("View", model);
         }
 
         private void SaveModel(CostModel model)

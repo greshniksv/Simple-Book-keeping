@@ -39,11 +39,8 @@
             <li data-role="list-divider"> ## Название плана 1 </li>
             <li><a href="audi.html">Няня Аня</a></li>
 
-            <li data-role="list-divider"> ## Название плана 2 </li>
-            <li><a href="audi.html">Няня Аня</a></li>
-
             <li data-role="list-divider"> # Активные планы </li>
-            <li><a href="audi.html">Название плана 1</a></li>
+            <li><a data-icon="bullets" href="audi.html">Название плана 1</a></li>
             <li><a href="audi.html">Название плана 2</a></li>
 
             <li data-role="list-divider"> --- </li>
@@ -54,7 +51,9 @@
 
     <div data-role="footer">
         <a onclick="doBack()" data-icon="back">Назад</a>
-        <div class="user-name"> @(HttpContext.Current?.User?.Identity.Name) </div>
+        <a href="#" data-icon="user">
+           @(HttpContext.Current?.User?.Identity.Name)
+        </a>
     </div>
 
 </div>
