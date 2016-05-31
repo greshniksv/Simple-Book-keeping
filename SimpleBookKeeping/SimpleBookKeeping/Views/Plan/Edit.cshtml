@@ -11,7 +11,7 @@
 
     <h3> Создание плана </h3>
 
-    <form action="/Plan/Save" method="POST" data-ajax="false">
+    <form id="plan-save" action="/Plan/Save" method="POST" data-ajax="false">
 
         <input name="id" value="@Model.Id" type="hidden"/>
 
@@ -32,13 +32,24 @@
         <input class="margin10" type="submit" value="@(Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
 
     </form>
-
-    <a data-role="button" class="margin10" onclick="redirect('/Cost/Index?planId=@Model.Id')">Управление расходами</a>
+    @if (Model.Id != Guid.Empty)
+    {
+        <a data-role="button" class="margin10" data-icon="shop" onclick="redirect('/Cost/Index?planId=@Model.Id')">Управление расходами</a>
+        <a data-role="button" class="margin10" data-icon="delete" data-theme = "b" onclick="redirect('/Plan/Remove?id=@Model.Id')">Удалить</a>
+    }
 
 </div>
 
 <script type="text/javascript">
-    backUrl = "/Plan/Index"
+    backUrl = "/Plan/Index";
+
+    $(document).ready(function () {
+        saveFunc = function () {
+            $("#plan-save").submit();
+        }
+        showSaveButton();
+    });
+
 </script>
 
 @Scripts.Render("~/jqm.datebox.js")

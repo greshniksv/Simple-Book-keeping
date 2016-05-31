@@ -17,13 +17,16 @@ function doBack() {
 }
 
 function doSave() {
-    showLoading();
-
+    
     if (typeof saveFunc != "undefined") {
-        saveFunc();
+        showLoading();
+        $("#save").fadeOut(1000, function () {
+            saveFunc();
+        });
+    } else {
+        $("#save").fadeOut(100);
+        alert("Nothing to save");
     }
-
-    $("#save").fadeOut(1000);
 }
 
 function showLoading() {

@@ -10,7 +10,7 @@
     <property name="Deleted" column="deleted" type="Boolean" index="idx_deleted" />
     <many-to-one name="Plan" class="Plan" column="plan_id" cascade="all" />
 
-    <bag name="CostDetails" cascade="all-delete-orphan" lazy="true" inverse="true">
+    <bag name="CostDetails" cascade="none" lazy="true" inverse="true">
       <key column="cost_id" />
       <one-to-many class="CostDetail" />
     </bag>

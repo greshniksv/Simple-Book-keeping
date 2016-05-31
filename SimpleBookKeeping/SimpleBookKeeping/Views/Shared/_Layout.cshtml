@@ -21,7 +21,7 @@
 
 <div data-role="page">
     <div data-role="header">
-        <a onclick="panel()" data-icon="grid">Меню</a>
+        <a onclick="panel()" data-icon="bars">Меню</a>
         <h1> @ViewBag.Title </h1>
         <a id="save" onclick="doSave()" href="#" data-icon="check">Сохр</a>
     </div>
@@ -53,7 +53,7 @@
     </div>
 
     <div data-role="footer">
-        <a onclick="doBack()" data-icon="grid">Назад</a>
+        <a onclick="doBack()" data-icon="back">Назад</a>
         <div class="user-name"> @(HttpContext.Current?.User?.Identity.Name) </div>
     </div>
 

@@ -16,7 +16,7 @@ namespace SimpleBookKeeping.Controllers
         {
             if (planId == Guid.Empty)
             {
-                planId = new Guid("c23070b3-ddec-4eb0-a5c2-0fcc9a13d5f6");
+                throw new PlanNotFoundException(planId.ToString());
             }
 
             IList<CostModel> costModels = new List<CostModel>();
@@ -44,12 +44,11 @@ namespace SimpleBookKeeping.Controllers
 
         public ActionResult View(Guid id)
         {
-            Cost cost;
             CostModel item;
             
             using (var session = Db.Session)
             {
-                cost = session.QueryOver<Cost>()
+                var cost = session.QueryOver<Cost>()
                     .Where(x => x.Id == id).List().FirstOrDefault();
 
                 if (cost == null)
@@ -66,6 +65,12 @@ namespace SimpleBookKeeping.Controllers
 
         public ActionResult Save(CostModel model)
         {
+            foreach (var costDetailModel in model.CostDetails)
+            {
+                if (costDetailModel.Value == null)
+                    costDetailModel.Value = 0;
+            }
+
             if (ModelState.IsValid)
             {
                 SaveModel(model);
@@ -79,6 +84,7 @@ namespace SimpleBookKeeping.Controllers
         {
             Cost cost;
             Plan plan;
+            List<CostDetail> costDetails = null;
 
             using (var session = Db.Session)
             {
@@ -97,15 +103,7 @@ namespace SimpleBookKeeping.Controllers
                     {
                         throw new CostNotFoundException(model.Id.ToString());
                     }
-
-                    cost.CostDetails.Clear();
-                }
-
-                using (var session = Db.Session)
-                using (var transaction = session.BeginTransaction())
-                {
-                    session.SaveOrUpdate(cost);
-                    transaction.Commit();
+                    costDetails = cost.CostDetails.ToList();
                 }
             }
             else
@@ -122,6 +120,22 @@ namespace SimpleBookKeeping.Controllers
                 transaction.Commit();
             }
 
+            // Remove old details
+            if (costDetails != null)
+            {
+                using (var session = Db.Session)
+                using (var transaction = session.BeginTransaction())
+                {
+                    foreach (var costDetail in costDetails)
+                    {
+                        costDetail.Cost = null;
+                        session.Delete(costDetail);
+                    }
+                    transaction.Commit();
+                }
+            }
+
+            // Insert new details
             using (var session = Db.Session)
             using (var transaction = session.BeginTransaction())
             {

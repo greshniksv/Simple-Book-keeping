@@ -520,6 +520,7 @@
     <Compile Include="Exceptions\CostNotFoundException.cs" />
     <Compile Include="Exceptions\PlanNotFoundException.cs" />
     <Compile Include="Exceptions\UserNotFoundException.cs" />
+    <Compile Include="Extensions\DayOfWeekExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

@@ -1,41 +1,47 @@
 ﻿.cost-page table {
-        width: 100%;
-        border-color: #ddd;
+    width: 100%;
+    /*border-color: #ddd;
         border-style: solid;
-        border-radius: 10px;
+        border-radius: 10px;*/
 }
 
+table{
+    border-collapse: collapse;
+}
 
-/*.cost-page table td {
-        border-color: #ddd;
-        border-style: solid;
-        border-radius: 10px;
-}*/
-
-/*.cost-page table tr {
-        border-color: #ddd;
-        border-style: solid;
-        border-radius: 10px;
-}*/
+table tr{
+    border-bottom: 1px solid #bbb;
+}
 
 table th:first-child {
+    width: 50px;
+}
+
+table td {
+    text-align: center;
+}
+
+table th:last-child {
     width: 150px;
 }
 
-table td:first-child {
-    width: 60px;
-    text-align: center
-}
-
-table th{
+table th {
     background-color: #bbb;
     border-style: solid;
-    border-color: #bbb;
-    border-radius: 8px;
+    border-color: #f9f9f9;
+    border-radius: 20px;
 }
 
-table .ui-input-text{
+table .ui-input-text {
     border-style: none;
-    width: 200px;
+    width: 150px;
     margin: .3em 0;
+}
+
+tr.holiday {
+    background-color: #C0FCE5;
+}
+
+tr.holiday td:first-child {
+    font-weight: 600;
 }

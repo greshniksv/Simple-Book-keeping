@@ -69,16 +69,16 @@ namespace SimpleBookKeeping.Database
                 Plan = costPlan
             };
 
-            for (int i = 10; i > 0; i--)
-            {
-                cost.CostDetails.Add(new CostDetail
-                {
-                    Deleted = false,
-                    Date = DateTime.Now.AddDays(-i),
-                    Value = 100,
-                    Cost = cost
-                });
-            }
+            //for (int i = 10; i > 0; i--)
+            //{
+            //    cost.CostDetails.Add(new CostDetail
+            //    {
+            //        Deleted = false,
+            //        Date = DateTime.Now.AddDays(-i),
+            //        Value = 100,
+            //        Cost = cost
+            //    });
+            //}
 
             costPlan.Costs.Add(cost);
             user.Plans.Add(costPlan);
@@ -87,8 +87,25 @@ namespace SimpleBookKeeping.Database
             using (ITransaction transaction = session.BeginTransaction())
             {
                 session.Save(user);
+
+                for (int i = 10; i > 0; i--)
+                {
+                    var detail = new CostDetail
+                    {
+                        Deleted = false,
+                        Date = DateTime.Now.AddDays(-i),
+                        Value = 100,
+                        Cost = cost
+                    };
+
+                    session.Save(detail);
+                }
+
                 transaction.Commit();
             }
+
+
+
         }
     }
 }

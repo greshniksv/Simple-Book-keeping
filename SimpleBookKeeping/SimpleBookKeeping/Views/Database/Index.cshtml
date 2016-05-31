@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<a data-role="button" class="margin10" onclick="redirect('/Database/CreateDatabase')">Создать БД</a>
+<a data-role="button" class="margin10" data-icon="check" onclick="redirect('/Database/CreateDatabase')">Создать БД</a>
 
 @if (!string.IsNullOrEmpty(ViewBag.Error))
 {
