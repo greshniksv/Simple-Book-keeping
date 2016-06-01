@@ -377,8 +377,6 @@
     <EmbeddedResource Include="Database\Mappings\CostDetails.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <Content Include="Content\mPopup.css" />
-    <Content Include="Content\mPopup.min.css" />
     <Content Include="Global.asax" />
     <Content Include="hibernate.cfg.xml">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -395,7 +393,6 @@
     <Content Include="Content\site\cost.less" />
     <Content Include="Content\site\home.less" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
-    <Content Include="Scripts\Class\messageBox.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
     <Content Include="Scripts\jquery.mobile-1.4.5.js" />
@@ -405,8 +402,6 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\mPopup.jquery.js" />
-    <Content Include="Scripts\mPopup.jquery.min.js" />
     <Content Include="Scripts\Site\animate.js" />
     <Content Include="Scripts\Site\layout.js" />
     <Content Include="Scripts\Site\login.js" />

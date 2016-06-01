@@ -80,10 +80,7 @@ namespace SimpleBookKeeping.Controllers
             using (var session = Db.Session)
             using (var transaction = session.BeginTransaction())
             {
-
-                   
                 session.Delete(plan);
-
                 transaction.Commit();
             }
 

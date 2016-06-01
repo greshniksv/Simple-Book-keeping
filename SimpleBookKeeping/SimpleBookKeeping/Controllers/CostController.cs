@@ -36,6 +36,25 @@ namespace SimpleBookKeeping.Controllers
             return View("Index", costModels);
         }
 
+        public ActionResult Remove(Guid id)
+        {
+            Cost cost;
+            using (var session = Db.Session)
+            {
+                cost = session.QueryOver<Cost>().Where(x => x.Id == id).List().FirstOrDefault();
+                cost.CostDetails.Clear();
+            }
+
+            using (var session = Db.Session)
+            using (var transaction = session.BeginTransaction())
+            {
+                cost.Plan = null;
+                session.Delete(cost);
+                transaction.Commit();
+            }
+            return new EmptyResult();
+        }
+
         public ActionResult Create(Guid planId)
         {
             var model = CreateNew(planId);

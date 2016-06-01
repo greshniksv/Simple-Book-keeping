@@ -36,13 +36,19 @@
     @if (Model.Id != Guid.Empty)
     {
         <a data-role="button" class="margin10" data-icon="shop" onclick="redirect('/Cost/Index?planId=@Model.Id')">Управление расходами</a>
-        <a data-role="button" class="margin10" data-icon="delete" data-theme = "b" onclick="redirect('/Plan/Remove?id=@Model.Id')">Удалить</a>
+        <a data-role="button" class="margin10" data-icon="delete" data-theme = "b" onclick="Remove()">Удалить</a>
     }
 
 </div>
 
 <script type="text/javascript">
     backUrl = "/Plan/Index";
+
+    function Remove() {
+        if (confirm("Вы действительно хотите удалить план: @Model.Name")) {
+            redirect('/Plan/Remove?id=@Model.Id');
+        }
+    }
 
     $(document).ready(function () {
         saveFunc = function () {

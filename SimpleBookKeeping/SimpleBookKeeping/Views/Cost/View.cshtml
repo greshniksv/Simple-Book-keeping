@@ -43,13 +43,32 @@
             }
         </table>
 
-        <input type="submit" value="Save" />
+        <input type="submit" value="Save"/>
+
+        @if (Model.Id != Guid.Empty)
+        {
+            <a data-role="button" data-icon="delete" data-theme="b" onclick="Remove()">Удалить</a>
+        }
+
     </div>
     
 </form>
 
 <script type="text/javascript">
-    backUrl = "/Cost/Index?@Model.PlanId";
+    backUrl = "/Cost/Index?planId=@Model.PlanId";
+
+    function Remove() {
+        if (confirm("Вы действительно хотите удалить расход: @Model.Name")) {
+            showLoading();
+            $.get('/Cost/Remove?id=@Model.Id', function (data) {
+                if (data.length > 5) {
+                    alert("Ошибка удаления расхода");
+                } else {
+                    redirect("/Cost/Index?planId=@Model.PlanId");
+                }
+            });
+        }
+    }
 
     $(document).ready(function () {
         saveFunc = function() {
