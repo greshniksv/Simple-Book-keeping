@@ -16,11 +16,11 @@
 
         <input name="id" value="@Model.Id" type="hidden"/>
 
-        <input name="start" placeholder="Дата начала" type="date" value="@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("dd-MM-yyyy"))"
-               data-role="datebox" data-options='{"mode": "datebox", "overrideDateFormat": "%d-%m-%Y"}'/>
+        <input name="start" placeholder="Дата начала" type="date" value="@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("yyyy-MM-dd"))"
+               data-role="date" />
         @Html.ValidationMessageFor(model => model.Start)
 
-        <input name="end" placeholder="Дата завершения" type="date" value="@(Model.End == DateTime.MinValue ? "" : Model.End.ToString("dd-MM-yyyy"))"
+        <input name="end" placeholder="Дата завершения" type="date" value="@(Model.End == DateTime.MinValue ? "" : Model.End.ToString("yyyy-MM-dd"))"
                data-role="datebox" data-options='{"mode": "datebox", "overrideDateFormat": "%d-%m-%Y"}'/>
         @Html.ValidationMessageFor(model => model.End)
 
@@ -51,6 +51,19 @@
     }
 
     $(document).ready(function () {
+
+        var today = "@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("yyyy-MM-dd"))";
+        $('[name=start]').val(today);
+
+        $('[name=start]').datepicker({ dateFormat: 'dd-mm-yyyy' });
+
+        //$("[name=start]").formatDate("DD, MM d, yy", new Date(2007, 7 - 1, 14), {
+        //    dayNamesShort: $.datepicker.regional["fr"].dayNamesShort,
+        //    dayNames: $.datepicker.regional["fr"].dayNames,
+        //    monthNamesShort: $.datepicker.regional["fr"].monthNamesShort,
+        //    monthNames: $.datepicker.regional["fr"].monthNames
+        //});
+
         saveFunc = function () {
             $("#plan-save").submit();
         }
