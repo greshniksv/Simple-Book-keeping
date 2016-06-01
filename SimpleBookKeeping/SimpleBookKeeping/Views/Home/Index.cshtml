@@ -7,22 +7,35 @@
 @Styles.Render("~/home.css")
 @Styles.Render("~/mPopup.css")
 @Scripts.Render("~/mPopup.js")
+@Scripts.Render("~/messageBox.js")
 
 MAIN PAGE
 
+<div id="msg">
+    BLA BLA
+</div>
+
 <div class="mPopup">
-    <button class="mPopup-close">×</button>
-    <div class="popup-header">Popup title</div>
-    <div class="popup-body">
-        Content ...
+
+    <hr>
+    <div class="popup-buttons">
+        <a data-role="button" class="margin10 popup-button"> Yes </a>
+        <a data-role="button" class="margin10 popup-button"> No </a>    
     </div>
+    
 </div>
 
 <a data-role="button" class="margin10" onclick="show()"> Acion </a>
+<a data-role="button" class="margin10" onclick="show2()"> Acion2 </a>
 
 <script type="text/javascript">
 
     function show() {
+
+        $("#msg").msgBox();
+    }
+
+    function show2() {
         var popup = $('.mPopup').mPopup({
             showOverlay: false
         });
