@@ -49,14 +49,16 @@ namespace SimpleBookKeeping
             bundles.Add(new ScriptBundle("~/animate.js").Include(
                      "~/Scripts/Site/animate.js"));
 
-            // JQuery module datebox
-            bundles.Add(new ScriptBundle("~/jqm.datebox.js").Include(
-                     "~/Scripts/jqm-datebox/jquery.mobile.datebox.js",
-                     "~/Scripts/jqm-datebox/jqm-datebox.*",
-                     "~/Scripts/jqm-datebox/i18n/jquery.mobile.datebox.i18n.ru.utf8.js"));
+            // mPopup
+            bundles.Add(new ScriptBundle("~/mPopup.js").Include(
+                     "~/Scripts/mPopup.jquery.js"));
 
-            bundles.Add(new StyleBundle("~/jqm.datebox.css").Include(
-                      "~/Content/jquery.mobile.datebox.css"));
+            bundles.Add(new StyleBundle("~/mPopup.css").Include(
+                      "~/Content/mPopup.css"));
+
+            // Home
+            bundles.Add(new StyleBundle("~/home.css").Include(
+                      "~/Content/site/home.less"));
 
             // Plan
             bundles.Add(new StyleBundle("~/plan.css").Include(

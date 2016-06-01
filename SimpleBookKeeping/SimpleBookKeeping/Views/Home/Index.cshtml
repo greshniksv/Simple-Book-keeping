@@ -1,6 +1,33 @@
-﻿@{
+﻿@using System.Web.Optimization
+@{
     ViewBag.Title = "Главная";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@Styles.Render("~/home.css")
+@Styles.Render("~/mPopup.css")
+@Scripts.Render("~/mPopup.js")
+
 MAIN PAGE
+
+<div class="mPopup">
+    <button class="mPopup-close">×</button>
+    <div class="popup-header">Popup title</div>
+    <div class="popup-body">
+        Content ...
+    </div>
+</div>
+
+<a data-role="button" class="margin10" onclick="show()"> Acion </a>
+
+<script type="text/javascript">
+
+    function show() {
+        var popup = $('.mPopup').mPopup({
+            showOverlay: false
+        });
+        // open generated popup
+        popup.mPopup('open');
+    }
+
+</script>
