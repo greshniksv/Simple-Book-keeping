@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
-using Ninject;
+using Microsoft.Practices.Unity;
 using SimpleBookKeeping.Authentication;
 using SimpleBookKeeping.Models;
 using SimpleBookKeeping.Unility.Interfaces;
@@ -40,7 +40,7 @@ namespace SimpleBookKeeping.Controllers
             {
                 if (!(string.IsNullOrEmpty(model.Login) && string.IsNullOrEmpty(model.Password)))
                 {
-                    var auth = MvcApp.Kernel.Get<IAuthentication>();
+                    var auth = MvcApp.Unity.Resolve<IAuthentication>();
                     auth.HttpContext = System.Web.HttpContext.Current;
                     var user = auth.Login(model.Login, model.Password, true);
 

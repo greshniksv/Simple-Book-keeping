@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Ninject;
+using Microsoft.Practices.Unity;
 using SimpleBookKeeping.Authentication;
 
 namespace SimpleBookKeeping.Modules
@@ -22,7 +22,7 @@ namespace SimpleBookKeeping.Modules
             HttpApplication app = (HttpApplication)source;
             HttpContext context = app.Context;
 
-            var auth = MvcApp.Kernel.Get<IAuthentication>();
+            var auth = MvcApp.Unity.Resolve<IAuthentication>();
             auth.HttpContext = context;
             context.User = auth.CurrentUser;
         }
