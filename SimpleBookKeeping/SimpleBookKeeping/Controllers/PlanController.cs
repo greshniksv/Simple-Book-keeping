@@ -1,53 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using MediatR;
 using Microsoft.Practices.Unity;
+using SimpleBookKeeping.Attributes;
 using SimpleBookKeeping.Authentication;
 using SimpleBookKeeping.Commands;
-using SimpleBookKeeping.Database;
-using SimpleBookKeeping.Database.Entities;
-using SimpleBookKeeping.Exceptions;
 using SimpleBookKeeping.Models;
 using SimpleBookKeeping.Queries;
 
 namespace SimpleBookKeeping.Controllers
 {
-    //[HandleAllError]
+    [HandleAllError]
     public class PlanController : Controller
     {
+        private readonly IMediator _mediator;
+
+        public PlanController()
+        {
+            _mediator = MvcApp.Unity.Resolve<IMediator>();
+        }
+
         // GET: Plan
         public ActionResult Index()
         {
-            IList<Plan> plans;
-            using (var session = Db.Session)
-            {
-                plans = session.QueryOver<Plan>().List();
-            }
-
-            var mediator = MvcApp.Unity.Resolve<IMediator>();
-            var result = mediator.Send(new GetPlansQuery());
-
-
+            var plans = _mediator.Send(new GetPlansQuery());
             return View(plans);
         }
 
         // GET: View
         public ActionResult View(Guid id)
         {
-            IList<Plan> plans;
-            using (var session = Db.Session)
-            {
-                plans = session.QueryOver<Plan>().Where(p => p.Id == id).List();
-            }
-
-            if (!plans.Any())
-            {
-                throw new PlanNotFoundException($"Plan id: {id}");
-            }
-
-            PlanModel model = AutoMapperConfig.Mapper.Map<PlanModel>(plans.First());
+            var model = _mediator.Send(new GetPlanQuery { PlanId = id});
 
             return View("View", model);
         }
@@ -69,26 +52,8 @@ namespace SimpleBookKeeping.Controllers
         // GET: Remove
         public ActionResult Remove(Guid id)
         {
-            Plan plan;
-            using (var session = Db.Session)
-            {
-                plan = session.QueryOver<Plan>().Where(p => p.Id == id).List().FirstOrDefault();
-                if (plan == null)
-                {
-                    return RedirectToAction("Index");
-                }
-
-                plan.User = null;
-                plan.Costs.Clear();
-            }
-
-            using (var session = Db.Session)
-            using (var transaction = session.BeginTransaction())
-            {
-                session.Delete(plan);
-                transaction.Commit();
-            }
-
+            _mediator.Send(new RemovePlanCommand { PlanId = id });
+            
             return RedirectToAction("Index");
         }
 
@@ -103,21 +68,17 @@ namespace SimpleBookKeeping.Controllers
 
             if (ModelState.IsValid)
             {
-                var mediator = MvcApp.Unity.Resolve<IMediator>();
-
-                var result = mediator.Send(new AddUpdatePlanCommand
+                _mediator.Send(new SavePlanCommand
                 {
                     PlanModel = model,
-                    UserId = ((UserIndentity) HttpContext.User.Identity).Id
+                    UserId = ((UserIndentity)HttpContext.User.Identity).Id
                 });
-
 
                 return RedirectToAction("Index");
             }
 
             return View("View", model);
         }
-
 
     }
 }

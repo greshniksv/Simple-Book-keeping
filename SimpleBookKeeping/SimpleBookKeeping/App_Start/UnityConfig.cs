@@ -30,7 +30,7 @@ namespace SimpleBookKeeping
             container.RegisterType<IMediator, Mediator>();
 
             container.RegisterTypes(
-                AllClasses.FromAssemblies(typeof(AddUpdatePlanCommand).Assembly)
+                AllClasses.FromAssemblies(typeof(SavePlanCommand).Assembly)
                     .Where(t => t.GetInterfaces()
                     .Any(i => i.IsGenericType &&
                             MediatorTypes.Contains(i.GetGenericTypeDefinition()))),

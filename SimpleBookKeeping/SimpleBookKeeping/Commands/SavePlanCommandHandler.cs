@@ -5,12 +5,12 @@ using SimpleBookKeeping.Database.Entities;
 
 namespace SimpleBookKeeping.Commands
 {
-    public class AddUpdatePlanCommandHandler : IRequestHandler<AddUpdatePlanCommand, bool>
+    public class SavePlanCommandHandler : IRequestHandler<SavePlanCommand, bool>
     {
         /// <summary>Handles a request</summary>
         /// <param name="message">The request message</param>
         /// <returns>Response from the request</returns>
-        public bool Handle(AddUpdatePlanCommand message)
+        public bool Handle(SavePlanCommand message)
         {
             Plan plan;
             User currentUser;
