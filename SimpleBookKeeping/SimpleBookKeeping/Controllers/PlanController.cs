@@ -10,6 +10,7 @@ using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
 using SimpleBookKeeping.Exceptions;
 using SimpleBookKeeping.Models;
+using SimpleBookKeeping.Queries;
 
 namespace SimpleBookKeeping.Controllers
 {
@@ -24,6 +25,10 @@ namespace SimpleBookKeeping.Controllers
             {
                 plans = session.QueryOver<Plan>().List();
             }
+
+            var mediator = MvcApp.Unity.Resolve<IMediator>();
+            var result = mediator.Send(new GetPlansQuery());
+
 
             return View(plans);
         }

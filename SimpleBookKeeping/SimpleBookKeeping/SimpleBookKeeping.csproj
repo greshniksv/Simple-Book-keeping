@@ -464,6 +464,8 @@
     <Compile Include="Models\PlanModel.cs" />
     <Compile Include="Modules\AuthHttpModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\GetPlansQuery.cs" />
+    <Compile Include="Queries\GetPlansQueryHandler.cs" />
     <Compile Include="Unility\Interfaces\IHashCalculator.cs" />
     <Compile Include="Unility\MD5HashCalculator.cs" />
   </ItemGroup>
@@ -487,7 +489,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
