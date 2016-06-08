@@ -69,13 +69,12 @@ namespace SimpleBookKeeping.Commands
             using (var session = Db.Session)
             using (var transaction = session.BeginTransaction())
             {
-
                 foreach (var costDetailModel in message.Cost.CostDetails)
                 {
                     var detail = new CostDetail();
                     AutoMapperConfig.Mapper.Map(costDetailModel, detail);
                     detail.Cost = cost;
-                    session.SaveOrUpdate(detail);
+                    session.Save(detail);
                 }
 
                 transaction.Commit();

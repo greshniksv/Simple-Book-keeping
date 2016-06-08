@@ -15,22 +15,6 @@ namespace SimpleBookKeeping.Controllers
         // GET: Login
         public ActionResult Index()
         {
-
-            //    hashCalculator = MvcApp.Kernel.Get<IHashCalculator>();
-            //    ViewBag.Hash = hashCalculator.GetHash("Bla bla");
-
-            //var session = Db.Session();
-            //using (ITransaction transaction = session.BeginTransaction())
-            //{
-            //    ICriteria criteria = session.CreateCriteria(typeof(User));
-            //    criteria.Add(Restrictions.Eq("Id", "efd174aa-fd61-40f4-ae37-ea5fe1cc0f6d"));
-            //    IList<User> matchingObjects = criteria.List<User>();
-            //    transaction.Commit();
-            //    var user = matchingObjects.First();
-            //}
-
-
-
             return View();
         }
 

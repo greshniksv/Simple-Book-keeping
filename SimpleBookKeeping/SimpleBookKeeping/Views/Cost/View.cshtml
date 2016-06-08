@@ -1,4 +1,5 @@
-﻿@using System.Web.Optimization
+﻿@using System.Globalization
+@using System.Web.Optimization
 @using SimpleBookKeeping.Extensions
 @model SimpleBookKeeping.Models.CostModel
 @{
@@ -7,7 +8,6 @@
 }
 
 @Styles.Render("~/cost.css")
-
 
 <form id="cost-save" action="/Cost/Save" method="POST" data-ajax="false">
     <input type="hidden" name="Id" value="@Model.Id" />
@@ -18,7 +18,6 @@
                value="@(Model == null ? string.Empty : Model.Name)" />
         @Html.ValidationMessageFor(model => model.Name)
         @Html.ValidationMessageFor(model => model.PlanId)
-        
 
         <table>
             <tr><th> День </th> <th> Дата </th><th> Сумма </th></tr>
@@ -26,15 +25,18 @@
                 int list = 0;
                 foreach (var costDetailModel in Model?.CostDetails.OrderBy(x => x.Date))
                 {
-                    <tr class=" @(costDetailModel.Date.DayOfWeek == DayOfWeek.Sunday ||
-                                  costDetailModel.Date.DayOfWeek == DayOfWeek.Saturday ? "holiday" : string.Empty) ">
-                        
+                    bool isHoliday = costDetailModel.Date.DayOfWeek == DayOfWeek.Sunday ||
+                                     costDetailModel.Date.DayOfWeek == DayOfWeek.Saturday;
+                    string dayName = costDetailModel.Date.ToString("ddd", new CultureInfo("en-US")).ToLower();
+
+                    <tr class=" @(isHoliday ? "holiday" : string.Empty) @dayName ">
+
                         <td> @costDetailModel.Date.DayOfWeek.ToShortRuString() </td>
                         <td> @costDetailModel.Date.ToString("dd-MM-yyyy") </td>
                         <td>
-                            <input type="hidden" name="CostDetails[@list].Date" value="@costDetailModel.Date.ToString("dd-MM-yyyy")"/>
+                            <input type="hidden" name="CostDetails[@list].Date" value="@costDetailModel.Date.ToString("dd-MM-yyyy")" />
                             <input type="text" name="CostDetails[@list].Value" value="@(costDetailModel.Value == 0 ?
-                                                                                            string.Empty : costDetailModel.Value.ToString())"/>
+                                                                                            string.Empty : costDetailModel.Value.ToString())" />
                         </td>
                     </tr>
 
@@ -43,7 +45,7 @@
             }
         </table>
 
-        <input type="submit" data-icon="check" value="Сохранить"/>
+        <input type="submit" data-icon="check" value="Сохранить" />
 
         @if (Model.Id != Guid.Empty)
         {
@@ -51,11 +53,73 @@
         }
 
     </div>
-    
+
 </form>
+
+<a id="genButton" class="margin10" data-role="button" data-icon="action" onclick="ShowGenerator()">Показать генерацию</a>
+
+<div id="generator" class="margin10 ui-shadow">
+    <h2> Генератор </h2>
+
+    <div class="ui-field-contain day-of-week">
+        <fieldset data-role="controlgroup" data-type="vertical">
+            <legend>Дни недели:</legend>
+            <input type="checkbox" name="mon" id="mon">
+            <label for="mon">Понедельник</label>
+
+            <input type="checkbox" name="tue" id="tue">
+            <label for="tue">Вторник</label>
+
+            <input type="checkbox" name="wed" id="wed">
+            <label for="wed">Среда</label>
+
+            <input type="checkbox" name="thu" id="thu">
+            <label for="thu">Четверг</label>
+
+            <input type="checkbox" name="fri" id="fri">
+            <label for="fri">Пятница</label>
+
+            <input type="checkbox" name="sat" id="sat">
+            <label for="sat">Суббота</label>
+
+            <input type="checkbox" name="sun" id="sun">
+            <label for="sun">Воскресенье</label>
+        </fieldset>
+    </div>
+
+    <input id="genSum" type="text" placeholder="Сумма" />
+
+    <a class="margin10" data-role="button" data-icon="action" onclick="Generate()">Генерировать</a>
+
+</div>
+
 
 <script type="text/javascript">
     backUrl = "/Cost/Index?planId=@Model.PlanId";
+
+    function ShowGenerator() {
+        $("#genButton").fadeOut(1000);
+        $("#generator").fadeIn(1000);
+    }
+
+    function Generate() {
+        var dayOfWeeks = new Array();
+        var sum = $("#genSum").val();
+
+        $(".day-of-week .ui-checkbox-on").each(function (i, v) {
+            dayOfWeeks.push($(v).attr("for"));
+        });
+
+        for (var i = 0; i < dayOfWeeks.length; i++) {
+            $("." + dayOfWeeks[i] + " input[type=text]").val(sum);
+        }
+
+        $("#genButton").fadeIn(1000);
+        $("#generator").fadeOut(1000, function () {
+            $('.day-of-week input').prop('checked', false).checkboxradio('refresh');
+            $("#genSum").val("");
+        });
+    }
 
     function Remove() {
         if (confirm("Вы действительно хотите удалить расход: @Model.Name")) {
@@ -71,7 +135,7 @@
     }
 
     $(document).ready(function () {
-        saveFunc = function() {
+        saveFunc = function () {
             $("#cost-save").submit();
         }
         showSaveButton();
