@@ -8,6 +8,7 @@ namespace SimpleBookKeeping.Database.Entities
     {
         private User _user;
         IList<Cost> _costs = new List<Cost>();
+        IList<PlanMember> _palnMembers = new List<PlanMember>();
 
         public virtual Guid Id
         {
@@ -40,21 +41,20 @@ namespace SimpleBookKeeping.Database.Entities
 
         public virtual IList<Cost> Costs
         {
-            get
-            {
-                return _costs;
-            }
-
-            set
-            {
-                _costs = value;
-            }
+            get { return _costs; }
+            set { _costs = value; }
         }
 
         public virtual User User
         {
             get { return _user; }
             set { _user = value; }
+        }
+
+        public virtual IList<PlanMember> PlanMembers
+        {
+            get { return _palnMembers; }
+            set { _palnMembers = value; }
         }
 
         public virtual bool Deleted

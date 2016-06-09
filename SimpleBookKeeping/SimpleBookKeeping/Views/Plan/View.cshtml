@@ -1,4 +1,5 @@
 ﻿@using System.Web.Optimization
+@using SimpleBookKeeping.Models
 @model SimpleBookKeeping.Models.PlanModel
 @{
     ViewBag.Title = "План";
@@ -16,12 +17,15 @@
 
         <input name="id" value="@Model.Id" type="hidden"/>
 
-        <input name="start" placeholder="Дата начала" type="date" value="@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("yyyy-MM-dd"))"
-               data-role="date" />
+        <input name="start" placeholder="Дата начала" type="date"
+               value="@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("yyyy-MM-dd"))" data-role="date"/>
+
         @Html.ValidationMessageFor(model => model.Start)
 
-        <input name="end" placeholder="Дата завершения" type="date" value="@(Model.End == DateTime.MinValue ? "" : Model.End.ToString("yyyy-MM-dd"))"
+        <input name="end" placeholder="Дата завершения" type="date"
+               value="@(Model.End == DateTime.MinValue ? "" : Model.End.ToString("yyyy-MM-dd"))"
                data-role="datebox" data-options='{"mode": "datebox", "overrideDateFormat": "%d-%m-%Y"}'/>
+
         @Html.ValidationMessageFor(model => model.End)
 
         <input name="name" type="text" value="@Model.Name" placeholder="Наименование"/>
@@ -30,8 +34,18 @@
         <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс"/>
         @Html.ValidationMessageFor(model => model.Balance)
 
-        <input class="margin10" data-icon="check" type="submit" value="@(Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
+        <label for="members" class="select">Участвующие:</label>
+        <select name="members" id="members" multiple="multiple" data-native-menu="false">
+            @foreach (UserModel user in ViewBag.Users)
+            {
+                <option value="@user.Id"
+                        @(Model.PlanMembers.Any(x=>x.User.EqualId(user))? "selected='selected'":string.Empty)>@user.Name</option>
+            }
+            
+        </select>
 
+        <input class="margin10" data-icon="check" type="submit" value="@(Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
+        
     </form>
     @if (Model.Id != Guid.Empty)
     {

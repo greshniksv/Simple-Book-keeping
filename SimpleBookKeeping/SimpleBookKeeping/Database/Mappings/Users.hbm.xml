@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="SimpleBookKeeping" namespace="SimpleBookKeeping.Database.Entities">
 
-  <class name="User" table="users" lazy="true">
+  <class name="User" table="Users" lazy="true">
     <id name="Id" column="id">
       <generator class="guid" />
     </id>
@@ -9,10 +9,16 @@
     <property name="Name" column="name"  type="String" />
     <property name="Login" column="login"  type="String" index="idx_login" />
     <property name="Password" column="password" type="String" />
+    <property name="IsAdmin" column="admin" type="Boolean" />
 
     <bag name="Plans" cascade="all-delete-orphan" lazy="true">
       <key column="user_id" />
       <one-to-many class="Plan" />
+    </bag>
+
+    <bag name="PlanMembers" cascade="all-delete-orphan" lazy="true">
+      <key column="user_id" />
+      <one-to-many class="PlanMember" />
     </bag>
 
   </class>

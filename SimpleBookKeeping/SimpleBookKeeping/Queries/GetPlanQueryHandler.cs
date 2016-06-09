@@ -12,18 +12,18 @@ namespace SimpleBookKeeping.Queries
     {
         public PlanModel Handle(GetPlanQuery message)
         {
-            IList<Plan> plans;
+            PlanModel model;
             using (var session = Db.Session)
             {
-                plans = session.QueryOver<Plan>().Where(p => p.Id == message.PlanId).List();
-            }
+                var plans = session.QueryOver<Plan>().Where(p => p.Id == message.PlanId).List();
 
-            if (!plans.Any())
-            {
-                throw new PlanNotFoundException($"Plan id: {message.PlanId}");
-            }
+                if (!plans.Any())
+                {
+                    throw new PlanNotFoundException($"Plan id: {message.PlanId}");
+                }
 
-            PlanModel model = AutoMapperConfig.Mapper.Map<PlanModel>(plans.First());
+                model = AutoMapperConfig.Mapper.Map<PlanModel>(plans.First());
+            }
 
             return model;
         }

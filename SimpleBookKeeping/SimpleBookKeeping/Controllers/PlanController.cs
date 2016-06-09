@@ -31,7 +31,9 @@ namespace SimpleBookKeeping.Controllers
         public ActionResult View(Guid id)
         {
             var model = _mediator.Send(new GetPlanQuery { PlanId = id});
+            var users = _mediator.Send(new GetUsersQuery());
 
+            ViewBag.Users = users;
             return View("View", model);
         }
 

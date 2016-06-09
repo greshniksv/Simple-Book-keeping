@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace SimpleBookKeeping.Models
 {
@@ -23,5 +21,7 @@ namespace SimpleBookKeeping.Models
         [Required(ErrorMessage = "Баланс должен быть указан")]
         [Range(1,50000,ErrorMessage = "Баланс может быть от 1 до 50'000")]
         public int Balance { get; set; }
+
+        public List<PlanMemberModel> PlanMembers { get; set; }
     }
 }

@@ -394,6 +394,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Database\Mappings\PlanMembers.hbm.xml">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <Content Include="Global.asax" />
     <Content Include="hibernate.cfg.xml">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -458,6 +461,7 @@
     <Compile Include="Database\Entities\CostDetail.cs" />
     <Compile Include="Database\Entities\Interfaces\IDeleteMarker.cs" />
     <Compile Include="Database\Entities\Plan.cs" />
+    <Compile Include="Database\Entities\PlanMember.cs" />
     <Compile Include="Database\Entities\User.cs" />
     <Compile Include="Exceptions\CookieDecryptException.cs" />
     <Compile Include="Exceptions\CostNotFoundException.cs" />
@@ -470,7 +474,9 @@
     <Compile Include="Models\CostDetailModel.cs" />
     <Compile Include="Models\CostModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PlanMemberModel.cs" />
     <Compile Include="Models\PlanModel.cs" />
+    <Compile Include="Models\UserModel.cs" />
     <Compile Include="Modules\AuthHttpModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetCostQuery.cs" />
@@ -481,6 +487,8 @@
     <Compile Include="Queries\GetPlanQueryHandler.cs" />
     <Compile Include="Queries\GetPlansQuery.cs" />
     <Compile Include="Queries\GetPlansQueryHandler.cs" />
+    <Compile Include="Queries\GetUsersQuery.cs" />
+    <Compile Include="Queries\GetUsersQueryHandler.cs" />
     <Compile Include="Unility\Interfaces\IHashCalculator.cs" />
     <Compile Include="Unility\MD5HashCalculator.cs" />
   </ItemGroup>
