@@ -61,36 +61,19 @@
 <div id="generator" class="margin10 ui-shadow">
     <h2> Генератор </h2>
 
-    <div class="ui-field-contain day-of-week">
-        <fieldset data-role="controlgroup" data-type="vertical">
-            <legend>Дни недели:</legend>
-            <input type="checkbox" name="mon" id="mon">
-            <label for="mon">Понедельник</label>
-
-            <input type="checkbox" name="tue" id="tue">
-            <label for="tue">Вторник</label>
-
-            <input type="checkbox" name="wed" id="wed">
-            <label for="wed">Среда</label>
-
-            <input type="checkbox" name="thu" id="thu">
-            <label for="thu">Четверг</label>
-
-            <input type="checkbox" name="fri" id="fri">
-            <label for="fri">Пятница</label>
-
-            <input type="checkbox" name="sat" id="sat">
-            <label for="sat">Суббота</label>
-
-            <input type="checkbox" name="sun" id="sun">
-            <label for="sun">Воскресенье</label>
-        </fieldset>
-    </div>
+    <label for="members" class="select">Дни недели:</label>
+    <select name="members" id="members" multiple="multiple" data-native-menu="false">
+        <option value="mon"> Пн </option>
+        <option value="tue"> Вт </option>
+        <option value="wed"> Ср </option>
+        <option value="thu"> Чт </option>
+        <option value="fri"> Пт </option>
+        <option value="sat"> Сб </option>
+        <option value="sun"> Вс </option>
+    </select>
 
     <input id="genSum" type="text" placeholder="Сумма" />
-
     <a class="margin10" data-role="button" data-icon="action" onclick="Generate()">Генерировать</a>
-
 </div>
 
 
@@ -106,8 +89,8 @@
         var dayOfWeeks = new Array();
         var sum = $("#genSum").val();
 
-        $(".day-of-week .ui-checkbox-on").each(function (i, v) {
-            dayOfWeeks.push($(v).attr("for"));
+        $("#members :selected").each(function() {
+            dayOfWeeks.push($(this).attr("value"));
         });
 
         for (var i = 0; i < dayOfWeeks.length; i++) {
@@ -116,7 +99,8 @@
 
         $("#genButton").fadeIn(1000);
         $("#generator").fadeOut(1000, function () {
-            $('.day-of-week input').prop('checked', false).checkboxradio('refresh');
+            $("#members :selected").removeAttr("selected");
+            $("#members").selectmenu("refresh", true);
             $("#genSum").val("");
         });
     }

@@ -18,11 +18,16 @@ namespace SimpleBookKeeping
                 cfg.CreateMap<Plan, PlanModel>();
                 cfg.CreateMap<PlanModel, Plan>();
 
+                cfg.CreateMap<User, UserModel>();
+                cfg.CreateMap<UserModel, User>();
+                
+                cfg.CreateMap<PlanMember, PlanMemberModel>();
+                cfg.CreateMap<PlanMemberModel, PlanMember>();
+
                 cfg.CreateMap<Cost, CostModel>()
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))
                 .ForMember(dst => dst.PlanId, opt => opt.MapFrom(src => src.Plan.Id))
                 .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Name));
-                //.ForMember(dst => dst.CostDetails, opt => opt.Ignore());
 
                 cfg.CreateMap<CostModel, Cost>()
                 .ForMember(dst => dst.Id, opt => opt.MapFrom(src => src.Id))

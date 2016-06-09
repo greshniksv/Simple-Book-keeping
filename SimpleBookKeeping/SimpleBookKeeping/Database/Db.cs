@@ -38,6 +38,7 @@ namespace SimpleBookKeeping.Database
             configuration.Configure();
             configuration.AddAssembly(typeof(User).Assembly);
             var schemaExport = new SchemaExport(configuration);
+            schemaExport.Drop(false, true);
             schemaExport.Create(false, true);
 
             InsertTestData();
