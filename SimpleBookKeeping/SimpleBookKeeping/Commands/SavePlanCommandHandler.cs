@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using MediatR;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
@@ -12,32 +13,66 @@ namespace SimpleBookKeeping.Commands
         /// <returns>Response from the request</returns>
         public bool Handle(SavePlanCommand message)
         {
+            IList<PlanMember> existingPlanMembers = null;
             Plan plan;
-            User currentUser;
+            IList<User> users;
             using (var session = Db.Session)
             {
+                users = session.QueryOver<User>().List();
+
                 plan = session.QueryOver<Plan>()
                .Where(p => p.Id == message.PlanModel.Id).List().FirstOrDefault();
 
-                currentUser =
-                    session.QueryOver<User>()
-                        .Where(x => x.Id == message.UserId)
-                        .List().FirstOrDefault();
+                var currentUser = session.QueryOver<User>()
+                    .Where(x => x.Id == message.UserId)
+                    .List().FirstOrDefault();
+
+                if (plan == null)
+                {
+                    plan = new Plan
+                    {
+                        User = currentUser
+                    };
+                }
+                else
+                {
+                    // Get PlanMembers and remove it
+                    existingPlanMembers = plan.PlanMembers.ToList();
+                    plan.PlanMembers.Clear();
+                }
             }
 
-            if (plan == null)
-            {
-                plan = new Plan
-                {
-                    User = currentUser
-                };
-            }
             AutoMapperConfig.Mapper.Map(message.PlanModel, plan);
 
-            using (var sessionInsert = Db.Session)
-            using (var transaction = sessionInsert.BeginTransaction())
+            using (var session = Db.Session)
+            using (var transaction = session.BeginTransaction())
             {
-                sessionInsert.SaveOrUpdate(plan);
+                if (existingPlanMembers != null && existingPlanMembers.Any())
+                {
+                    foreach (var existingPlanMember in existingPlanMembers)
+                    {
+                        existingPlanMember.User = null;
+                        existingPlanMember.Plan = null;
+                        session.Delete(existingPlanMember);
+                    }
+                }
+                transaction.Commit();
+            }
+
+            using (var session = Db.Session)
+            using (var transaction = session.BeginTransaction())
+            {
+
+                // Add plan
+                session.SaveOrUpdate(plan);
+
+                // Add plan members
+                foreach (var userMember in message.PlanModel.UserMembers)
+                {
+                    var user = users.First(x => x.Id == userMember);
+                    session.Save(new PlanMember { User = user, Plan = plan });
+                }
+
                 transaction.Commit();
             }
 

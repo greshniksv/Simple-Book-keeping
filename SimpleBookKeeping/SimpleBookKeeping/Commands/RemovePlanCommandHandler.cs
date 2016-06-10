@@ -19,6 +19,7 @@ namespace SimpleBookKeeping.Commands
                 }
 
                 plan.User = null;
+                plan.PlanMembers.Clear();
                 plan.Costs.Clear();
             }
 

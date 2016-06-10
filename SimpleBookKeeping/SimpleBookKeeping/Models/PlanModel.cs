@@ -22,6 +22,6 @@ namespace SimpleBookKeeping.Models
         [Range(1,50000,ErrorMessage = "Баланс может быть от 1 до 50'000")]
         public int Balance { get; set; }
 
-        public List<PlanMemberModel> PlanMembers { get; set; }
+        public List<Guid> UserMembers { get; set; }
     }
 }

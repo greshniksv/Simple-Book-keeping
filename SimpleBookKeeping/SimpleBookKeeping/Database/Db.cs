@@ -52,7 +52,15 @@ namespace SimpleBookKeeping.Database
                 Login = "admin",
                 Password = "123456",
             };
-          
+
+            var usertest = new User
+            {
+                Name = "test",
+                Login = "test",
+                Password = "123456",
+            };
+
+
             var costPlan = new Plan
             {
                 Name = "Test plan",
@@ -84,10 +92,11 @@ namespace SimpleBookKeeping.Database
             costPlan.Costs.Add(cost);
             user.Plans.Add(costPlan);
 
-            using (var session = Db.Session)
+            using (var session = Session)
             using (ITransaction transaction = session.BeginTransaction())
             {
                 session.Save(user);
+                session.Save(usertest);
                 transaction.Commit();
             }
 

@@ -34,15 +34,22 @@
         <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс"/>
         @Html.ValidationMessageFor(model => model.Balance)
 
-        <label for="members" class="select">Участвующие:</label>
-        <select name="members" id="members" multiple="multiple" data-native-menu="false">
-            @foreach (UserModel user in ViewBag.Users)
-            {
-                <option value="@user.Id"
-                        @(Model.PlanMembers.Any(x=>x.User.EqualId(user))? "selected='selected'":string.Empty)>@user.Name</option>
-            }
-            
-        </select>
+        <div class="margin10">
+            <label for="members" class="select">Участвующие:</label>
+            <select id="members" multiple="multiple" data-native-menu="false">
+                @foreach (UserModel user in ViewBag.Users)
+                {
+                    <option value="@user.Id"
+                            @(Model.UserMembers.Any(x => x == user.Id) ? "selected='selected'" : string.Empty)>
+                        @user.Name
+                    </option>
+                }
+
+            </select>
+            <div id="members-input-item">
+                
+            </div>
+        </div>
 
         <input class="margin10" data-icon="check" type="submit" value="@(Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
         
@@ -53,6 +60,7 @@
         <a data-role="button" class="margin10" data-icon="delete" data-theme = "b" onclick="Remove()">Удалить</a>
     }
 
+    
 </div>
 
 <script type="text/javascript">
@@ -65,6 +73,19 @@
     }
 
     $(document).ready(function () {
+
+        $("#members-listbox .ui-icon-delete").click(function () {
+            var inputs = "";
+
+            var item = 0;
+            $("#members :selected").each(function () {
+                var userId = $(this).attr("value");
+                inputs += "<input type='hidden' name='UserMembers[" + item + "]' value='" + userId + "'/>";
+                item++;
+            });
+
+            $("#members-input-item").html(inputs);
+        });
 
         var today = "@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("yyyy-MM-dd"))";
         $('[name=start]').val(today);

@@ -61,8 +61,8 @@
 <div id="generator" class="margin10 ui-shadow">
     <h2> Генератор </h2>
 
-    <label for="members" class="select">Дни недели:</label>
-    <select name="members" id="members" multiple="multiple" data-native-menu="false">
+    <label for="day-of-week" class="select">Дни недели:</label>
+    <select id="day-of-week" multiple="multiple" data-native-menu="false">
         <option value="mon"> Пн </option>
         <option value="tue"> Вт </option>
         <option value="wed"> Ср </option>
@@ -89,7 +89,7 @@
         var dayOfWeeks = new Array();
         var sum = $("#genSum").val();
 
-        $("#members :selected").each(function() {
+        $("#day-of-week :selected").each(function () {
             dayOfWeeks.push($(this).attr("value"));
         });
 
