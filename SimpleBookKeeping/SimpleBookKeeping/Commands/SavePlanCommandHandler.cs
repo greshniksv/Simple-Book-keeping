@@ -38,7 +38,6 @@ namespace SimpleBookKeeping.Commands
                 {
                     // Get PlanMembers and remove it
                     existingPlanMembers = plan.PlanMembers.ToList();
-                    plan.PlanMembers.Clear();
                 }
             }
 
@@ -47,6 +46,15 @@ namespace SimpleBookKeeping.Commands
             using (var session = Db.Session)
             using (var transaction = session.BeginTransaction())
             {
+                // Add plan
+                session.SaveOrUpdate(plan);
+                transaction.Commit();
+            }
+
+            using (var session = Db.Session)
+            using (var transaction = session.BeginTransaction())
+            {
+                // Remove old plan members
                 if (existingPlanMembers != null && existingPlanMembers.Any())
                 {
                     foreach (var existingPlanMember in existingPlanMembers)
@@ -59,18 +67,21 @@ namespace SimpleBookKeeping.Commands
                 transaction.Commit();
             }
 
+            Plan newPlan;
+            using (var session = Db.Session)
+            {
+                newPlan = session.QueryOver<Plan>().Where(x => x.Id == plan.Id).List().First();
+            }
+
             using (var session = Db.Session)
             using (var transaction = session.BeginTransaction())
             {
-
-                // Add plan
-                session.SaveOrUpdate(plan);
 
                 // Add plan members
                 foreach (var userMember in message.PlanModel.UserMembers)
                 {
                     var user = users.First(x => x.Id == userMember);
-                    session.Save(new PlanMember { User = user, Plan = plan });
+                    session.Save(new PlanMember { User = user, Plan = newPlan });
                 }
 
                 transaction.Commit();

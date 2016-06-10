@@ -53,13 +53,10 @@ namespace SimpleBookKeeping
             bundles.Add(new ScriptBundle("~/messageBox.js").Include(
                      "~/Scripts/Class/messageBox.js"));
             
-            // mPopup
-            bundles.Add(new ScriptBundle("~/mPopup.js").Include(
-                     "~/Scripts/mPopup.jquery.js"));
-
-            bundles.Add(new StyleBundle("~/mPopup.css").Include(
-                      "~/Content/mPopup.css"));
-
+            // msgBox
+            bundles.Add(new ScriptBundle("~/msgBox.js").Include(
+                     "~/Scripts/Site/msgBox.js"));
+            
             // Home
             bundles.Add(new StyleBundle("~/home.css").Include(
                       "~/Content/site/home.less"));

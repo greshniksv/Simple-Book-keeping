@@ -425,6 +425,7 @@
     <Content Include="Scripts\Site\animate.js" />
     <Content Include="Scripts\Site\layout.js" />
     <Content Include="Scripts\Site\login.js" />
+    <Content Include="Scripts\Site\msgBox.js" />
     <Content Include="Web.config" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
