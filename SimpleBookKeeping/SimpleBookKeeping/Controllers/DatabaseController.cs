@@ -4,14 +4,17 @@ using SimpleBookKeeping.Database;
 
 namespace SimpleBookKeeping.Controllers
 {
+    [Authorize]
     public class DatabaseController : Controller
     {
         // GET: Database
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult CreateDatabase()
         {
             try
@@ -27,7 +30,8 @@ namespace SimpleBookKeeping.Controllers
             return RedirectToAction("CreateResult", 
                 new { message = "Database created successful", success = true });
         }
-        
+
+        [AllowAnonymous]
         public ActionResult CreateResult(string message, bool success)
         {
             if (success)

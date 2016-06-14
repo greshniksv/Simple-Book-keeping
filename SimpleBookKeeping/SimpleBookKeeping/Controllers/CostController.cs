@@ -9,6 +9,7 @@ using SimpleBookKeeping.Queries;
 
 namespace SimpleBookKeeping.Controllers
 {
+    [Authorize]
     public class CostController : Controller
     {
         private readonly IMediator _mediator;

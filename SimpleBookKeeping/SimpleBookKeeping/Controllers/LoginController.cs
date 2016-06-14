@@ -8,16 +8,17 @@ using SimpleBookKeeping.Unility.Interfaces;
 
 namespace SimpleBookKeeping.Controllers
 {
+    [Authorize]
     public class LoginController : Controller
     {
-        private IHashCalculator hashCalculator;
-
         // GET: Login
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View();
         }
 
+        [AllowAnonymous]
         public ActionResult Authorize(LoginModel model)
         {
             if (ModelState.IsValid)

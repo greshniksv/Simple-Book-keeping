@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using MediatR;
 using Microsoft.Practices.Unity;
@@ -10,6 +11,7 @@ using SimpleBookKeeping.Queries;
 
 namespace SimpleBookKeeping.Controllers
 {
+    [Authorize]
     [HandleAllError]
     public class PlanController : Controller
     {
@@ -30,7 +32,7 @@ namespace SimpleBookKeeping.Controllers
         // GET: View
         public ActionResult View(Guid id)
         {
-            var model = _mediator.Send(new GetPlanQuery { PlanId = id});
+            var model = _mediator.Send(new GetPlanQuery { PlanId = id });
             var users = _mediator.Send(new GetUsersQuery());
 
             ViewBag.Users = users;
@@ -61,11 +63,28 @@ namespace SimpleBookKeeping.Controllers
 
         public ActionResult Save(PlanModel model)
         {
+            var oldPlan = _mediator.Send(new GetPlanQuery { PlanId = model.Id });
+
             if (model.Start >= model.End)
             {
                 ModelState
                     .AddModelError(nameof(model.Start),
                             "Дата начала должна быть меньше даты конца");
+            }
+
+            var costs = _mediator.Send(new GetCostsQuery
+            {
+                PlanId = model.Id
+            });
+
+            if (costs.Any() && (oldPlan.Start != model.Start || oldPlan.End != model.End))
+            {
+                ModelState
+                    .AddModelError(nameof(model.Start),
+                            "Нельзя изменить дату начала, так как существуют расходы");
+                ModelState
+                    .AddModelError(nameof(model.End),
+                            "Нельзя изменить дату завершения, так как существуют расходы");
             }
 
             if (ModelState.IsValid)
@@ -79,6 +98,8 @@ namespace SimpleBookKeeping.Controllers
                 return RedirectToAction("Index");
             }
 
+            var users = _mediator.Send(new GetUsersQuery());
+            ViewBag.Users = users;
             return View("View", model);
         }
 

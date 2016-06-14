@@ -7,7 +7,9 @@ namespace SimpleBookKeeping
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            //filters.Add(new HandleAllErrorAttribute());
+            filters.Add(new HandleAllErrorAttribute());
+            filters.Add(new AuthorizeAttribute());
+
         }
     }
 }
