@@ -4,7 +4,11 @@
         var settings = $.extend({
             'caption': 'Caption',
             'head': 'Head',
-            'body': 'Body text'
+            'body': 'Body text',
+            'firstButtonCaption': 'Нет',
+            'secondButtonCaption': 'Да',
+            'onFirstButton': null,
+            'onSecondButton': null
         }, options);
 
         var data = "<div class=\"ui-popup-container pop in ui-popup-active\" id=\"popupDialog-popup\" style=\"max-width: 290px; top: 241.5px; left: 15px;\">\r\n" +
@@ -15,8 +19,10 @@
             "    <div role=\"main\" class=\"ui-corner-bottom ui-content\">\r\n" +
             "        <h3 class=\"ui-title\">" + settings["head"] + "<\/h3>\r\n" +
             "        <p>" + settings["body"] + "<\/p>\r\n" +
-            "        <a href=\"#\" data-role=\"button\" data-inline=\"true\" data-rel=\"back\" data-theme=\"a\" role=\"button\" class=\"ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all\">Cancel<\/a>\r\n" +
-            "        <a href=\"#\" data-role=\"button\" data-inline=\"true\" data-rel=\"back\" data-transition=\"flow\" data-theme=\"b\" role=\"button\" class=\"ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all\">Delete<\/a>\r\n" +
+            "        <a href=\"#\" id=\"firstButton\" data-role=\"button\" data-inline=\"true\" data-rel=\"back\" data-theme=\"a\"" +
+            " role=\"button\" class=\"ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all\">" + settings["firstButtonCaption"] + "<\/a>\r\n" +
+            "        <a href=\"#\" id=\"secondButton\" data-role=\"button\" data-inline=\"true\" data-rel=\"back\" data-transition=\"flow\"" +
+            " data-theme=\"b\" role=\"button\" class=\"ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all\">" + settings["secondButtonCaption"] + "<\/a>\r\n" +
             "    <\/div>\r\n" +
             "<\/div><\/div>";
 
@@ -28,6 +34,18 @@
         $("#popupDialog").popup("open", {
             transition: "pop",
             positionTo: "window"
+        });
+
+        $("#firstButton").click(function () {
+            if (settings["onFirstButton"] !== undefined && settings["onFirstButton"] != null) {
+                settings["onFirstButton"]();
+            }
+        });
+
+        $("#secondButton").click(function () {
+            if (settings["onSecondButton"] !== undefined && settings["onSecondButton"] != null) {
+                settings["onSecondButton"]();
+            }
         });
 
         $("#popupDialog").on("popupafterclose", function (event, ui) {

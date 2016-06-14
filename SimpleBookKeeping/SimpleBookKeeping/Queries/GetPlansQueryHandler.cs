@@ -13,7 +13,16 @@ namespace SimpleBookKeeping.Queries
             IList<PlanModel> planModels;
             using (var session = Db.Session)
             {
-                var plans = session.QueryOver<Plan>().List();
+                IList<Plan> plans;
+                if (message.ShowDeleted)
+                {
+                    plans = session.QueryOver<Plan>().List();
+                }
+                else
+                {
+                    plans = session.QueryOver<Plan>().Where(x => x.Deleted == false).List();
+                }
+                
                 planModels = AutoMapperConfig.Mapper.Map<IList<PlanModel>>(plans);
             }
 

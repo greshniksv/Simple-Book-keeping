@@ -20,7 +20,16 @@ namespace SimpleBookKeeping.Queries
             IList<CostModel> costModels;
             using (var session = Db.Session)
             {
-                var costs = session.QueryOver<Cost>().Where(x => x.Plan.Id == message.PlanId).List();
+                IList<Cost> costs;
+                if (message.ShowDeleted)
+                {
+                    costs = session.QueryOver<Cost>().Where(x => x.Plan.Id == message.PlanId).List();
+                }
+                else
+                {
+                    costs = session.QueryOver<Cost>().Where(x => x.Plan.Id == message.PlanId && x.Deleted == false).List();
+                }
+                
                 costModels = AutoMapperConfig.Mapper.Map<IList<CostModel>>(costs);
             }
 

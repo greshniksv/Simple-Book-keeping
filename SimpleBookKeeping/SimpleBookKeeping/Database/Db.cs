@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using NHibernate;
 using NHibernate.Cfg;
+using NHibernate.Mapping;
 using NHibernate.Tool.hbm2ddl;
 using SimpleBookKeeping.Database.Entities;
 
@@ -95,12 +97,23 @@ namespace SimpleBookKeeping.Database
             using (var session = Session)
             using (ITransaction transaction = session.BeginTransaction())
             {
-                session.Save(user);
+                var costDetails = new List<CostDetail>();
+                for (int i = 10; i > 0; i--)
+                {
+                    var item = new CostDetail
+                    {
+                        Deleted = false,
+                        Date = DateTime.Now.AddDays(-i),
+                        Value = 100,
+                        Cost = cost
+                    };
+                    session.Save(item);
+                    costDetails.Add(item);
+                }
+                
                 session.Save(usertest);
                 transaction.Commit();
             }
-
-
 
         }
     }

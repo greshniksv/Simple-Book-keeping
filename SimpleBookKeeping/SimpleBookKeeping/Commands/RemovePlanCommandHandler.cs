@@ -18,15 +18,16 @@ namespace SimpleBookKeeping.Commands
                     return false;
                 }
 
-                plan.User = null;
-                plan.PlanMembers.Clear();
-                plan.Costs.Clear();
+                //plan.User = null;
+                //plan.PlanMembers.Clear();
+                //plan.Costs.Clear();
             }
 
             using (var session = Db.Session)
             using (var transaction = session.BeginTransaction())
             {
-                session.Delete(plan);
+                plan.Deleted = true;
+                session.Update(plan);
                 transaction.Commit();
             }
             return true;

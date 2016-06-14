@@ -18,14 +18,15 @@ namespace SimpleBookKeeping.Commands
                 {
                     throw new CostNotFoundException(message.CostId.ToString());
                 }
-                cost.CostDetails.Clear();
+                //cost.CostDetails.Clear();
             }
 
             using (var session = Db.Session)
             using (var transaction = session.BeginTransaction())
             {
-                cost.Plan = null;
-                session.Delete(cost);
+                //cost.Plan = null;
+                cost.Deleted = true;
+                session.Update(cost);
                 transaction.Commit();
             }
 

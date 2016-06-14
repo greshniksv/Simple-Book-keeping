@@ -8,5 +8,6 @@ namespace SimpleBookKeeping.Queries
     public class GetCostsQuery : IRequest<IList<CostModel>>
     {
         public Guid PlanId { get; set; }
+        public bool ShowDeleted { get; set; }
     }
 }

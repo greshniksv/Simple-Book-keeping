@@ -42,18 +42,13 @@ namespace SimpleBookKeeping.Commands
             }
 
             AutoMapperConfig.Mapper.Map(message.PlanModel, plan);
-
+            
             using (var session = Db.Session)
             using (var transaction = session.BeginTransaction())
             {
                 // Add plan
                 session.SaveOrUpdate(plan);
-                transaction.Commit();
-            }
 
-            using (var session = Db.Session)
-            using (var transaction = session.BeginTransaction())
-            {
                 // Remove old plan members
                 if (existingPlanMembers != null && existingPlanMembers.Any())
                 {
@@ -64,24 +59,12 @@ namespace SimpleBookKeeping.Commands
                         session.Delete(existingPlanMember);
                     }
                 }
-                transaction.Commit();
-            }
-
-            Plan newPlan;
-            using (var session = Db.Session)
-            {
-                newPlan = session.QueryOver<Plan>().Where(x => x.Id == plan.Id).List().First();
-            }
-
-            using (var session = Db.Session)
-            using (var transaction = session.BeginTransaction())
-            {
 
                 // Add plan members
                 foreach (var userMember in message.PlanModel.UserMembers)
                 {
                     var user = users.First(x => x.Id == userMember);
-                    session.Save(new PlanMember { User = user, Plan = newPlan });
+                    session.Save(new PlanMember { User = user, Plan = plan });
                 }
 
                 transaction.Commit();

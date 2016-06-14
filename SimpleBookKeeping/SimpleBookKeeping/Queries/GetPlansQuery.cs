@@ -6,5 +6,6 @@ namespace SimpleBookKeeping.Queries
 {
     public class GetPlansQuery : IRequest<IList<PlanModel>>
     {
+        public bool ShowDeleted { get; set; }
     }
 }
