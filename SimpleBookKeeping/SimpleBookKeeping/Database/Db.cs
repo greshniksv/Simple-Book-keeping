@@ -94,6 +94,14 @@ namespace SimpleBookKeeping.Database
             costPlan.Costs.Add(cost);
             user.Plans.Add(costPlan);
 
+            var expenditure = new Expenditure
+            {
+                Plan = costPlan,
+                Date = DateTime.Now,
+                Value = 100500
+            };
+
+
             using (var session = Session)
             using (ITransaction transaction = session.BeginTransaction())
             {
@@ -110,7 +118,8 @@ namespace SimpleBookKeeping.Database
                     session.Save(item);
                     costDetails.Add(item);
                 }
-                
+
+                session.Save(expenditure);
                 session.Save(usertest);
                 transaction.Commit();
             }

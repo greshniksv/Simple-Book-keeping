@@ -20,7 +20,7 @@ function doSave() {
     
     if (typeof saveFunc != "undefined") {
         showLoading();
-        $("#save").fadeOut(1000, function () {
+        $("#save").fadeOut(500, function () {
             saveFunc();
         });
     } else {
@@ -30,11 +30,11 @@ function doSave() {
 }
 
 function showLoading() {
-    $(".wait-overlay").fadeIn(1000);
+    $(".wait-overlay").fadeIn(500);
 }
 
 function hideLoading() {
-    $(".wait-overlay").fadeOut(1000);
+    $(".wait-overlay").fadeOut(500);
 }
 
 function redirect(url) {
@@ -43,5 +43,5 @@ function redirect(url) {
 
     window.setTimeout(function () {
         window.location = url;
-    }, 1500);
+    }, 500);
 }

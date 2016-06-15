@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MediatR;
@@ -6,13 +7,14 @@ using Microsoft.Practices.Unity;
 using SimpleBookKeeping.Attributes;
 using SimpleBookKeeping.Authentication;
 using SimpleBookKeeping.Commands;
+using SimpleBookKeeping.Database.Entities;
 using SimpleBookKeeping.Models;
 using SimpleBookKeeping.Queries;
 
 namespace SimpleBookKeeping.Controllers
 {
     [Authorize]
-    [HandleAllError]
+    //[HandleAllError]
     public class PlanController : Controller
     {
         private readonly IMediator _mediator;
@@ -47,9 +49,14 @@ namespace SimpleBookKeeping.Controllers
                 Balance = 0,
                 Start = DateTime.Now,
                 End = DateTime.Now.AddMonths(1),
-                Name = string.Empty
+                Name = string.Empty,
+                UserMembers = new List<Guid>(),
+                Id = Guid.Empty
             };
 
+            var users = _mediator.Send(new GetUsersQuery());
+
+            ViewBag.Users = users;
             return View("View", model);
         }
 
@@ -63,7 +70,11 @@ namespace SimpleBookKeeping.Controllers
 
         public ActionResult Save(PlanModel model)
         {
-            var oldPlan = _mediator.Send(new GetPlanQuery { PlanId = model.Id });
+            PlanModel oldPlan = null;
+            if (model.Id != Guid.Empty)
+            {
+                oldPlan = _mediator.Send(new GetPlanQuery {PlanId = model.Id});
+            }
 
             if (model.Start >= model.End)
             {
@@ -71,13 +82,14 @@ namespace SimpleBookKeeping.Controllers
                     .AddModelError(nameof(model.Start),
                             "Дата начала должна быть меньше даты конца");
             }
-
-            var costs = _mediator.Send(new GetCostsQuery
+            IList<CostModel> costs = null;
+            if (model.Id != Guid.Empty)
             {
-                PlanId = model.Id
-            });
+                costs = _mediator.Send(new GetCostsQuery { PlanId = model.Id });
+            }
 
-            if (costs.Any() && (oldPlan.Start != model.Start || oldPlan.End != model.End))
+            if (costs != null && costs.Any() && oldPlan != null &&
+                (oldPlan.Start.Date != model.Start.Date || oldPlan.End.Date != model.End.Date))
             {
                 ModelState
                     .AddModelError(nameof(model.Start),

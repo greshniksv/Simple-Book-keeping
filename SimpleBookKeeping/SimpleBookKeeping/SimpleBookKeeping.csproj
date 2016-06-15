@@ -399,6 +399,9 @@
     <EmbeddedResource Include="Database\Mappings\PlanMembers.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Database\Mappings\Expenditures.hbm.xml">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
     <Content Include="Global.asax" />
     <Content Include="hibernate.cfg.xml">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -464,6 +467,7 @@
     <Compile Include="Database\Db.cs" />
     <Compile Include="Database\Entities\Cost.cs" />
     <Compile Include="Database\Entities\CostDetail.cs" />
+    <Compile Include="Database\Entities\Expenditure.cs" />
     <Compile Include="Database\Entities\Interfaces\IDeleteMarker.cs" />
     <Compile Include="Database\Entities\Plan.cs" />
     <Compile Include="Database\Entities\PlanMember.cs" />
