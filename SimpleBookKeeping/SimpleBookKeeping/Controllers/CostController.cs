@@ -49,6 +49,11 @@ namespace SimpleBookKeeping.Controllers
 
         public ActionResult Save(CostModel model)
         {
+            if (model.PlanId == Guid.Empty)
+            {
+                return RedirectToAction("Index", "Plan");
+            }
+
             foreach (var costDetailModel in model.CostDetails)
             {
                 if (costDetailModel.Value == null)

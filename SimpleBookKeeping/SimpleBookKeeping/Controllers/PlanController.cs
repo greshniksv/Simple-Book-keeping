@@ -14,7 +14,7 @@ using SimpleBookKeeping.Queries;
 namespace SimpleBookKeeping.Controllers
 {
     [Authorize]
-    //[HandleAllError]
+    [HandleAllError]
     public class PlanController : Controller
     {
         private readonly IMediator _mediator;
@@ -70,6 +70,11 @@ namespace SimpleBookKeeping.Controllers
 
         public ActionResult Save(PlanModel model)
         {
+            if (model.Start == DateTime.MinValue && model.End == DateTime.MinValue)
+            {
+                return RedirectToAction("Index");
+            }
+
             PlanModel oldPlan = null;
             if (model.Id != Guid.Empty)
             {
