@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="SimpleBookKeeping" namespace="SimpleBookKeeping.Database.Entities">
 
-  <class name="Plan" table="Plans" lazy="true">
+  <class name="Plan" table="PlanIds" lazy="true">
     <id name="Id" column="id">
       <generator class="guid" />
     </id>
@@ -13,11 +13,6 @@
     <property name="Deleted" column="deleted" type="Boolean" index="idx_deleted" />
 
     <many-to-one name="User" class="User" column="user_id" cascade="all" />
-
-    <bag name="Expenditures" cascade="none" lazy="true">
-      <key column="plan_id" />
-      <one-to-many class="Expenditure" />
-    </bag>
 
     <bag name="Costs" cascade="none" lazy="true">
       <key column="plan_id" />

@@ -96,12 +96,11 @@ namespace SimpleBookKeeping.Database
 
             var expenditure = new Expenditure
             {
-                Plan = costPlan,
+                Cost = cost,
                 Date = DateTime.Now,
                 Value = 100500
             };
-
-
+            
             using (var session = Session)
             using (ITransaction transaction = session.BeginTransaction())
             {

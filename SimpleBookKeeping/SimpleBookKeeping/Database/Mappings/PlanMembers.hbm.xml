@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="SimpleBookKeeping" namespace="SimpleBookKeeping.Database.Entities">
 
-  <class name="PlanMember" table="PlanMembers" lazy="true">
+  <class name="PlanMember" table="PlanIdMembers" lazy="true">
     <id name="Id" column="id">
       <generator class="guid" />
     </id>
 
     <many-to-one name="User" class="User" column="user_id" cascade="all" />
-    <many-to-one name="Plan" class="Plan" column="plan_id" cascade="all" />
+    <many-to-one name="Plan" class="PlanId" column="plan_id" cascade="all" />
 
   </class>
 

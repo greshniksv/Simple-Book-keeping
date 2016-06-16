@@ -10,7 +10,7 @@
     <property name="Value" column="value"  type="Int32" />
 
     <many-to-one name="User" class="User" column="user_id" cascade="all" />
-    <many-to-one name="Plan" class="Plan" column="plan_id" cascade="all" />
+    <many-to-one name="Cost" class="Cost" column="cost_id" cascade="all" />
 
   </class>
 
