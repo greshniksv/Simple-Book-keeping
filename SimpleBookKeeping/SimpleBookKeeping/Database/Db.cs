@@ -79,22 +79,11 @@ namespace SimpleBookKeeping.Database
                 Deleted = false,
                 Plan = costPlan
             };
-
-            for (int i = 10; i > 0; i--)
-            {
-                cost.CostDetails.Add(new CostDetail
-                {
-                    Deleted = false,
-                    Date = DateTime.Now.AddDays(-i),
-                    Value = 100,
-                    Cost = cost
-                });
-            }
-
+            
             costPlan.Costs.Add(cost);
             user.Plans.Add(costPlan);
 
-            var expenditure = new Expenditure
+            var spend = new Spend
             {
                 Cost = cost,
                 Date = DateTime.Now,
@@ -104,6 +93,12 @@ namespace SimpleBookKeeping.Database
             using (var session = Session)
             using (ITransaction transaction = session.BeginTransaction())
             {
+                session.Save(user);
+                session.Save(usertest);
+                session.Save(costPlan);
+                session.Save(cost);
+                session.Save(spend);
+
                 var costDetails = new List<CostDetail>();
                 for (int i = 10; i > 0; i--)
                 {
@@ -117,9 +112,7 @@ namespace SimpleBookKeeping.Database
                     session.Save(item);
                     costDetails.Add(item);
                 }
-
-                session.Save(expenditure);
-                session.Save(usertest);
+                
                 transaction.Commit();
             }
 

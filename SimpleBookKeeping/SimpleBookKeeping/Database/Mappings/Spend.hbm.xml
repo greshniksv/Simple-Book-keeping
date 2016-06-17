@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="SimpleBookKeeping" namespace="SimpleBookKeeping.Database.Entities">
 
-  <class name="Expenditure" table="Expenditures" lazy="true">
+  <class name="Spend" table="Spends" lazy="true">
     <id name="Id" column="id">
       <generator class="guid" />
     </id>
@@ -9,8 +9,8 @@
     <property name="Date" column="Date" type="DateTime" index="idx_date" />
     <property name="Value" column="value"  type="Int32" />
 
-    <many-to-one name="User" class="User" column="user_id" cascade="all" />
-    <many-to-one name="Cost" class="Cost" column="cost_id" cascade="all" />
+    <many-to-one name="User" class="User" column="user_id" cascade="none" />
+    <many-to-one name="Cost" class="Cost" column="cost_id" cascade="none" />
 
   </class>
 

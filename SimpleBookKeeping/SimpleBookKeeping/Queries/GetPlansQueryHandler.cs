@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MediatR;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
@@ -14,15 +15,20 @@ namespace SimpleBookKeeping.Queries
             using (var session = Db.Session)
             {
                 IList<Plan> plans;
-                if (message.ShowDeleted)
+                var planQuery = session.QueryOver<Plan>();
+
+                if (message.ShowDeleted != null)
                 {
-                    plans = session.QueryOver<Plan>().List();
+                    planQuery = planQuery.Where(x => x.Deleted == message.ShowDeleted);
                 }
-                else
+
+                if (message.IsActive != null)
                 {
-                    plans = session.QueryOver<Plan>().Where(x => x.Deleted == false).List();
+                    var now = DateTime.Now;
+                    planQuery = planQuery.Where(x => x.Start <= now && x.End >= now);
                 }
-                
+
+                plans = planQuery.List();
                 planModels = AutoMapperConfig.Mapper.Map<IList<PlanModel>>(plans);
             }
 

@@ -5,9 +5,10 @@ using SimpleBookKeeping.Models;
 
 namespace SimpleBookKeeping.Queries
 {
-    public class ExpendituresQuery : IRequest<IList<ExpenditureModel>>
+    public class GetSpendsQuery : IRequest<IList<SpendModel>>
     {
         public Guid UserId { get; set; }
+
         public Guid CostId { get; set; }
     }
 }

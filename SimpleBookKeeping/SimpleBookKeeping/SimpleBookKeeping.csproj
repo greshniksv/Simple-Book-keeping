@@ -399,7 +399,7 @@
     <EmbeddedResource Include="Database\Mappings\PlanMembers.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Mappings\Expenditures.hbm.xml">
+    <EmbeddedResource Include="Database\Mappings\Spend.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
     </EmbeddedResource>
     <Content Include="Global.asax" />
@@ -460,7 +460,7 @@
     <Compile Include="Commands\RemovePlanCommandHandler.cs" />
     <Compile Include="Controllers\CostController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
-    <Compile Include="Controllers\ExpenditureController.cs" />
+    <Compile Include="Controllers\SpendController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PlanController.cs" />
@@ -468,7 +468,7 @@
     <Compile Include="Database\Db.cs" />
     <Compile Include="Database\Entities\Cost.cs" />
     <Compile Include="Database\Entities\CostDetail.cs" />
-    <Compile Include="Database\Entities\Expenditure.cs" />
+    <Compile Include="Database\Entities\Spend.cs" />
     <Compile Include="Database\Entities\Interfaces\IDeleteMarker.cs" />
     <Compile Include="Database\Entities\Plan.cs" />
     <Compile Include="Database\Entities\PlanMember.cs" />
@@ -483,15 +483,18 @@
     </Compile>
     <Compile Include="Models\CostDetailModel.cs" />
     <Compile Include="Models\CostModel.cs" />
-    <Compile Include="Models\ExpenditureModel.cs" />
+    <Compile Include="Models\CostSpendDetailModel.cs" />
+    <Compile Include="Models\SpendModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PlanMemberModel.cs" />
     <Compile Include="Models\PlanModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Modules\AuthHttpModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Queries\ExpendituresQuery.cs" />
-    <Compile Include="Queries\ExpendituresQueryHandler.cs" />
+    <Compile Include="Queries\GetActiveCostSpendDetailsQuery.cs" />
+    <Compile Include="Queries\GetActiveCostSpendDetailsQueryHandler.cs" />
+    <Compile Include="Queries\GetSpendsQuery.cs" />
+    <Compile Include="Queries\GetSpendsQueryHandler.cs" />
     <Compile Include="Queries\GetCostQuery.cs" />
     <Compile Include="Queries\GetCostQueryHandler.cs" />
     <Compile Include="Queries\GetCostsQuery.cs" />
@@ -516,7 +519,7 @@
     <Content Include="Views\Plan\View.cshtml" />
     <Content Include="Views\Cost\Index.cshtml" />
     <Content Include="Views\Cost\View.cshtml" />
-    <Content Include="Views\Expenditure\Index.cshtml" />
+    <Content Include="Views\Spend\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

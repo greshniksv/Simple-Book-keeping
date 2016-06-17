@@ -5,7 +5,7 @@ namespace SimpleBookKeeping.Database.Entities
 {
     public class User
     {
-        IList<Expenditure> _expenditure = new List<Expenditure>();
+        IList<Spend> _spend = new List<Spend>();
         IList<Plan> _palns = new List<Plan>();
         IList<PlanMember> _palnMembers = new List<PlanMember>();
 
@@ -42,10 +42,10 @@ namespace SimpleBookKeeping.Database.Entities
             set { _palns = value; }
         }
 
-        public virtual IList<Expenditure> Expenditures
+        public virtual IList<Spend> Spends
         {
-            get { return _expenditure; }
-            set { _expenditure = value; }
+            get { return _spend; }
+            set { _spend = value; }
         }
 
         public virtual IList<PlanMember> PlanMembers

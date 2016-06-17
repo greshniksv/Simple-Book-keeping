@@ -8,7 +8,7 @@ namespace SimpleBookKeeping.Database.Entities
     {
         private Plan _plan;
         IList<CostDetail> _costDetails = new List<CostDetail>();
-        IList<Expenditure> _expenditure = new List<Expenditure>();
+        IList<Spend> _spend = new List<Spend>();
 
         public virtual Guid Id
         {
@@ -27,10 +27,10 @@ namespace SimpleBookKeeping.Database.Entities
             set { _plan = value; }
         }
 
-        public virtual IList<Expenditure> Expenditures
+        public virtual IList<Spend> Spends
         {
-            get { return _expenditure; }
-            set { _expenditure = value; }
+            get { return _spend; }
+            set { _spend = value; }
         }
 
         public virtual IList<CostDetail> CostDetails

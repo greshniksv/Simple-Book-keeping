@@ -8,11 +8,11 @@
 
     <property name="Name" column="name"  type="String" />
     <property name="Deleted" column="deleted" type="Boolean" index="idx_deleted" />
-    <many-to-one name="Plan" class="PlanId" column="plan_id" cascade="all" />
+    <many-to-one name="Plan" class="Plan" column="plan_id" cascade="none" />
 
-    <bag name="Expenditures" cascade="none" lazy="true">
+    <bag name="Spends" cascade="none" lazy="true">
       <key column="cost_id" />
-      <one-to-many class="Expenditure" />
+      <one-to-many class="Spend" />
     </bag>
     
     <bag name="CostDetails" cascade="delete" lazy="true" inverse="true">

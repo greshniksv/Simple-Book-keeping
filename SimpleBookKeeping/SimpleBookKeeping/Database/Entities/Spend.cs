@@ -3,7 +3,7 @@ using System;
 
 namespace SimpleBookKeeping.Database.Entities
 {
-    public class Expenditure
+    public class Spend
     {
         private User _user;
         private Cost _cost;

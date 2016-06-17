@@ -7,7 +7,16 @@ namespace SimpleBookKeeping.Queries
 {
     public class GetPlansQuery : IRequest<IList<PlanModel>>
     {
-        [DefaultValue(false)]
-        public bool ShowDeleted { get; set; }
+        /// <summary>
+        /// If value is TRUE, return only deleted plan; If FALSE, return only not deleted; If NULL return all;
+        /// </summary>
+        [DefaultValue(null)]
+        public bool? ShowDeleted { get; set; }
+
+        /// <summary>
+        /// If value is TRUE, return only active plan; If FALSE, return only not active; If NULL return all;
+        /// </summary>
+        [DefaultValue(null)]
+        public bool? IsActive { get; set; }
     }
 }

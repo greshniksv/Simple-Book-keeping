@@ -2,7 +2,7 @@
 
 namespace SimpleBookKeeping.Models
 {
-    public class ExpenditureModel
+    public class SpendModel
     {
         public virtual Guid Id { get; set; }
 
