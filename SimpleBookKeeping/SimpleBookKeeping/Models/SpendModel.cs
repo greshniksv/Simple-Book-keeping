@@ -4,14 +4,16 @@ namespace SimpleBookKeeping.Models
 {
     public class SpendModel
     {
-        public virtual Guid Id { get; set; }
+        public Guid Id { get; set; }
 
-        public virtual Guid UserId { get; set; }
+        public Guid UserId { get; set; }
 
-        public virtual Guid CostId { get; set; }
+        public Guid CostId { get; set; }
 
-        public virtual DateTime Date { get; set; }
+        public DateTime Date { get; set; }
 
-        public virtual int Value { get; set; }
+        public int Value { get; set; }
+
+        public string Comment { get; set; }
     }
 }

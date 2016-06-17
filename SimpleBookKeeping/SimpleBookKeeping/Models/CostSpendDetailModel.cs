@@ -5,7 +5,11 @@ namespace SimpleBookKeeping.Models
 {
     public class CostSpendDetailModel
     {
-        public Guid Id { get; set; }
+        public Guid CostId { get; set; }
+
+        public string CostName { get; set; }
+
+        public Guid DetailId { get; set; }
 
         public DateTime Date { get; set; }
 

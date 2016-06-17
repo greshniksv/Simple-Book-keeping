@@ -8,6 +8,7 @@
     
     <property name="Date" column="Date" type="DateTime" index="idx_date" />
     <property name="Value" column="value"  type="Int32" />
+    <property name="Comment" column="comment"  type="String" />
 
     <many-to-one name="User" class="User" column="user_id" cascade="none" />
     <many-to-one name="Cost" class="Cost" column="cost_id" cascade="none" />

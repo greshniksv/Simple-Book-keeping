@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Web.Mvc;
 using MediatR;
 using Microsoft.Practices.Unity;
@@ -20,16 +22,14 @@ namespace SimpleBookKeeping.Controllers
         }
 
         // GET: Spend
-        public ActionResult Index(Guid costId)
+        public ActionResult Index(Guid? costId)
         {
             var userId = ((UserIndentity)HttpContext.User.Identity).Id;
+            var costSpends = _mediator.Send(new GetActiveCostSpendDetailsQuery { UserId = userId });
 
-            var costSpends = _mediator.Send(new GetActiveCostSpendDetailsQuery());
+            var group = costSpends.GroupBy(model => model.CostId);
 
-            //var spends =
-            //    _mediator.Send(new GetSpendsQuery() { CostId = costId, UserId = _userId });
-
-            return View();
+            return View(costSpends);
         }
 
 

@@ -37,5 +37,11 @@ namespace SimpleBookKeeping.Database.Entities
             get;
             set;
         }
+
+        public virtual string Comment
+        {
+            get;
+            set;
+        }
     }
 }

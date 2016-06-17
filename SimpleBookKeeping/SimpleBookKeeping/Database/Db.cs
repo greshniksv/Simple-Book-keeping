@@ -85,9 +85,10 @@ namespace SimpleBookKeeping.Database
 
             var spend = new Spend
             {
+                User = user,
                 Cost = cost,
                 Date = DateTime.Now,
-                Value = 100500
+                Value = 10
             };
             
             using (var session = Session)
