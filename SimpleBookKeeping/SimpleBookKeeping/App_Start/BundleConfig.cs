@@ -72,6 +72,10 @@ namespace SimpleBookKeeping
             bundles.Add(new StyleBundle("~/cost.css").Include(
                       "~/Content/site/cost.less"));
 
+            // Spend
+            bundles.Add(new StyleBundle("~/spend.css").Include(
+                      "~/Content/site/spend.less"));
+
             // Datepicker
             bundles.Add(new StyleBundle("~/datepicker.css").Include(
                       "~/Content/jquery.mobile.datepicker.theme.css").Include(

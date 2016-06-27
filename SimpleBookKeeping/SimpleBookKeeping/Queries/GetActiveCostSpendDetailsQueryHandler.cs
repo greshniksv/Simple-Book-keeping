@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MediatR;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
@@ -31,6 +33,11 @@ namespace SimpleBookKeeping.Queries
                 {
                     var costs = session.QueryOver<Cost>().Where(x => x.Plan.Id == activePlan.Id).List();
 
+                    if (message.CostId != Guid.Empty)
+                    {
+                        costs = costs.Where(x => x.Id == message.CostId).ToList();
+                    }
+
                     foreach (var cost in costs)
                     {
                         foreach (var costDetail in cost.CostDetails)
@@ -45,7 +52,9 @@ namespace SimpleBookKeeping.Queries
                                 Spends = new List<SpendModel>()
                             };
 
-                            var spends = session.QueryOver<Spend>().Where(x => x.Cost.Id == cost.Id).List();
+                            var spends = session.QueryOver<Spend>()
+                                .Where(x => x.Cost.Id == cost.Id && x.Date.Date == costDetail.Date.Date).List();
+
                             var spendModels = AutoMapperConfig.Mapper.Map<IList<SpendModel>>(spends);
                             ((List<SpendModel>)item.Spends).AddRange(spendModels);
 

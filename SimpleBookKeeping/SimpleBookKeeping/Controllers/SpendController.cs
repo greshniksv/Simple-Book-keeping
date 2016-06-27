@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using MediatR;
 using Microsoft.Practices.Unity;
 using SimpleBookKeeping.Authentication;
+using SimpleBookKeeping.Models;
 using SimpleBookKeeping.Queries;
 
 
@@ -17,19 +17,24 @@ namespace SimpleBookKeeping.Controllers
         /// <summary>Initializes a new instance of the <see cref="T:System.Web.Mvc.Controller" /> class.</summary>
         public SpendController()
         {
-            
+
             _mediator = MvcApp.Unity.Resolve<IMediator>();
         }
 
         // GET: Spend
-        public ActionResult Index(Guid? costId)
+        public ActionResult Index(Guid costId)
         {
             var userId = ((UserIndentity)HttpContext.User.Identity).Id;
-            var costSpends = _mediator.Send(new GetActiveCostSpendDetailsQuery { UserId = userId });
+           IList<CostSpendDetailModel> costSpend =
+                _mediator.Send(new GetActiveCostSpendDetailsQuery { UserId = userId, CostId = costId });
+            
+            return View(costSpend);
+        }
 
-            var group = costSpends.GroupBy(model => model.CostId);
+        public ActionResult Add(AddSpendModel model)
+        {
 
-            return View(costSpends);
+            return RedirectToAction("Index", new { costId = model.CostId});
         }
 
 
