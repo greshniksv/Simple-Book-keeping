@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using MediatR;
 using SimpleBookKeeping.Queries;
 using Microsoft.Practices.Unity;
 using SimpleBookKeeping.Authentication;
+using SimpleBookKeeping.Extensions;
 using SimpleBookKeeping.Models;
 
 namespace SimpleBookKeeping.Controllers
@@ -14,7 +12,7 @@ namespace SimpleBookKeeping.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-        private IMediator _mediator;
+        private readonly IMediator _mediator;
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Web.Mvc.Controller" /> class.</summary>
         public HomeController()
@@ -25,10 +23,9 @@ namespace SimpleBookKeeping.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            var userId = ((UserIndentity)HttpContext.User.Identity).Id;
+            var userId = HttpContext.UserId();
 
             ViewBag.Title = "SimpleBookKeeping";
-            IReadOnlyCollection<PlanCostsModel> planCosts = _mediator.Send(new GetActivePlanCostsQuery { UserId = userId });
 
             return View();
         }

@@ -85,6 +85,13 @@ namespace SimpleBookKeeping
                      "~/Scripts/jquery.mobile.datepicker.js").Include(
                      "~/Scripts/external/jquery-ui/datepicker.js"));
 
+            // jQMProgressBar
+            bundles.Add(new StyleBundle("~/jQMProgressBar.css").Include(
+                      "~/Content/jQMProgressBar.css"));
+
+            bundles.Add(new ScriptBundle("~/jQMProgressBar.js").Include(
+                "~/Scripts/jQMProgressBar.js"));
+
         }
 
     }

@@ -14,17 +14,15 @@ namespace SimpleBookKeeping.Queries
         /// <returns>Response from the request</returns>
         public IReadOnlyCollection<PlanCostsModel> Handle(GetActivePlanCostsQuery message)
         {
-            List<PlanCostsModel> planCostsModels;
+            List<PlanCostsModel> planCostsModels = new List<PlanCostsModel>();
             using (var session = Db.Session)
             {
                 // Note: Find by creator and by member in plan.
+                var plansByCreator = session.QueryOver<Plan>().Where(x => x.User.Id == message.UserId).List();
+                var plansByMember = session.QueryOver<PlanMember>().Where(x => x.User.Id == message.UserId).Select(x=>x.Plan).List<Plan>();
 
-                var plans = session.QueryOver<Plan>().Where(x => 
-                x.User.Id == message.UserId || 
-                x.PlanMembers.Any(p=>p.User.Id == message.UserId) 
-                ).List();
-
-                planCostsModels = AutoMapperConfig.Mapper.Map<List<PlanCostsModel>>(plans);
+                planCostsModels.AddRange(AutoMapperConfig.Mapper.Map<List<PlanCostsModel>>(plansByCreator));
+                planCostsModels.AddRange(AutoMapperConfig.Mapper.Map<List<PlanCostsModel>>(plansByMember));
             }
             return planCostsModels;
         }
