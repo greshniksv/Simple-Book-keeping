@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleBookKeeping.Models
 {
@@ -8,10 +9,9 @@ namespace SimpleBookKeeping.Models
 
         public Guid UserId { get; set; }
 
-        public Guid CostId { get; set; }
+        public CostDetailModel CostDetail { get; set; }
 
-        public DateTime Date { get; set; }
-
+        [Range(0, 50000, ErrorMessage = "Расход может быть от 0 до 50 000")]
         public int Value { get; set; }
 
         public string Comment { get; set; }

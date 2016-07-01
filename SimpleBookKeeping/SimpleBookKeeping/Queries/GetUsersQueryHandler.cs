@@ -16,8 +16,12 @@ namespace SimpleBookKeeping.Queries
             IList<UserModel> userModels;
             using (var session = Db.Session)
             {
-                var users = session.QueryOver<User>().List();
-                userModels = AutoMapperConfig.Mapper.Map<IList<UserModel>>(users);
+                var users = session.QueryOver<User>();
+                if (message.UsersId != null)
+                {
+                    users.Where(x => message.UsersId.Contains(x.Id));
+                }
+                userModels = AutoMapperConfig.Mapper.Map<IList<UserModel>>(users.List());
             }
 
             return userModels;

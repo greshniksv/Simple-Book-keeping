@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using MediatR;
 using SimpleBookKeeping.Queries;
 using Microsoft.Practices.Unity;
+using SimpleBookKeeping.Authentication;
+using SimpleBookKeeping.Models;
 
 namespace SimpleBookKeeping.Controllers
 {
@@ -23,8 +25,11 @@ namespace SimpleBookKeeping.Controllers
         // GET: Home
         public ActionResult Index()
         {
+            var userId = ((UserIndentity)HttpContext.User.Identity).Id;
+
             ViewBag.Title = "SimpleBookKeeping";
-           
+            IReadOnlyCollection<PlanCostsModel> planCosts = _mediator.Send(new GetActivePlanCostsQuery { UserId = userId });
+
             return View();
         }
     }

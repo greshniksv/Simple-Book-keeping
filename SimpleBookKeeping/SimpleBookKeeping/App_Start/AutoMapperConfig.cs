@@ -17,12 +17,13 @@ namespace SimpleBookKeeping
             Configuration = new MapperConfiguration(cfg => {
 
                 cfg.CreateMap<SpendModel, Spend>()
-                    .ForMember(dst => dst.User, opt => opt.Ignore())
-                    .ForMember(dst => dst.Cost, opt => opt.Ignore());
+                    .ForMember(dst => dst.User, opt => opt.Ignore());
 
                 cfg.CreateMap<Spend, SpendModel>()
-                    .ForMember(dst => dst.UserId, opt => opt.MapFrom(src => src.User.Id))
-                    .ForMember(dst => dst.CostId, opt => opt.MapFrom(src => src.Cost.Id));
+                    .ForMember(dst => dst.UserId, opt => opt.MapFrom(src => src.User.Id));
+
+                cfg.CreateMap<Plan, PlanCostsModel>()
+                    .ForMember(dst => dst.UserMembers, opt => opt.MapFrom(src => src.PlanMembers.Select(x => x.User.Id)));
 
                 cfg.CreateMap<Plan, PlanModel>()
                     .ForMember(dst => dst.UserMembers, opt => opt.MapFrom(src => src.PlanMembers.Select(x=>x.User.Id)));

@@ -5,13 +5,13 @@
     <id name="Id" column="id">
       <generator class="guid" />
     </id>
-    
-    <property name="Date" column="Date" type="DateTime" index="idx_date" />
+
+    <property name="OrderId" column="order_id"  type="Int32" />
     <property name="Value" column="value"  type="Int32" />
     <property name="Comment" column="comment"  type="String" />
 
     <many-to-one name="User" class="User" column="user_id" cascade="none" />
-    <many-to-one name="Cost" class="Cost" column="cost_id" cascade="none" />
+    <many-to-one name="CostDetail" class="CostDetail" column="cost_detail_id" cascade="none" />
 
   </class>
 

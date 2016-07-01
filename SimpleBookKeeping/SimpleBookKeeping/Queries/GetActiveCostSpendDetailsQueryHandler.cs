@@ -51,11 +51,8 @@ namespace SimpleBookKeeping.Queries
                                 Value = costDetail.Value,
                                 Spends = new List<SpendModel>()
                             };
-
-                            var spends = session.QueryOver<Spend>()
-                                .Where(x => x.Cost.Id == cost.Id && x.Date.Date == costDetail.Date.Date).List();
-
-                            var spendModels = AutoMapperConfig.Mapper.Map<IList<SpendModel>>(spends);
+                            
+                            var spendModels = AutoMapperConfig.Mapper.Map<IList<SpendModel>>(costDetail.Spends.OrderBy(x=>x.OrderId));
                             ((List<SpendModel>)item.Spends).AddRange(spendModels);
 
                             costSpendDetailModels.Add(item);

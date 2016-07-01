@@ -6,7 +6,7 @@ namespace SimpleBookKeeping.Database.Entities
     public class Spend
     {
         private User _user;
-        private Cost _cost;
+        private CostDetail _costDetail;
 
         public virtual Guid Id
         {
@@ -20,13 +20,13 @@ namespace SimpleBookKeeping.Database.Entities
             set { _user = value; }
         }
 
-        public virtual Cost Cost
+        public virtual CostDetail CostDetail
         {
-            get { return _cost; }
-            set { _cost = value; }
+            get { return _costDetail; }
+            set { _costDetail = value; }
         }
 
-        public virtual DateTime Date
+        public virtual int OrderId
         {
             get;
             set;

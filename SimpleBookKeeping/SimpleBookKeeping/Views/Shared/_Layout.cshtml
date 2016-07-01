@@ -1,6 +1,9 @@
 ﻿@using System.Web.Optimization
 @using SimpleBookKeeping.Authentication
-
+@using SimpleBookKeeping.Helpers
+@{
+    var planCosts = MenuHelper.GetPlanCosts();
+}
 <!DOCTYPE html>
 
 <html>
@@ -36,12 +39,16 @@
             <li><a href="#" onclick="redirect('/Home/Index')">Главная</a></li>
 
             <li data-role="list-divider"> # Расходы </li>
-            <li data-role="list-divider"> ## Название плана 1 </li>
-            <li><a href="audi.html">Няня Аня</a></li>
 
-            <li data-role="list-divider"> # Активные планы </li>
-            <li><a data-icon="bullets" href="audi.html">Название плана 1</a></li>
-            <li><a href="audi.html">Название плана 2</a></li>
+            @foreach (var planCostsModel in planCosts)
+            {
+                <li data-role="list-divider"> ## @planCostsModel.Name </li>
+
+                foreach (var cost in planCostsModel.Costs)
+                {
+                    <li><a href="#" onclick="redirect('/Spend/Index?costId=@cost.Id')"> @cost.Name </a></li>
+                }
+            }
 
             <li data-role="list-divider"> --- </li>
             <li><a href="#" onclick="redirect('/Settings/Index')">Настройки</a></li>
@@ -64,3 +71,4 @@
 @Scripts.Render("~/layout.js")
 @Scripts.Render("~/animate.js")
 @Scripts.Render("~/msgBox.js")
+

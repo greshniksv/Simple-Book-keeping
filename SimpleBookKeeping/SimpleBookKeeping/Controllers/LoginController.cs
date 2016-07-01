@@ -1,10 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using SimpleBookKeeping.Authentication;
 using SimpleBookKeeping.Models;
-using SimpleBookKeeping.Unility.Interfaces;
 
 namespace SimpleBookKeeping.Controllers
 {

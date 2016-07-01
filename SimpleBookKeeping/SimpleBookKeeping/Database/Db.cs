@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Mapping;
@@ -48,6 +49,8 @@ namespace SimpleBookKeeping.Database
 
         private static void InsertTestData()
         {
+            Random random = new Random();
+
             var user = new User
             {
                 Name = "admin",
@@ -67,7 +70,7 @@ namespace SimpleBookKeeping.Database
             {
                 Name = "Test plan",
                 Start = DateTime.Now.AddDays(-10),
-                End = DateTime.Now,
+                End = DateTime.Now.AddDays(10),
                 Balance = 1000,
                 Deleted = false,
                 User = user
@@ -82,14 +85,6 @@ namespace SimpleBookKeeping.Database
             
             costPlan.Costs.Add(cost);
             user.Plans.Add(costPlan);
-
-            var spend = new Spend
-            {
-                User = user,
-                Cost = cost,
-                Date = DateTime.Now,
-                Value = 10
-            };
             
             using (var session = Session)
             using (ITransaction transaction = session.BeginTransaction())
@@ -98,7 +93,6 @@ namespace SimpleBookKeeping.Database
                 session.Save(usertest);
                 session.Save(costPlan);
                 session.Save(cost);
-                session.Save(spend);
 
                 var costDetails = new List<CostDetail>();
                 for (int i = 10; i > 0; i--)
@@ -111,12 +105,20 @@ namespace SimpleBookKeeping.Database
                         Cost = cost
                     };
                     session.Save(item);
+
+                    var spend = new Spend
+                    {
+                        User = user,
+                        CostDetail = item,
+                        Value = random.Next(1,500)
+                    };
+                    session.Save(spend);
+
                     costDetails.Add(item);
                 }
-                
+
                 transaction.Commit();
             }
-
         }
     }
 }

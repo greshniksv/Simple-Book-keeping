@@ -23,7 +23,7 @@ namespace SimpleBookKeeping.Queries
             using (var session = Db.Session)
             {
                 var items = session.QueryOver<Spend>()
-                    .Where(x => x.User.Id == message.UserId && x.Cost.Id == message.CostId).List();
+                    .Where(x => x.User.Id == message.UserId && x.CostDetail.Cost.Id == message.CostId).List();
 
                 models = AutoMapperConfig.Mapper.Map<IList<SpendModel>>(items);
             }

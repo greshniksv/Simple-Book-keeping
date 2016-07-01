@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using MediatR;
 using Microsoft.Practices.Unity;
 using SimpleBookKeeping.Authentication;
+using SimpleBookKeeping.Commands;
 using SimpleBookKeeping.Models;
 using SimpleBookKeeping.Queries;
 
@@ -25,18 +27,30 @@ namespace SimpleBookKeeping.Controllers
         public ActionResult Index(Guid costId)
         {
             var userId = ((UserIndentity)HttpContext.User.Identity).Id;
-           IList<CostSpendDetailModel> costSpend =
-                _mediator.Send(new GetActiveCostSpendDetailsQuery { UserId = userId, CostId = costId });
-            
+            IList<CostSpendDetailModel> costSpend =
+                 _mediator.Send(new GetActiveCostSpendDetailsQuery { UserId = userId, CostId = costId });
+
             return View(costSpend);
         }
 
         public ActionResult Add(AddSpendModel model)
         {
+            var userId = ((UserIndentity)HttpContext.User.Identity).Id;
 
-            return RedirectToAction("Index", new { costId = model.CostId});
+            if (ModelState.IsValid)
+            {
+                _mediator.Send(new SaveSpendCommand {SpendModels = new[] {model}, UserId = userId });
+            }
+
+            return RedirectToAction("Index", new { costId = model.CostId });
         }
+        public ActionResult Update(AddSpendModel[] addSpendModels)
+        {
+            var userId = ((UserIndentity)HttpContext.User.Identity).Id;
 
+            _mediator.Send(new SaveSpendCommand { SpendModels = addSpendModels, UserId = userId });
 
+            return RedirectToAction("Index", new { costId = addSpendModels.First().CostId });
+        }
     }
 }

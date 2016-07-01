@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SimpleBookKeeping.DatabaseConfig.Entities.Interfaces;
 
 namespace SimpleBookKeeping.Database.Entities
@@ -6,6 +7,7 @@ namespace SimpleBookKeeping.Database.Entities
     public class CostDetail: IDeleteMarker
     {
         private Cost _cost;
+        private IList<Spend> _spend = new List<Spend>();
 
         public virtual Guid Id
         {
@@ -23,6 +25,12 @@ namespace SimpleBookKeeping.Database.Entities
         {
             get;
             set;
+        }
+
+        public virtual IList<Spend> Spends
+        {
+            get { return _spend; }
+            set { _spend = value; }
         }
 
         public virtual Cost Cost

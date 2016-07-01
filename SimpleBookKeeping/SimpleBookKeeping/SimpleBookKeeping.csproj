@@ -388,9 +388,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Mappings\Plans.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Mappings\Costs.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Mappings\CostDetails.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -401,6 +403,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Mappings\Spend.hbm.xml">
       <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="Global.asax" />
     <Content Include="hibernate.cfg.xml">
@@ -459,6 +462,8 @@
     <Compile Include="Commands\CreateCostCommandHandler.cs" />
     <Compile Include="Commands\RemovePlanCommand.cs" />
     <Compile Include="Commands\RemovePlanCommandHandler.cs" />
+    <Compile Include="Commands\SaveSpendCommand.cs" />
+    <Compile Include="Commands\SaveSpendCommandHandler.cs" />
     <Compile Include="Controllers\CostController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
     <Compile Include="Controllers\SpendController.cs" />
@@ -482,10 +487,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Menu.cs" />
     <Compile Include="Models\AddSpendModel.cs" />
     <Compile Include="Models\CostDetailModel.cs" />
     <Compile Include="Models\CostModel.cs" />
     <Compile Include="Models\CostSpendDetailModel.cs" />
+    <Compile Include="Models\PlanCostsModel.cs" />
     <Compile Include="Models\SpendModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PlanMemberModel.cs" />
@@ -495,6 +502,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\GetActiveCostSpendDetailsQuery.cs" />
     <Compile Include="Queries\GetActiveCostSpendDetailsQueryHandler.cs" />
+    <Compile Include="Queries\GetActivePlanCostsQuery.cs" />
+    <Compile Include="Queries\GetActivePlanCostsQueryHandler.cs" />
     <Compile Include="Queries\GetSpendsQuery.cs" />
     <Compile Include="Queries\GetSpendsQueryHandler.cs" />
     <Compile Include="Queries\GetCostQuery.cs" />

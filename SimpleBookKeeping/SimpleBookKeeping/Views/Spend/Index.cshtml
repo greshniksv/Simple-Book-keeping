@@ -3,7 +3,7 @@
 @model IList<CostSpendDetailModel>
 @{
     IList<CostSpendDetailModel> costSpends = Model;
-    ViewBag.Title = "Траты";
+    ViewBag.Title = "Траты: "+ costSpends.First().CostName;
     Layout = "~/Views/Shared/_Layout.cshtml";
     bool fisrt = true;
     var currentDate = DateTime.Now.Date;
@@ -11,54 +11,57 @@
 
 @Styles.Render("~/spend.css")
 
-<h3> @costSpends.First().CostName </h3>
-
 <div class="spend-row" data-role="collapsible-set">
 
-    @foreach (var spendModel in costSpends.OrderByDescending(x=>x.Date))
+    @foreach (CostSpendDetailModel costSpendDetailModel in costSpends.OrderByDescending(x => x.Date))
     {
-        bool editable = spendModel.Date > currentDate.Date.AddDays(-2) && spendModel.Date <= currentDate.Date;
+        string formId = "update-spend-" + costSpendDetailModel.CostId.ToString().Replace("-", "");
+        int spendIterator = 0;
+        bool editable = costSpendDetailModel.Date > currentDate.Date.AddDays(-2) && costSpendDetailModel.Date <= currentDate.Date;
 
-        <div class='@(editable ? "editable" : string.Empty) spend-row-detail'
-             data-collapsed-icon="carat-r" data-expanded-icon="carat-d" data-role='collapsible' @(fisrt ? Html.Raw("data-collapsed='false'") : Html.Raw(""))>
+        <form id="@formId" action="/Spend/Update" method="POST" data-ajax="false">
             
-            <h3>
-                @spendModel.Date.ToString("dd.MM.yyyy") <span class="ui-li-count ui-body-inherit">@spendModel.Spends.Sum(x => x.Value)</span>
-            </h3>
-            <p>
-                <ul id="@spendModel.DetailId" class="@(editable ? "editable" : string.Empty) custom-list" data-role="listview" data-inset="true">
-                    @foreach (var spend in spendModel.Spends)
-                    {
+            <div class='@(editable ? "editable" : string.Empty) spend-row-detail'
+                 data-collapsed-icon="carat-r" data-expanded-icon="carat-d" data-role='collapsible' @(fisrt ? Html.Raw("data-collapsed='false'") : Html.Raw(""))>
 
+                <h3>
+                    @costSpendDetailModel.Date.ToString("dd.MM.yyyy") <span class="ui-li-count ui-body-inherit">@costSpendDetailModel.Spends.Sum(x => x.Value)</span>
+                </h3>
+
+                <ul id="@costSpendDetailModel.DetailId" class="@(editable ? "editable" : string.Empty) custom-list" data-role="listview" data-inset="true">
+                    @foreach (var spend in costSpendDetailModel.Spends)
+                    {
                         <li>
+                           
                             @(editable ?
-                                  Html.Raw($"<input id='{spend.Id}' name='comment' class='comment' type='text' value='{spend.Comment}'/>") :
+                                  Html.Raw($"<input name='addSpendModels[{spendIterator}].Comment' class='comment' type='text' value='{spend.Comment}'/>") :
                                   Html.Raw(spend.Comment ?? " "))
 
+                            <input type="hidden" name="addSpendModels[@spendIterator].CostId" value="@costSpends.First().CostId" />
+                            <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
+                            <input type="hidden" name="addSpendModels[@spendIterator].CostDetailId" value="@costSpendDetailModel.DetailId" />
+
                             @(editable ?
-                                  Html.Raw($"<input id='{spend.Id}' name='value' class='sum' type='text' value='{spend.Value}'/>") :
+                                  Html.Raw($"<input name='addSpendModels[{spendIterator}].Value' class='sum' type='text' value='{spend.Value}'/>") :
                                   Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
                         </li>
 
+                        spendIterator++;
                     }
 
-                    <li>
-                        <input class='comment' type='text' value='' placeholder="Коментарий"/>
-                        <input class='sum' type='text' value='' placeholder="Сумма"/>
-                    </li>
-
                     <li id="add-button" data-icon="plus" class="add-spend">
-                        <div onclick="Add('@spendModel.DetailId')" class="ui-btn ui-input-btn ui-shadow"> Добавить </div>
+                        <div onclick="Add('@costSpendDetailModel.DetailId')" class="ui-btn ui-input-btn ui-shadow"> Добавить </div>
                     </li>
 
                 </ul>
 
                 @if (editable)
                 {
-                    <a data-role="button" class="margin10" data-icon="check" onclick="save('')">Сохранить</a>
+                    <a data-role="button" class="margin10" data-icon="check" onclick="Update('@formId')">Сохранить</a>
                 }
-            </p>
-        </div>
+
+            </div>
+        </form>
 
         fisrt = false;
     }
@@ -92,6 +95,13 @@
 <script type="text/javascript">
     var selectedCostDetail;
 
+    function Update(id) {
+        showLoading();
+        setTimeout(function () {
+            $("#" + id).submit();
+        }, 500);
+    }
+
     function Add(id) {
         $("#detailId").val(id);
         $("#popupDialog").popup();
@@ -102,7 +112,11 @@
     }
 
     function Submit() {
-        $("#add-spend").submit();
+        showLoading();
+        $("#popupDialog").fadeOut(300);
+        setTimeout(function() {
+            $("#add-spend").submit();
+        }, 500);
     }
 
 </script>
