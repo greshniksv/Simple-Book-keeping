@@ -58,20 +58,60 @@ namespace SimpleBookKeeping.Database
                 Password = "123456",
             };
 
-            var usertest = new User
+            var lenkaUser = new User
             {
-                Name = "test",
-                Login = "test",
+                Name = "Ленка",
+                Login = "lenka",
                 Password = "123456",
             };
 
-
-            var costPlan = new Plan
+            var sergUser = new User
             {
-                Name = "Test plan",
+                Name = "Серж",
+                Login = "serg",
+                Password = "123456",
+            };
+
+            var lenkaPlan = new Plan
+            {
+                Name = "Ленка план",
                 Start = DateTime.Now.AddDays(-10),
                 End = DateTime.Now.AddDays(10),
-                Balance = 1000,
+                Balance = 2000,
+                Deleted = false,
+                User = sergUser
+            };
+
+            var lenkaCost = new Cost
+            {
+                Name = "Косметика",
+                Deleted = false,
+                Plan = lenkaPlan
+            };
+
+            var sergPlan = new Plan
+            {
+                Name = "Сержо",
+                Start = DateTime.Now.AddDays(-10),
+                End = DateTime.Now.AddDays(10),
+                Balance = 3000,
+                Deleted = false,
+                User = sergUser
+            };
+
+            var sergCost = new Cost
+            {
+                Name = "Игрухи",
+                Deleted = false,
+                Plan = sergPlan
+            };
+            
+            var plan = new Plan
+            {
+                Name = "Общий",
+                Start = DateTime.Now.AddDays(-10),
+                End = DateTime.Now.AddDays(10),
+                Balance = 4000,
                 Deleted = false,
                 User = user
             };
@@ -80,19 +120,72 @@ namespace SimpleBookKeeping.Database
             {
                 Name = "Nanny",
                 Deleted = false,
-                Plan = costPlan
+                Plan = plan
             };
             
-            costPlan.Costs.Add(cost);
-            user.Plans.Add(costPlan);
-            
+            plan.Costs.Add(cost);
+            user.Plans.Add(plan);
+
+            sergPlan.Costs.Add(sergCost);
+            sergUser.Plans.Add(sergPlan);
+
+            lenkaPlan.Costs.Add(lenkaCost);
+            lenkaUser.Plans.Add(lenkaPlan);
+
+            PlanMember planMember1 = new PlanMember
+            {
+                Plan = plan,
+                User = sergUser
+            };
+
+            PlanMember planMember2 = new PlanMember
+            {
+                Plan = plan,
+                User = lenkaUser
+            };
+
             using (var session = Session)
             using (ITransaction transaction = session.BeginTransaction())
             {
                 session.Save(user);
-                session.Save(usertest);
-                session.Save(costPlan);
+                session.Save(sergUser);
+                session.Save(lenkaUser);
+
+                session.Save(sergPlan);
+                session.Save(sergCost);
+
+                session.Save(lenkaPlan);
+                session.Save(lenkaCost);
+                
+                session.Save(plan);
                 session.Save(cost);
+
+                session.Save(planMember1);
+                session.Save(planMember2);
+
+                var sergCostDetails = new List<CostDetail>();
+                for (int i = 10; i > 0; i--)
+                {
+                    var item = new CostDetail
+                    {
+                        Deleted = false,
+                        Date = DateTime.Now.AddDays(-i),
+                        Value = 300,
+                        Cost = cost
+                    };
+                    session.Save(item);
+
+                    var spend = new Spend
+                    {
+                        User = sergUser,
+                        CostDetail = item,
+                        Value = random.Next(1, 500)
+                    };
+                    session.Save(spend);
+
+                    sergCostDetails.Add(item);
+                }
+
 
                 var costDetails = new List<CostDetail>();
                 for (int i = 10; i > 0; i--)

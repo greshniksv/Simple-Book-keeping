@@ -45,3 +45,7 @@ function redirect(url) {
         window.location = url;
     }, 500);
 }
+
+function logOut() {
+    window.location.href = "/Login/LogOut";
+}

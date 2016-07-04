@@ -3,7 +3,7 @@
 @model IList<CostSpendDetailModel>
 @{
     IList<CostSpendDetailModel> costSpends = Model;
-    ViewBag.Title = "Траты: "+ costSpends.First().CostName;
+    ViewBag.Title = "Траты: "+ costSpends.FirstOrDefault()?.CostName;
     Layout = "~/Views/Shared/_Layout.cshtml";
     bool fisrt = true;
     var currentDate = DateTime.Now.Date;
@@ -31,26 +31,45 @@
                 <ul id="@costSpendDetailModel.DetailId" class="@(editable ? "editable" : string.Empty) custom-list" data-role="listview" data-inset="true">
                     @foreach (var spend in costSpendDetailModel.Spends)
                     {
-                        <li>
-                           
-                            @(editable ?
+                        if (spend.UserId == ViewBag.UserId)
+                        {
+                            <li>
+
+                                @(editable ?
                                   Html.Raw($"<input name='addSpendModels[{spendIterator}].Comment' class='comment' type='text' value='{spend.Comment}'/>") :
                                   Html.Raw(spend.Comment ?? " "))
 
-                            <input type="hidden" name="addSpendModels[@spendIterator].CostId" value="@costSpends.First().CostId" />
-                            <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
-                            <input type="hidden" name="addSpendModels[@spendIterator].CostDetailId" value="@costSpendDetailModel.DetailId" />
+                                <input type="hidden" name="addSpendModels[@spendIterator].CostId" value="@costSpends.First().CostId" />
+                                <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
+                                <input type="hidden" name="addSpendModels[@spendIterator].CostDetailId" value="@costSpendDetailModel.DetailId" />
 
-                            @(editable ?
+                                @(editable ?
                                   Html.Raw($"<input name='addSpendModels[{spendIterator}].Value' class='sum' type='text' value='{spend.Value}'/>") :
                                   Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
-                        </li>
+                            </li>
 
-                        spendIterator++;
+                            spendIterator++;
+                        }
+                        else
+                        {
+                            <li>
+                                @(editable ?
+                                  Html.Raw($"<input class='input-readonly comment' type='text' value='{spend.Comment}'/>") :
+                                  Html.Raw(spend.Comment ?? " "))
+
+                                @(editable ?
+                                  Html.Raw($"<input class='input-readonly sum' type='text' value='{spend.Value}'/>") :
+                                  Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
+                            </li>
+                        }
+
                     }
 
                     <li id="add-button" data-icon="plus" class="add-spend">
-                        <div onclick="Add('@costSpendDetailModel.DetailId')" class="ui-btn ui-input-btn ui-shadow"> Добавить </div>
+                        <div class="spend-sum">
+                            Сумма: @costSpendDetailModel.Spends.Sum(x=>x.Value)
+                        </div>
+                        <div onclick="Add('@costSpendDetailModel.DetailId')" class="spend-add ui-btn ui-input-btn ui-shadow"> Добавить </div>
                     </li>
 
                 </ul>
@@ -78,7 +97,7 @@
         <div role="main" class="ui-corner-bottom ui-content">
             <h3 class="ui-title">Добавить траты</h3>
 
-            <input type="hidden" name="CostId" value="@costSpends.First().CostId" />
+            <input type="hidden" name="CostId" value="@costSpends.FirstOrDefault()?.CostId" />
             <input id="detailId" type="hidden" name="CostDetailId" value="" />
             <input class='comment' name="Comment" type='text' value='' placeholder="Коментарий" />
             <input class='sum' name="Value" type='text' value='' placeholder="Сумма" />
@@ -94,6 +113,10 @@
 
 <script type="text/javascript">
     var selectedCostDetail;
+
+    $(document).ready(function () {
+        $('.input-readonly').textinput('disable');
+    });
 
     function Update(id) {
         showLoading();

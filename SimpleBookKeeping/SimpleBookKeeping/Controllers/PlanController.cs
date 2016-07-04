@@ -8,6 +8,7 @@ using SimpleBookKeeping.Attributes;
 using SimpleBookKeeping.Authentication;
 using SimpleBookKeeping.Commands;
 using SimpleBookKeeping.Database.Entities;
+using SimpleBookKeeping.Extensions;
 using SimpleBookKeeping.Models;
 using SimpleBookKeeping.Queries;
 
@@ -27,7 +28,7 @@ namespace SimpleBookKeeping.Controllers
         // GET: Plan
         public ActionResult Index()
         {
-            var plans = _mediator.Send(new GetPlansQuery());
+            var plans = _mediator.Send(new GetPlansQuery { UserId = HttpContext.UserId() });
             return View(plans);
         }
 
@@ -64,7 +65,7 @@ namespace SimpleBookKeeping.Controllers
         public ActionResult Remove(Guid id)
         {
             _mediator.Send(new RemovePlanCommand { PlanId = id });
-            
+
             return RedirectToAction("Index");
         }
 
@@ -78,7 +79,7 @@ namespace SimpleBookKeeping.Controllers
             PlanModel oldPlan = null;
             if (model.Id != Guid.Empty)
             {
-                oldPlan = _mediator.Send(new GetPlanQuery {PlanId = model.Id});
+                oldPlan = _mediator.Send(new GetPlanQuery { PlanId = model.Id });
             }
 
             if (model.Start >= model.End)

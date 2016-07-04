@@ -40,5 +40,15 @@ namespace SimpleBookKeeping.Controllers
             return View("index", model);
         }
 
+        [AllowAnonymous]
+        public ActionResult LogOut()
+        {
+            var auth = MvcApp.Unity.Resolve<IAuthentication>();
+            auth.HttpContext = System.Web.HttpContext.Current;
+            auth.LogOut();
+
+            return RedirectToAction("Index", "Login");
+        }
+
     }
 }

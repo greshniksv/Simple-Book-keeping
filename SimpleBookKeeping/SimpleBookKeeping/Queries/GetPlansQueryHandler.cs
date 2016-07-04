@@ -12,6 +12,11 @@ namespace SimpleBookKeeping.Queries
     {
         public IList<PlanModel> Handle(GetPlansQuery message)
         {
+            if (message.UserId == Guid.Empty)
+            {
+                throw new Exception("GetPlansQueryHandler. UserId can't be empty.");
+            }
+
             IList<PlanModel> planModels;
             using (var session = Db.Session)
             {

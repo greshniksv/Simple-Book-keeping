@@ -11,6 +11,7 @@ namespace SimpleBookKeeping.Queries
     public class GetActiveCostSpendDetailsQueryHandler : IRequestHandler<GetActiveCostSpendDetailsQuery, IList<CostSpendDetailModel>>
     {
         private readonly IMediator _mediator;
+        private Dictionary<Guid, User> _userCache;
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
         public GetActiveCostSpendDetailsQueryHandler(IMediator mediator)
@@ -25,10 +26,12 @@ namespace SimpleBookKeeping.Queries
         {
             IList<CostSpendDetailModel> costSpendDetailModels = new List<CostSpendDetailModel>();
 
-            var activePlans = _mediator.Send(new GetPlansQuery { IsActive = true });
-            
+            var activePlans = _mediator.Send(new GetPlansQuery { IsActive = true, UserId = message.UserId });
+
             using (var session = Db.Session)
             {
+                _userCache = session.QueryOver<User>().List().ToDictionary(x => x.Id, x => x);
+
                 foreach (var activePlan in activePlans)
                 {
                     var costs = session.QueryOver<Cost>().Where(x => x.Plan.Id == activePlan.Id).List();
@@ -51,8 +54,18 @@ namespace SimpleBookKeeping.Queries
                                 Value = costDetail.Value,
                                 Spends = new List<SpendModel>()
                             };
-                            
-                            var spendModels = AutoMapperConfig.Mapper.Map<IList<SpendModel>>(costDetail.Spends.OrderBy(x=>x.OrderId));
+
+                            var spendModels = AutoMapperConfig.Mapper.Map<IList<SpendModel>>(costDetail.Spends.OrderBy(x => x.OrderId));
+
+                            // Replace other user comment
+                            foreach (var spendModel in spendModels)
+                            {
+                                if (spendModel.UserId != message.UserId)
+                                {
+                                    spendModel.Comment = GetUser(spendModel.UserId).Name;
+                                }
+                            }
+
                             ((List<SpendModel>)item.Spends).AddRange(spendModels);
 
                             costSpendDetailModels.Add(item);
@@ -62,6 +75,16 @@ namespace SimpleBookKeeping.Queries
             }
 
             return costSpendDetailModels;
+        }
+
+        private User GetUser(Guid userId)
+        {
+            User user;
+            if (!_userCache.TryGetValue(userId, out user))
+            {
+                throw new Exception("User not found!");
+            }
+            return user;
         }
     }
 }
