@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MediatR;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
@@ -14,8 +15,10 @@ namespace SimpleBookKeeping.Queries
             IList<PlanModel> planModels;
             using (var session = Db.Session)
             {
-                IList<Plan> plans;
+                List<Plan> plans = new List<Plan>();
                 var planQuery = session.QueryOver<Plan>();
+
+                planQuery = planQuery.Where(x => x.User.Id == message.UserId);
 
                 if (message.ShowDeleted != null)
                 {
@@ -28,8 +31,26 @@ namespace SimpleBookKeeping.Queries
                     planQuery = planQuery.Where(x => x.Start <= now && x.End >= now);
                 }
 
-                plans = planQuery.List();
-                planModels = AutoMapperConfig.Mapper.Map<IList<PlanModel>>(plans);
+                plans.AddRange(planQuery.List());
+
+                List<Plan> planByMember = 
+                    session.QueryOver<PlanMember>().Where(x => x.User.Id == message.UserId).Select(x => x.Plan).List<Plan>().ToList();
+
+                if (message.ShowDeleted != null)
+                {
+
+                    planByMember.RemoveAll(x => x.Deleted != message.ShowDeleted);
+                }
+
+                if (message.IsActive != null)
+                {
+                    var now = DateTime.Now;
+                    planByMember.RemoveAll(x => !(x.Start <= now && x.End >= now));
+                }
+
+                plans.AddRange(planByMember);
+
+                planModels = AutoMapperConfig.Mapper.Map<IList<PlanModel>>(plans.Distinct());
             }
 
             return planModels;

@@ -496,7 +496,9 @@
     <Compile Include="Models\CostDetailModel.cs" />
     <Compile Include="Models\CostModel.cs" />
     <Compile Include="Models\CostSpendDetailModel.cs" />
+    <Compile Include="Models\CostStatusModel.cs" />
     <Compile Include="Models\PlanCostsModel.cs" />
+    <Compile Include="Models\PlanStatusModel.cs" />
     <Compile Include="Models\SpendModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PlanMemberModel.cs" />
@@ -508,6 +510,8 @@
     <Compile Include="Queries\GetActiveCostSpendDetailsQueryHandler.cs" />
     <Compile Include="Queries\GetActivePlanCostsQuery.cs" />
     <Compile Include="Queries\GetActivePlanCostsQueryHandler.cs" />
+    <Compile Include="Queries\GetPlanStatusQuery.cs" />
+    <Compile Include="Queries\GetPlanStatusQueryHandler.cs" />
     <Compile Include="Queries\GetSpendsQuery.cs" />
     <Compile Include="Queries\GetSpendsQueryHandler.cs" />
     <Compile Include="Queries\GetCostQuery.cs" />

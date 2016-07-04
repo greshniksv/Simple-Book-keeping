@@ -27,7 +27,15 @@ namespace SimpleBookKeeping.Controllers
 
             ViewBag.Title = "SimpleBookKeeping";
 
-            return View();
+            List<PlanStatusModel> planStatusModels = new List<PlanStatusModel>();
+            var activePlans = _mediator.Send(new GetPlansQuery { IsActive = true, UserId = userId });
+            foreach (var activePlan in activePlans)
+            {
+                var palnStatus = _mediator.Send(new GetPlanStatusQuery { PlanId = activePlan.Id });
+                planStatusModels.Add(palnStatus);
+            }
+
+            return View(planStatusModels);
         }
     }
 }

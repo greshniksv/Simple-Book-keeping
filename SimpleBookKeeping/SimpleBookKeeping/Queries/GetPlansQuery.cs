@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using MediatR;
 using SimpleBookKeeping.Models;
@@ -18,5 +19,7 @@ namespace SimpleBookKeeping.Queries
         /// </summary>
         [DefaultValue(null)]
         public bool? IsActive { get; set; }
+
+        public Guid UserId { get; set; }
     }
 }

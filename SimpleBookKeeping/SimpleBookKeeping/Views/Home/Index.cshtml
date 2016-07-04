@@ -1,21 +1,46 @@
 ﻿@using System.Web.Optimization
+@model IReadOnlyCollection<SimpleBookKeeping.Models.PlanStatusModel>
 @{
     ViewBag.Title = "Главная";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @Styles.Render("~/home.css")
-@Styles.Render("~/jQMProgressBar.css")
-@Scripts.Render("~/jQMProgressBar.js")
+@*@Styles.Render("~/jQMProgressBar.css")
+@Scripts.Render("~/jQMProgressBar.js")*@
 
-<div class="info-board ui-shadow">
-    @*<div id="progressbar"></div>*@
+    @foreach (var planStatusModel in Model)
+    {
+        <div class="info-board ui-shadow">
+            @*<div id="progressbar"></div>*@
 
-    <div data-role="content">
+            <div class="name">@planStatusModel.Name</div>
+            <div data-role="content" style="padding: 0 !important;"> </div>
+            <div class="money-status-green"> @planStatusModel.Balance грн </div>
+            <div class="money-rest"> Остаток: @planStatusModel.Rest грн </div>
 
-    </div>
+            <div class="cost-head">
 
-</div>
+                <ul data-role="listview" data-inset="true">
+
+                    @foreach (var costStatusModel in planStatusModel.CostStatusModels)
+                    {
+                        <li class="ui-li-static ui-body-inherit ui-li-has-count ui-first-child">
+                            @costStatusModel.Name
+                            <span class="ui-li-count ui-body-inherit">
+                                @costStatusModel.Balance
+                            </span>
+                        </li>
+                    }
+
+                </ul>
+
+            </div>
+
+        </div>
+    }
+
+
 
 
 <script type="text/javascript">
