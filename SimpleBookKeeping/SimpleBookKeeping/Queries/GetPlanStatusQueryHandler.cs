@@ -27,10 +27,14 @@ namespace SimpleBookKeeping.Queries
                     throw new Exception("GetPlanStatusQuery. Plan not found.");
                 }
 
+                var passedDays = (DateTime.Now.Date - plan.Start.Date).Days;
+                var totalDays = (plan.End.Date - plan.Start.Date).Days;
+
                 planStatusModel.Id = plan.Id;
                 planStatusModel.Name = plan.Name;
-
-                foreach (var cost in plan.Costs.OrderBy(x=>x.Name))
+                planStatusModel.Progress = passedDays * 100 / totalDays;
+                
+                foreach (var cost in plan.Costs.OrderBy(x => x.Name))
                 {
                     int balance = 0;
                     // (That you can spend) - (you spend)
@@ -50,10 +54,18 @@ namespace SimpleBookKeeping.Queries
                         Balance = balance
                     });
                 }
+
+                // Balance on start minus sum of planed costs
                 planStatusModel.Rest = plan.Balance - allSpend;
+                planStatusModel.BalanceToEnd = plan.Balance - plan.Costs.Sum(x => x.CostDetails.Sum(d => d.Value));
+                if (planStatusModel.Rest < 0)
+                {
+                    // If we exceed the plan, we must take away this exceed sum.
+                    planStatusModel.BalanceToEnd += planStatusModel.Rest;
+                }
                 planStatusModel.Balance = costStatusModels.Sum(x => x.Balance);
             }
-            
+
             planStatusModel.CostStatusModels = costStatusModels;
             return planStatusModel;
         }

@@ -423,6 +423,8 @@
     <Content Include="Content\site\cost.less" />
     <Content Include="Content\site\home.less" />
     <Content Include="Content\site\spend.less" />
+    <None Include="Properties\PublishProfiles\SBK - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\SBK - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4-vsdoc.js" />
     <Content Include="Scripts\external\jquery-ui\datepicker.js" />
     <Content Include="Scripts\jQMProgressBar.js" />

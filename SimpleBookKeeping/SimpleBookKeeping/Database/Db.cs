@@ -164,14 +164,17 @@ namespace SimpleBookKeeping.Database
                 session.Save(planMember2);
 
                 var sergCostDetails = new List<CostDetail>();
-                for (int i = 10; i > 0; i--)
+                var start = cost.Plan.Start;
+                var end = cost.Plan.End;
+
+                for (DateTime i = start; i < end; i = i.AddDays(1))
                 {
                     var item = new CostDetail
                     {
                         Deleted = false,
-                        Date = DateTime.Now.AddDays(-i),
+                        Date = i,
                         Value = 300,
-                        Cost = cost
+                        Cost = sergCost
                     };
                     session.Save(item);
 
@@ -188,13 +191,14 @@ namespace SimpleBookKeeping.Database
 
 
                 var costDetails = new List<CostDetail>();
-                for (int i = 10; i > 0; i--)
+               
+                for (DateTime i = start; i < end; i = i.AddDays(1))
                 {
                     var item = new CostDetail
                     {
                         Deleted = false,
-                        Date = DateTime.Now.AddDays(-i),
-                        Value = 100,
+                        Date = i,
+                        Value = 200,
                         Cost = cost
                     };
                     session.Save(item);

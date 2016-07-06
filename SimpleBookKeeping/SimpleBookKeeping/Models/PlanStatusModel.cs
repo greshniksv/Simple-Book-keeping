@@ -15,6 +15,10 @@ namespace SimpleBookKeeping.Models
 
         public int Rest { get; set; }
 
+        public int Progress { get; set; }
+
+        public int BalanceToEnd { get; set; }
+
         public IReadOnlyCollection<CostStatusModel> CostStatusModels { get; set; }
     }
 }
