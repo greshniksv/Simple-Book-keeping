@@ -34,7 +34,7 @@ namespace SimpleBookKeeping.Queries
 
                 foreach (var activePlan in activePlans)
                 {
-                    var costs = session.QueryOver<Cost>().Where(x => x.Plan.Id == activePlan.Id).List();
+                    var costs = session.QueryOver<Cost>().Where(x => x.Plan.Id == activePlan.Id && x.Deleted == false).List();
 
                     if (message.CostId != Guid.Empty)
                     {
@@ -43,7 +43,7 @@ namespace SimpleBookKeeping.Queries
 
                     foreach (var cost in costs)
                     {
-                        foreach (var costDetail in cost.CostDetails)
+                        foreach (var costDetail in cost.CostDetails.Where(x=>x.Deleted == false))
                         {
                             var item = new CostSpendDetailModel
                             {
