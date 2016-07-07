@@ -9,10 +9,12 @@
 <html>
 <head>
 
-    @Styles.Render("~/common.css")
-    @Styles.Render("~/login.css")
-    @Styles.Render("~/jquery.mobile.css")
-    @Scripts.Render("~/bundles/jquery.full")
+    @Styles.Render("~/Content/site/common")
+    @Styles.Render("~/Content/site/login")
+    @Styles.Render("~/Content/jquery.mobile")
+    @Scripts.Render("~/Scripts/jquery")
+    @Scripts.Render("~/Scripts/jquery.validate")
+    @Scripts.Render("~/Scripts/jquery.mobile")
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <title> Login page </title>
@@ -51,4 +53,4 @@
 </body>
 </html>
 
-@Scripts.Render("~/login.js")
+@Scripts.Render("~/Scripts/site/login")

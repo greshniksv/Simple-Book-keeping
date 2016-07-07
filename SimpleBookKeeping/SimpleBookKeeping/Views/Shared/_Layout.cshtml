@@ -1,5 +1,4 @@
 ﻿@using System.Web.Optimization
-@using SimpleBookKeeping.Authentication
 @using SimpleBookKeeping.Helpers
 @{
     var planCosts = MenuHelper.GetPlanCosts();
@@ -9,11 +8,13 @@
 <html>
 <head>
 
-    @Styles.Render("~/common.css")
-    @Styles.Render("~/jquery.mobile.css")
-    @Styles.Render("~/layout.css")
-    @Scripts.Render("~/bundles/jquery.full")
-    
+    @Styles.Render("~/Content/site/common")
+    @Styles.Render("~/Content/jquery.mobile")
+    @Styles.Render("~/Content/site/layout")
+    @Scripts.Render("~/Scripts/jquery")
+    @Scripts.Render("~/Scripts/jquery.mobile")
+    @Scripts.Render("~/Scripts/jquery.validate")
+
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
     <title> @ViewBag.Title </title>
 </head>
@@ -68,7 +69,7 @@
 </body>
 </html>
 
-@Scripts.Render("~/layout.js")
-@Scripts.Render("~/animate.js")
-@Scripts.Render("~/msgBox.js")
+@Scripts.Render("~/Scripts/Site/layout")
+@Scripts.Render("~/Scripts/Site/animate")
+@Scripts.Render("~/Scripts/Site/msgBox")
 
