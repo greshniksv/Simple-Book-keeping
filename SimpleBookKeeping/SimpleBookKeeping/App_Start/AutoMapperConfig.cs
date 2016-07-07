@@ -23,7 +23,8 @@ namespace SimpleBookKeeping
                     .ForMember(dst => dst.UserId, opt => opt.MapFrom(src => src.User.Id));
 
                 cfg.CreateMap<Plan, PlanCostsModel>()
-                    .ForMember(dst => dst.UserMembers, opt => opt.MapFrom(src => src.PlanMembers.Select(x => x.User.Id)));
+                    .ForMember(dst => dst.UserMembers, opt => opt.MapFrom(src => src.PlanMembers.Select(x => x.User.Id)))
+                    .ForMember(dst => dst.Costs, opt => opt.MapFrom(src => src.Costs.Where(x=>x.Deleted == false)));
 
                 cfg.CreateMap<Plan, PlanModel>()
                     .ForMember(dst => dst.UserMembers, opt => opt.MapFrom(src => src.PlanMembers.Select(x=>x.User.Id)));
