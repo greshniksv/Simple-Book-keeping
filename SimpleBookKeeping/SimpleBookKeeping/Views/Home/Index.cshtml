@@ -20,7 +20,9 @@
             <div class="progress" style="width: @(planStatusModel.Progress+"%")"></div>
         </div>
 
-        <div class="money-status-green"> @planStatusModel.Balance грн </div>
+        <div class=" @(planStatusModel.Balance >= 0 ? "money-status-green" : "money-status-red") ">
+             @planStatusModel.Balance грн
+        </div>
         <div class="money-rest"> Остаток: @planStatusModel.Rest грн </div>
         <div class="money-rest"> Остаток на конец: @planStatusModel.BalanceToEnd грн </div>
 
@@ -61,17 +63,6 @@
         }).slider("refresh");
 
         progressBar.setValue(50);
-
-        //jQMProgressBar('progressbar')
-        //    .setOuterTheme('c')
-        //    .setInnerTheme('e')
-        //    .isMini(false)
-        //    .setMax(100)
-        //    .setStartFrom(0)
-        //    .setInterval(10)
-        //    .showCounter(false)
-        //    .build()
-        //    .run();
     });
 
     var progressBar = {
