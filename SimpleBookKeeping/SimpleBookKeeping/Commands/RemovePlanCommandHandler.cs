@@ -17,10 +17,6 @@ namespace SimpleBookKeeping.Commands
                 {
                     return false;
                 }
-
-                //plan.User = null;
-                //plan.PlanMembers.Clear();
-                //plan.Costs.Clear();
             }
 
             using (var session = Db.Session)

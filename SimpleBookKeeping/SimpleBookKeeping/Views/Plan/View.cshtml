@@ -16,7 +16,7 @@
 
     <form id="plan-save" action="/Plan/Save" method="POST" data-ajax="false">
 
-        <input name="id" value="@Model.Id" type="hidden"/>
+        <input name="id" value="@Model.Id" type="hidden" />
 
         <input name="start" class="datepicker" placeholder="Дата начала" data-role="date"
                value="@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("MM/dd/yyyy",new CultureInfo("en-US")))" />
@@ -28,10 +28,10 @@
 
         @Html.ValidationMessageFor(model => model.End)
 
-        <input name="name" type="text" value="@Model.Name" placeholder="Наименование"/>
+        <input name="name" type="text" value="@Model.Name" placeholder="Наименование" />
         @Html.ValidationMessageFor(model => model.Name)
 
-        <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс"/>
+        <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс" />
         @Html.ValidationMessageFor(model => model.Balance)
 
         <div class="margin10">
@@ -49,41 +49,37 @@
             <div id="members-input-item">
                 @for (int i = 0; i < Model.UserMembers.Count; i++)
                 {
-                    <input type='hidden' name='UserMembers[@i]' value='@Model.UserMembers[i]'/>
+                    <input type='hidden' name='UserMembers[@i]' value='@Model.UserMembers[i]' />
                 }
             </div>
         </div>
 
-        <input class="margin10" data-icon="check" type="submit" value="@(Model.Id == Guid.Empty ? "Создать" : "Применить")"/>
-        
+        <input class="margin10" data-icon="check" type="submit" value="@(Model.Id == Guid.Empty ? "Создать" : "Применить")" />
+
     </form>
     @if (Model.Id != Guid.Empty)
     {
         <a data-role="button" class="margin10" data-icon="shop" onclick="redirect('/Cost/Index?planId=@Model.Id')">Управление расходами</a>
-        <a data-role="button" class="margin10" data-icon="delete" data-theme = "b" onclick="Remove()">Удалить</a>
+        <a data-role="button" class="margin10" data-icon="delete" data-theme="b" onclick="Remove()">Удалить</a>
     }
 
 </div>
-
-
 
 <script type="text/javascript">
     backUrl = "/Plan/Index";
 
     function Remove() {
-
         $("body").msgBox({
             caption: "Удалить ?",
             head: "Удалить план",
             body: "Вы действительно хотите удалить план: @Model.Name",
-            onSecondButton: function() {
-                alert("Allah akbar!");
+            onSecondButton: function () {
+                redirect("/Plan/Remove?id=@Model.Id");
             }
         });
     }
 
     $(document).ready(function () {
-
         $(".datepicker").datepicker("option", "dateFormat", "dd.mm.yy");
         $("#ui-datepicker-div").hide();
 
@@ -100,7 +96,7 @@
             $("#members-input-item").html(inputs);
         });
 
-    
+
         saveFunc = function () {
             $("#plan-save").submit();
         }

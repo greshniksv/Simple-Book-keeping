@@ -15,7 +15,8 @@ namespace SimpleBookKeeping.Queries
             PlanModel model;
             using (var session = Db.Session)
             {
-                var plans = session.QueryOver<Plan>().Where(p => p.Id == message.PlanId).List();
+                var plans = session.QueryOver<Plan>()
+                    .Where(p => p.Id == message.PlanId && p.Deleted == false).List();
 
                 if (!plans.Any())
                 {
