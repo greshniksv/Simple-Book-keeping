@@ -9,12 +9,20 @@
 <html>
 <head>
 
-    @Styles.Render("~/Content/site/common")
+    <link rel="stylesheet" type="text/css" href="/Content/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" type="text/css" href="/Content/site/login.css">
+    <link rel="stylesheet" type="text/css" href="/Content/site/common.css">
+
+    <script src="/Scripts/jquery-2.1.4.js"></script>
+    <script src="/Scripts/jquery.mobile-1.4.5.js"></script>
+    <script src="/Scripts/jquery.validate.js"></script> 
+
+    @*@Styles.Render("~/Content/site/common")
     @Styles.Render("~/Content/site/login")
     @Styles.Render("~/Content/jquery.mobile")
     @Scripts.Render("~/Scripts/jquery")
     @Scripts.Render("~/Scripts/jquery.validate")
-    @Scripts.Render("~/Scripts/jquery.mobile")
+    @Scripts.Render("~/Scripts/jquery.mobile")*@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <title> Login page </title>
@@ -53,4 +61,5 @@
 </body>
 </html>
 
-@Scripts.Render("~/Scripts/site/login")
+@*@Scripts.Render("~/Scripts/site/login")*@
+<script src="/Scripts/Site/login.js"></script>

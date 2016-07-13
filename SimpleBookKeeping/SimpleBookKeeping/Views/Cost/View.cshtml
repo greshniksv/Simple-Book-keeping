@@ -7,7 +7,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Styles.Render("~/Content/site/cost")
+<link rel="stylesheet" type="text/css" href="/Content/site/cost.css">
 
 <form id="cost-save" action="/Cost/Save" method="POST" data-ajax="false">
     <input type="hidden" name="Id" value="@Model.Id" />

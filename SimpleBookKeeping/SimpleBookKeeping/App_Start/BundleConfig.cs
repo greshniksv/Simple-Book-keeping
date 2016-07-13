@@ -22,7 +22,7 @@ namespace SimpleBookKeeping
 
             //bundles.Add(new ScriptBundle("~/Content/jquery").Include(
             //     "~/Content/jquery.mobile-1.4.5.css",
-            //     "~/Content/messages.less"));
+            //     "~/Content/messages.css"));
 
             bundles.Add(new StyleBundle("~/Content/jquery.mobile").Include(
                  "~/Content/jquery.mobile-1.4.5.min.css"));
@@ -38,14 +38,14 @@ namespace SimpleBookKeeping
                       "~/Scripts/site/login.js"));
             
             bundles.Add(new StyleBundle("~/Content/site/login").Include(
-                      "~/Content/site/login.less"));
+                      "~/Content/site/login.css"));
 
             // Layout
             bundles.Add(new ScriptBundle("~/Scripts/Site/layout").Include(
                      "~/Scripts/Site/layout.js"));
 
             bundles.Add(new StyleBundle("~/Content/site/layout").Include(
-                      "~/Content/site/layout.less"));
+                      "~/Content/site/layout.css"));
 
             // Animate
             bundles.Add(new ScriptBundle("~/Scripts/Site/animate").Include(
@@ -57,22 +57,22 @@ namespace SimpleBookKeeping
             
             // Home
             bundles.Add(new StyleBundle("~/Content/site/home").Include(
-                      "~/Content/site/home.less"));
+                      "~/Content/site/home.css"));
 
             // Plan
             bundles.Add(new StyleBundle("~/Content/site/plan").Include(
-                      "~/Content/site/plan.less"));
+                      "~/Content/site/plan.css"));
 
             // Common
             bundles.Add(new StyleBundle("~/Content/site/common").Include(
-                      "~/Content/site/common.less"));
+                      "~/Content/site/common.css"));
             // Cost
             bundles.Add(new StyleBundle("~/Content/site/cost").Include(
-                      "~/Content/site/cost.less"));
+                      "~/Content/site/cost.css"));
 
             // Spend
             bundles.Add(new StyleBundle("~/Content/site/spend").Include(
-                      "~/Content/site/spend.less"));
+                      "~/Content/site/spend.css"));
 
             // Datepicker
             bundles.Add(new StyleBundle("~/Content/jquery.mobile.datepicker").Include(
