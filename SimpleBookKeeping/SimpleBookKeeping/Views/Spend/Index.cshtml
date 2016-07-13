@@ -78,7 +78,7 @@
 
                 </ul>
 
-                @if (editable)
+                @if (editable && costSpendDetailModel.Spends.Any(x=>x.UserId == ViewBag.UserId))
                 {
                     <a data-role="button" class="margin10" data-icon="check" onclick="Update('@formId')">Сохранить</a>
                 }

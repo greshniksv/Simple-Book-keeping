@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using MediatR;
 using Microsoft.Practices.Unity;
@@ -13,10 +14,17 @@ namespace SimpleBookKeeping.Helpers
         public static IReadOnlyCollection<PlanCostsModel> GetPlanCosts()
         {
             var userId = HttpContext.Current.UserId();
+            IReadOnlyCollection<PlanCostsModel> planCosts;
 
             var mediator = MvcApp.Unity.Resolve<IMediator>();
-            IReadOnlyCollection<PlanCostsModel> planCosts = 
-                mediator.Send(new GetActivePlanCostsQuery { UserId = userId });
+            try
+            {
+                planCosts = mediator.Send(new GetActivePlanCostsQuery { UserId = userId });
+            }
+            catch (Exception)
+            {
+                planCosts = new List<PlanCostsModel>();
+            }
             return planCosts;
         }
     }
