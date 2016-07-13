@@ -5,9 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Styles.Render("~/Content/site/home")
-@*@Styles.Render("~/jQMProgressBar.css")
-    @Scripts.Render("~/jQMProgressBar.js")*@
+@*@Styles.Render("~/Content/site/home")*@
+<link rel="stylesheet" type="text/css" href="/Content/site/home.css">
 
 @foreach (var planStatusModel in Model)
 {

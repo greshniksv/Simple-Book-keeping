@@ -414,15 +414,15 @@
     </Content>
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
-    <Content Include="Content\site\login.less" />
+    <Content Include="Content\site\login.css" />
     <Content Include="Content\messages.less" />
-    <Content Include="Content\site\layout.less" />
-    <Content Include="Content\site\plan.less" />
-    <Content Include="Content\site\common.less" />
-    <Content Include="Content\site\error.less" />
-    <Content Include="Content\site\cost.less" />
-    <Content Include="Content\site\home.less" />
-    <Content Include="Content\site\spend.less" />
+    <Content Include="Content\site\layout.css" />
+    <Content Include="Content\site\plan.css" />
+    <Content Include="Content\site\common.css" />
+    <Content Include="Content\site\error.css" />
+    <Content Include="Content\site\cost.css" />
+    <Content Include="Content\site\home.css" />
+    <Content Include="Content\site\spend.css" />
     <None Include="Properties\PublishProfiles\SBK - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SBK - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4-vsdoc.js" />

@@ -7,8 +7,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@Styles.Render("~/Content/site/plan")
-@Styles.Render("~/Content/jquery.mobile.datepicker")
+@*@Styles.Render("~/Content/site/plan")
+@Styles.Render("~/Content/jquery.mobile.datepicker")*@
+
+<link rel="stylesheet" type="text/css" href="/Content/site/plan.css">
+<link rel="stylesheet" type="text/css" href="/Content/jquery.mobile.datepicker.css">
+<link rel="stylesheet" type="text/css" href="/Content/jquery.mobile.datepicker.theme.css">
 
 <div class="create-plan">
 
@@ -109,4 +113,6 @@
 
 </script>
 
-@Scripts.Render("~/Scripts/datepicker")
+@*@Scripts.Render("~/Scripts/datepicker")*@
+<script src="/Scripts/jquery.mobile.datepicker.js"></script>
+<script src="/Scripts/external/jquery-ui/datepicker.js"></script>
