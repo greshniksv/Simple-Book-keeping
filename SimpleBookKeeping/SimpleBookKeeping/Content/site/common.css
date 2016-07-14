@@ -76,6 +76,9 @@ ul.custom-list a{
     float: right;
 }
 
+#popupDialog div[role=main] div.ui-input-text {
+    width: 300px;
+}
 
 .progressbar {
     position: absolute;

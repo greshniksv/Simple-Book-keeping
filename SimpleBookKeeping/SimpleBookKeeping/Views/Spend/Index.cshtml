@@ -18,7 +18,7 @@
     {
         string formId = "update-spend-" + costSpendDetailModel.CostId.ToString().Replace("-", "");
         int spendIterator = 0;
-        bool editable = costSpendDetailModel.Date.Date > currentDate.Date.AddDays(-2).Date && costSpendDetailModel.Date.Date <= currentDate.Date.Date;
+        bool editable = costSpendDetailModel.Date.Date > currentDate.Date.AddDays(-4).Date && costSpendDetailModel.Date.Date <= currentDate.Date.Date;
 
         <form id="@formId" action="/Spend/Update" method="POST" data-ajax="false">
 
@@ -34,6 +34,7 @@
                     {
                         if (spend.UserId == ViewBag.UserId)
                         {
+                            string spendValueId = Guid.NewGuid().ToString().Replace("-", "");
                             <li>
 
                                 @(editable ?
@@ -44,9 +45,19 @@
                                 <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
                                 <input type="hidden" name="addSpendModels[@spendIterator].CostDetailId" value="@costSpendDetailModel.DetailId" />
 
+
+
                                 @(editable ?
-                                  Html.Raw($"<input name='addSpendModels[{spendIterator}].Value' class='sum' type='text' value='{spend.Value}'/>") :
-                                  Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
+                                  Html.Raw($" <div class='spend-value'> <input id='{spendValueId}' name='addSpendModels[{spendIterator}].Value' class='sum' type='text' value='{spend.Value}'/> </div>") :
+                                      Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
+
+                                @if (editable)
+                                {
+                                    <div class="formula-button">
+                                        <span onclick="ShowFormula('@spendValueId')" class="ui-btn-icon-notext ui-icon-plus"> </span>
+                                    </div>
+                                }
+
                             </li>
 
                             spendIterator++;
@@ -78,7 +89,7 @@
 
                 </ul>
 
-                @if (editable && costSpendDetailModel.Spends.Any(x=>x.UserId == ViewBag.UserId))
+                @if (editable && costSpendDetailModel.Spends.Any(x => x.UserId == ViewBag.UserId))
                 {
                     <a data-role="button" class="margin10" data-icon="check" onclick="Update('@formId')">Сохранить</a>
                 }
@@ -92,7 +103,7 @@
 </div>
 
 
-<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="a" style="max-width: 400px;"
+<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="a" style="max-width: 600px;"
      class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
     <form id="add-spend" action="/Spend/Add" method="POST" data-ajax="false">
         <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
@@ -114,14 +125,89 @@
     </form>
 </div>
 
+<div data-role="popup" id="popupDialogFormula" data-overlay-theme="a" data-theme="a" style="max-width: 600px;"
+     class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
+    <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
+        <h1 class="ui-title" role="heading" aria-level="1">Формула</h1>
+    </div>
+    <div role="main" class="ui-corner-bottom ui-content">
+        <h3 class="ui-title">Написать формулу</h3>
+        <input class='formula-input' placeholder=" 1 + 1 " />
+
+        <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
+           class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
+        <a href="#" onclick="CalculateFormula()" data-role="button" data-inline="true" data-rel="back" data-transition="flow"
+           data-theme="b" class="ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all" role="button">Добавить</a>
+    </div>
+</div>
+
 
 <script type="text/javascript">
     var selectedCostDetail;
+    var formulaInputId;
     backUrl = "/Home/Index";
 
     $(document).ready(function () {
         $('.input-readonly').textinput('disable');
     });
+
+    function ShowFormula(id) {
+        $(".formula-input").val("");
+        formulaInputId = id;
+        $("#popupDialogFormula").popup();
+        $("#popupDialogFormula").popup("open", {
+            transition: "pop",
+            positionTo: "window"
+        });
+    }
+
+    function CalculateFormula() {
+        var formula = $(".formula-input").val();
+        $("#" + formulaInputId).val(SumCalculate(formula));
+    }
+
+    function SumCalculate(formula) {
+        var sum = 0;
+        var sumOperation = new Array();
+        if (formula.indexOf('+') > -1) {
+            sumOperation = formula.split('+');
+        }
+        for (var i = 0; i < sumOperation.length; i++) {
+            var item = sumOperation[i];
+            if (!isNumber(item)) {
+                if (item.indexOf('-') > -1) {
+                    sum += MinusCalculate(item);
+                } else {
+                    alert("Формула написана не верно!");
+                    return -1;
+                }
+            }
+            sum += parseInt(item);
+        }
+        return sumOperation.length <= 0 ? formula : sum;;
+    }
+
+    function MinusCalculate(formula) {
+        var sum = 0;
+        var minusOperation = new Array();
+        if (formula.indexOf('-') > -1) {
+            minusOperation = formula.split('-');
+        }
+        for (var i = 0; i < minusOperation.length; i++) {
+            var item = minusOperation[i];
+            if (!isNumber(item)) {
+                alert("Формула написана не верно!");
+                return -1;
+            }
+            sum -= parseInt(item);
+        }
+        return minusOperation.length <= 0 ? formula : sum;
+    }
+
+    function isNumber(input) {
+        var regex = /^[0-9]*$/;
+        return regex.test(input);
+    }
 
     function Update(id) {
         showLoading();
@@ -140,6 +226,10 @@
     }
 
     function Submit() {
+        var formula = $("div[role=main] input.sum").val();
+        var sum = SumCalculate(formula);
+        $("div[role=main] input.sum").val(sum);
+
         showLoading();
         $("#popupDialog").fadeOut(300);
         setTimeout(function () {

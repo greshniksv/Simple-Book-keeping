@@ -12,15 +12,30 @@
     padding-top: 5px;
 }
 
-ul.editable div:first-child {
-    width: 79%;
+ul.editable div.ui-input-text:first-child {
+    width: 65%;
     display: inline-block;
 }
 
-ul.editable div:last-child {
-    width: 18%;
+div.spend-value {
+    width: 20%;
     display: inline-block;
-    float: right;
+}
+
+div.spend-value div{
+    width: 100% !important;
+}
+
+div.formula-button {
+    display: inline-block;
+    width: 50px;
+    height: 10px;
+    position: inherit;
+    cursor: pointer;
+}
+
+ul.editable div:last-child {
+   
 }
 
 ul.editable li) {
@@ -40,5 +55,13 @@ li.add-spend div{
 
 .spend-add {
     display: inline-block;
+    float: right;
+}
+
+#popupDialogFormula div[role=main] div.ui-input-text {
+    width: 300px;
+}
+
+#popupDialogFormula div[role=main] a:last-child {
     float: right;
 }
