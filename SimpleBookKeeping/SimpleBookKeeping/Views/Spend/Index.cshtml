@@ -38,17 +38,15 @@
                             <li>
 
                                 @(editable ?
-                                  Html.Raw($"<input name='addSpendModels[{spendIterator}].Comment' class='comment' type='text' value='{spend.Comment}'/>") :
+                                  Html.Raw($"<input name='addSpendModels[{spendIterator}].Comment' class='comment' type='text' autocomplete='off' value='{spend.Comment}'/>") :
                                   Html.Raw(spend.Comment ?? " "))
 
                                 <input type="hidden" name="addSpendModels[@spendIterator].CostId" value="@costSpends.First().CostId" />
                                 <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
                                 <input type="hidden" name="addSpendModels[@spendIterator].CostDetailId" value="@costSpendDetailModel.DetailId" />
 
-
-
                                 @(editable ?
-                                  Html.Raw($" <div class='spend-value'> <input id='{spendValueId}' name='addSpendModels[{spendIterator}].Value' class='sum' type='text' value='{spend.Value}'/> </div>") :
+                                  Html.Raw($" <div class='spend-value'> <input id='{spendValueId}' name='addSpendModels[{spendIterator}].Value' class='sum' type='text' autocomplete='off' value='{spend.Value}'/> </div>") :
                                       Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
 
                                 @if (editable)
@@ -114,8 +112,8 @@
 
             <input type="hidden" name="CostId" value="@(costSpends.FirstOrDefault()?.CostId)" />
             <input id="detailId" type="hidden" name="CostDetailId" value="" />
-            <input class='comment' name="Comment" type='text' value='' placeholder="Коментарий" />
-            <input class='sum' name="Value" type='text' value='' placeholder="Сумма" />
+            <input class='comment' name="Comment" type='text' value='' placeholder="Коментарий" autocomplete='off' />
+            <input class='sum' name="Value" type='text' value='' placeholder="Сумма" autocomplete='off' />
 
             <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
                class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
@@ -132,7 +130,7 @@
     </div>
     <div role="main" class="ui-corner-bottom ui-content">
         <h3 class="ui-title">Написать формулу</h3>
-        <input class='formula-input' placeholder=" 1 + 1 " />
+        <input class='formula-input' placeholder=" 1 + 1 " autocomplete='off'/>
 
         <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
            class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>

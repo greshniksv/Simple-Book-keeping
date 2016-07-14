@@ -22,20 +22,20 @@
 
         <input name="id" value="@Model.Id" type="hidden" />
 
-        <input name="start" class="datepicker" placeholder="Дата начала" data-role="date"
+        <input name="start" class="datepicker" placeholder="Дата начала" data-role="date" autocomplete="off"
                value="@(Model.Start == DateTime.MinValue ? "" : Model.Start.ToString("MM/dd/yyyy",new CultureInfo("en-US")))" />
 
         @Html.ValidationMessageFor(model => model.Start)
 
-        <input name="end" class="datepicker" placeholder="Дата завершения" data-role="date"
+        <input name="end" class="datepicker" placeholder="Дата завершения" data-role="date" autocomplete="off"
                value="@(Model.End == DateTime.MinValue ? "" : Model.End.ToString("MM/dd/yyyy",new CultureInfo("en-US")))" />
 
         @Html.ValidationMessageFor(model => model.End)
 
-        <input name="name" type="text" value="@Model.Name" placeholder="Наименование" />
+        <input name="name" type="text" value="@Model.Name" placeholder="Наименование" autocomplete="off"/>
         @Html.ValidationMessageFor(model => model.Name)
 
-        <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс" />
+        <input name="balance" type="text" value="@Model.Balance" placeholder="Баланс" autocomplete="off"/>
         @Html.ValidationMessageFor(model => model.Balance)
 
         <div class="margin10">

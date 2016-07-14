@@ -14,7 +14,7 @@
     <input type="hidden" name="PlanId" value="@Model.PlanId" />
 
     <div class="cost-page margin10">
-        <input type="text" name="Name" placeholder="Название расходов"
+        <input type="text" name="Name" placeholder="Название расходов" autocomplete="off"
                value="@(Model == null ? string.Empty : Model.Name)" />
         @Html.ValidationMessageFor(model => model.Name)
         @Html.ValidationMessageFor(model => model.PlanId)
@@ -34,9 +34,9 @@
                         <td> @costDetailModel.Date.DayOfWeek.ToShortRuString() </td>
                         <td> @costDetailModel.Date.ToString("dd-MM-yyyy") </td>
                         <td>
-                            <input type="hidden" name="CostDetails[@list].Date" value="@costDetailModel.Date.ToString("dd-MM-yyyy")" />
+                            <input type="hidden" name="CostDetails[@list].Date" value="@costDetailModel.Date.ToString("dd-MM-yyyy")" autocomplete="off"/>
                             <input type="text" name="CostDetails[@list].Value" value="@(costDetailModel.Value == 0 ?
-                                                                                            string.Empty : costDetailModel.Value.ToString())" />
+                                                                                            string.Empty : costDetailModel.Value.ToString())" autocomplete="off" />
                         </td>
                     </tr>
 
@@ -72,7 +72,7 @@
         <option value="sun"> Вс </option>
     </select>
 
-    <input id="genSum" type="text" placeholder="Сумма" />
+    <input id="genSum" type="text" placeholder="Сумма" autocomplete="off"/>
     <a class="margin10" data-role="button" data-icon="action" onclick="Generate()">Генерировать</a>
 </div>
 
