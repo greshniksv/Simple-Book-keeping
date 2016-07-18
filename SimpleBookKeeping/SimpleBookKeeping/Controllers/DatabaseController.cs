@@ -15,11 +15,17 @@ namespace SimpleBookKeeping.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult CreateDatabase()
+        public ActionResult CreateDatabase(string password)
         {
+            if (password != "ldyqfx")
+            {
+                return RedirectToAction("CreateResult",
+                    new { message = "Password is incorrect", success = false });
+            }
+
             try
             {
-               Db.CreateDb();
+               //Db.CreateDb();
             }
             catch (Exception ex)
             {

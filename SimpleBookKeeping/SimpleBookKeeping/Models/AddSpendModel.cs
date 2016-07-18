@@ -12,7 +12,7 @@ namespace SimpleBookKeeping.Models
         [Required]
         public Guid CostDetailId { get; set; }
 
-        [RegularExpression("[0-9]{1,}")]
+        [RegularExpression(@"[\+-]?[0-9]{1,}")]
         public int Value { get; set; }
 
         public string Comment { get; set; }

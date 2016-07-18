@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<a data-role="button" class="margin10" data-icon="check" onclick="redirect('/Database/CreateDatabase')">Создать БД</a>
+<a data-role="button" class="margin10" data-icon="check" onclick="CreateDB()">Создать БД</a>
 
 @if (!string.IsNullOrEmpty(ViewBag.Error))
 {
@@ -22,5 +22,20 @@
 }
 
 <script type="text/javascript">
-    backUrl = "/Settings/Index"
+    backUrl = "/Settings/Index";
+
+    function CreateDB() {
+        $("body").inpBox({
+            password: true,
+            caption: "Пароль",
+            head: "Для создания БД необходимо ввести пароль",
+            placeholder: "Пароль",
+            firstButtonCaption: "Отмена",
+            secondButtonCaption: "Создать",
+            onSecondButton: function (data) {
+                redirect('/Database/CreateDatabase?password=' + data);
+            }
+        });
+    }
+
 </script>

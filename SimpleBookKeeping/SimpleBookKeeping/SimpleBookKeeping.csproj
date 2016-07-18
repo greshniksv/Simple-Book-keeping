@@ -442,6 +442,7 @@
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\Site\animate.js" />
+    <Content Include="Scripts\Site\inpBox.js" />
     <Content Include="Scripts\Site\layout.js" />
     <Content Include="Scripts\Site\login.js" />
     <Content Include="Scripts\Site\msgBox.js" />

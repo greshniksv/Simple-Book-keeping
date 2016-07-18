@@ -120,17 +120,6 @@
                 });
             }
         });
-
-        @*if (confirm("Вы действительно хотите удалить расход: @Model.Name")) {
-            showLoading();
-            $.get('/Cost/Remove?id=@Model.Id', function (data) {
-                if (data.length > 5) {
-                    alert("Ошибка удаления расхода");
-                } else {
-                    redirect("/Cost/Index?planId=@Model.PlanId");
-                }
-            });
-        }*@
     }
 
     $(document).ready(function () {
