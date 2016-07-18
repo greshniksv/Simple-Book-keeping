@@ -134,7 +134,7 @@
 
         <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
            class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
-        <a href="#" onclick="CalculateFormula()" data-role="button" data-inline="true" data-rel="back" data-transition="flow"
+        <a href="#" onclick="CalculateFormula()" data-role="button" data-inline="true" data-transition="flow"
            data-theme="b" class="ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all" role="button">Добавить</a>
     </div>
 </div>
@@ -160,51 +160,13 @@
     }
 
     function CalculateFormula() {
-        var formula = $(".formula-input").val();
-        $("#" + formulaInputId).val(SumCalculate(formula));
-    }
-
-    function SumCalculate(formula) {
-        var sum = 0;
-        var sumOperation = new Array();
-        if (formula.indexOf('+') > -1) {
-            sumOperation = formula.split('+');
-        }
-        for (var i = 0; i < sumOperation.length; i++) {
-            var item = sumOperation[i];
-            if (!isNumber(item)) {
-                if (item.indexOf('-') > -1) {
-                    sum += MinusCalculate(item);
-                } else {
-                    alert("Формула написана не верно!");
-                    return -1;
-                }
-            }
-            sum += parseInt(item);
-        }
-        return sumOperation.length <= 0 ? formula : sum;;
-    }
-
-    function MinusCalculate(formula) {
-        var sum = 0;
-        var minusOperation = new Array();
-        if (formula.indexOf('-') > -1) {
-            minusOperation = formula.split('-');
-        }
-        for (var i = 0; i < minusOperation.length; i++) {
-            var item = minusOperation[i];
-            if (!isNumber(item)) {
-                alert("Формула написана не верно!");
-                return -1;
-            }
-            sum -= parseInt(item);
-        }
-        return minusOperation.length <= 0 ? formula : sum;
-    }
-
-    function isNumber(input) {
-        var regex = /^[0-9]*$/;
-        return regex.test(input);
+        try {
+            var formula = $(".formula-input").val();
+            $("#" + formulaInputId).val(eval(formula));
+            $("#popupDialogFormula").popup("close");
+        } catch (e) {
+            alert("Формула написана не верно!");
+        } 
     }
 
     function Update(id) {
@@ -225,8 +187,14 @@
 
     function Submit() {
         var formula = $("div[role=main] input.sum").val();
-        var sum = SumCalculate(formula);
-        $("div[role=main] input.sum").val(sum);
+
+        try {
+            var sum = eval(formula);
+            $("div[role=main] input.sum").val(sum);
+        } catch (e) {
+            alert("Формула написана не верно!");
+            return;
+        } 
 
         showLoading();
         $("#popupDialog").fadeOut(300);
