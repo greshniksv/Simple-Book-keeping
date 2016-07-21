@@ -24,7 +24,7 @@
         </div>
         <div class="money-rest"> Остаток: @planStatusModel.Rest грн </div>
         <div class="money-rest"> Остаток на конец: @planStatusModel.BalanceToEnd грн </div>
-
+        <div class="current-datetime">Текущее время: <div> @DateTime.UtcNow.AddHours(3).ToString("dd.MM.yyyy HH:mm") </div> </div>
         <div class="cost-head">
 
             <ul data-role="listview" data-inset="true">

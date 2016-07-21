@@ -41,22 +41,22 @@ namespace SimpleBookKeeping.Commands
                     }
                     else
                     {
-                        Spend spend = session.QueryOver<Spend>().Where(x => x.Id == spendModel.Id).List().First();
+                        Spend oldSpend = session.QueryOver<Spend>().Where(x => x.Id == spendModel.Id).List().First();
 
                         if (spendModel.Value == 0 && spendModel.Comment == null)
                         {
                             // Remove Spend
-                            session.Delete(spend);
+                            session.Delete(oldSpend);
                         }
                         else
                         {
                             // Update Spend
-                            spend.User = session.QueryOver<User>().Where(x => x.Id == message.UserId).List().First();
-                            spend.Comment = spendModel.Comment;
-                            spend.CostDetail = session.QueryOver<CostDetail>().Where(x => x.Id == spendModel.CostDetailId).List().First();
-                            spend.Value = spendModel.Value;
+                            oldSpend.User = session.QueryOver<User>().Where(x => x.Id == message.UserId).List().First();
+                            oldSpend.Comment = spendModel.Comment;
+                            oldSpend.CostDetail = session.QueryOver<CostDetail>().Where(x => x.Id == spendModel.CostDetailId).List().First();
+                            oldSpend.Value = spendModel.Value;
 
-                            session.SaveOrUpdate(spend);
+                            session.SaveOrUpdate(oldSpend);
                         }
                     }
                 }
