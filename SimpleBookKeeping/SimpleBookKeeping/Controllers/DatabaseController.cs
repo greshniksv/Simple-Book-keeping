@@ -25,7 +25,7 @@ namespace SimpleBookKeeping.Controllers
 
             try
             {
-               //Db.CreateDb();
+               Db.CreateDb();
             }
             catch (Exception ex)
             {

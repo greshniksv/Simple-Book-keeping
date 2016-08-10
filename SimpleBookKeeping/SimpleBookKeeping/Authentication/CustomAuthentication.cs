@@ -19,17 +19,23 @@ namespace SimpleBookKeeping.Authentication
         
         public User Login(string userName, string password, bool isPersistent)
         {
-            var session = Db.Session;
-            var criteria = session.CreateCriteria<User>();
-            criteria.Add(Restrictions.Eq("Login", userName));
-            criteria.Add(Restrictions.Eq("Password", password));
-
-            User retUser = criteria.List<User>().FirstOrDefault();
-            if (retUser != null)
+            using (var session = Db.Session)
             {
-                CreateCookie(retUser.Id.ToString(), isPersistent);
+                var users = session.QueryOver<User>().Where(x => x.Login == userName).List().ToList();
+                if (users.Count > 1)
+                {
+                    throw new Exception("Error. Founded duplicate user name!");
+                }
+                if (!users.Any())
+                {
+                    return null;
+                }
+                if (users[0].Password == password)
+                {
+                    CreateCookie(users[0].Id.ToString(), isPersistent);
+                }
+                return users[0];
             }
-            return retUser;
         }
 
         private void CreateCookie(string userId, bool isPersistent = false)
