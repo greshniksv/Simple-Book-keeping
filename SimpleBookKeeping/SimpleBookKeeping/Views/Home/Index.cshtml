@@ -18,13 +18,17 @@
         <div class="progressbar">
             <div class="progress" style="width: @(planStatusModel.Progress+"%")"></div>
         </div>
-
-        <div class=" @(planStatusModel.Balance >= 0 ? "money-status-green" : "money-status-red") ">
-             @planStatusModel.Balance грн
+        
+        <div class="balance">
+            <div class="money-balance-describe"> На сегодня: </div>
+            <div class=" @(planStatusModel.Balance >= 0 ? "money-status-green" : "money-status-red") ">
+                @planStatusModel.Balance грн
+            </div>
         </div>
-        <div class="money-rest"> Остаток: @planStatusModel.Rest грн </div>
-        <div class="money-rest"> Остаток на конец: @planStatusModel.BalanceToEnd грн </div>
-        <div class="current-datetime">Текущее время: <div> @DateTime.UtcNow.AddHours(3).ToString("dd.MM.yyyy HH:mm") </div> </div>
+        
+        @*<div class="money-rest"> Остаток: @planStatusModel.Rest грн </div>
+        <div class="money-rest"> Остаток на конец: @planStatusModel.BalanceToEnd грн </div>*@
+        <div class="current-datetime">Текущее время: <div> @DateTime.UtcNow.AddHours(2).ToString("dd.MM.yyyy HH:mm") </div> </div>
         <div class="cost-head">
 
             <ul data-role="listview" data-inset="true">
