@@ -424,9 +424,9 @@
     <Content Include="Content\site\cost.css" />
     <Content Include="Content\site\home.css" />
     <Content Include="Content\site\spend.css" />
-    <None Include="Properties\PublishProfiles\Default Settings.pubxml" />
     <None Include="Properties\PublishProfiles\SBK - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SBK - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Simple-Book-keeping Settings.pubxml" />
     <None Include="Properties\PublishProfiles\xg.pubxml" />
     <None Include="Scripts\jquery-2.1.4-vsdoc.js" />
     <Content Include="Scripts\external\jquery-ui\datepicker.js" />
