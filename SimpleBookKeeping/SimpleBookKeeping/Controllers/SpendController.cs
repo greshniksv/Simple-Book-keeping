@@ -45,6 +45,19 @@ namespace SimpleBookKeeping.Controllers
 
             return RedirectToAction("Index", new { costId = model.CostId });
         }
+
+        public ActionResult AddCredit(AddCreditSpendModel model)
+        {
+            var userId = HttpContext.UserId();
+
+            if (ModelState.IsValid)
+            {
+                _mediator.Send(new SaveCreditSpendCommand { SpendModels = new[] { model }, UserId = userId });
+            }
+
+            return RedirectToAction("Index", new { costId = model.CostId });
+        }
+
         public ActionResult Update(AddSpendModel[] addSpendModels)
         {
             var userId = HttpContext.UserId();

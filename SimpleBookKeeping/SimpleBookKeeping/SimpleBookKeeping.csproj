@@ -471,7 +471,9 @@
     <Compile Include="Commands\CreateCostCommandHandler.cs" />
     <Compile Include="Commands\RemovePlanCommand.cs" />
     <Compile Include="Commands\RemovePlanCommandHandler.cs" />
+    <Compile Include="Commands\SaveCreditSpendCommand.cs" />
     <Compile Include="Commands\SaveSpendCommand.cs" />
+    <Compile Include="Commands\SaveCreditSpendCommandHandler.cs" />
     <Compile Include="Commands\SaveSpendCommandHandler.cs" />
     <Compile Include="Controllers\CostController.cs" />
     <Compile Include="Controllers\DatabaseController.cs" />
@@ -498,6 +500,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Menu.cs" />
+    <Compile Include="Models\AddCreditSpendModel.cs" />
     <Compile Include="Models\AddSpendModel.cs" />
     <Compile Include="Models\CostDetailModel.cs" />
     <Compile Include="Models\CostModel.cs" />

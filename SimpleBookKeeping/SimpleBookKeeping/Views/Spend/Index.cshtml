@@ -1,5 +1,4 @@
-﻿@using System.Web.Optimization
-@using SimpleBookKeeping.Models
+﻿@using SimpleBookKeeping.Models
 @model IList<CostSpendDetailModel>
 @{
     IList<CostSpendDetailModel> costSpends = Model;
@@ -82,6 +81,7 @@
                         @if (editable)
                         {
                             <div onclick="Add('@costSpendDetailModel.DetailId')" class="spend-add ui-btn ui-input-btn ui-shadow"> Добавить </div>
+                            <div onclick="Credit('@costSpendDetailModel.DetailId')" class="spend-add ui-btn ui-input-btn ui-shadow"> В кредит </div>
                         }
                     </li>
 
@@ -118,6 +118,30 @@
             <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
                class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
             <a href="#" onclick="Submit()" data-role="button" data-inline="true" data-transition="flow"
+               data-theme="b" class="ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all" role="button">Добавить</a>
+        </div>
+    </form>
+</div>
+
+
+<div data-role="popup" id="creditPopupDialog" data-overlay-theme="a" data-theme="a" style="max-width: 600px;"
+     class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
+    <form id="add-credit-spend" action="/Spend/AddCredit" method="POST" data-ajax="false">
+        <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
+            <h1 class="ui-title" role="heading" aria-level="1">Траты</h1>
+        </div>
+        <div role="main" class="ui-corner-bottom ui-content">
+            <h3 class="ui-title">Добавить траты</h3>
+
+            <input type="hidden" name="CostId" value="@(costSpends.FirstOrDefault()?.CostId)" />
+            <input id="detailId" type="hidden" name="CostDetailId" value="" />
+            <input class='comment' name="Comment" type='text' value='' placeholder="Коментарий" autocomplete='off' />
+            <input class='sum' name="Value" type='text' value='' placeholder="Сумма" autocomplete='off' />
+            <input class='days' name="Days" type='text' value='' placeholder="Рассрочка дней" autocomplete='off' />
+
+            <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
+               class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
+            <a href="#" onclick="SubmitCredit()" data-role="button" data-inline="true" data-transition="flow"
                data-theme="b" class="ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all" role="button">Добавить</a>
         </div>
     </form>
@@ -165,7 +189,7 @@
     }
 
     function Add(id) {
-        $("#detailId").val(id);
+        $("#popupDialog #detailId").val(id);
         $("#popupDialog").popup();
         $("#popupDialog").popup("open", {
             transition: "pop",
@@ -173,12 +197,23 @@
         });
     }
 
+    function Credit(id) {
+        $("#creditPopupDialog #detailId").val(id);
+        $("#creditPopupDialog").popup();
+        $("#creditPopupDialog").popup("open", {
+            transition: "pop",
+            positionTo: "window"
+        });
+    }
+
+    
+
     function Submit() {
-        var formula = $("div[role=main] input.sum").val();
+        var formula = $("#popupDialog div[role=main] input.sum").val();
 
         try {
             var sum = eval(formula);
-            $("div[role=main] input.sum").val(sum);
+            $("#popupDialog div[role=main] input.sum").val(sum);
         } catch (e) {
             alert("Формула написана не верно!");
             return;
@@ -189,6 +224,39 @@
         setTimeout(function () {
             $("#add-spend").submit();
         }, 500);
+    }
+
+    function SubmitCredit() {
+        var formula = $("#creditPopupDialog div[role=main] input.sum").val();
+        var daysInput = $("#creditPopupDialog div[role=main] input.days").val();
+        var days = 0;
+
+        try {
+            var sum = eval(formula);
+            days = eval(daysInput);
+            $("#creditPopupDialog div[role=main] input.sum").val(sum);
+        } catch (e) {
+            alert("Формула написана не верно!");
+            return;
+        }
+
+        if (days === undefined || (days > 10 && days < 2)) {
+            alert("Рассрочка дней должна быть больше 2х, и не более 10 дней.");
+            return;
+        }
+
+        var message = "Внимание указанная сумма будет заделана на указанное кол-во дней." +
+            " И эта сумма будет вычитана из суммы указанных дней автоматически. "+
+            " Изменить кредит невозможно! Возможно только изменять суммы указанные на каждый день." +
+            " Вы согласны продолжить ?";
+
+        if (confirm(message)) {
+            showLoading();
+            $("#creditPopupDialog").fadeOut(300);
+            setTimeout(function () {
+                $("#add-credit-spend").submit();
+            }, 500);
+        }
     }
 
 </script>
