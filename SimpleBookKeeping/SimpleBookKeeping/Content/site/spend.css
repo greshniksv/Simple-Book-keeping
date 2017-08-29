@@ -65,3 +65,16 @@ li.add-spend div{
 #popupDialogFormula div[role=main] a:last-child {
     float: right;
 }
+
+.credit-list {
+    /*height: 40px;*/
+    line-height: 40px;
+}
+
+.credit-daysum-span {
+    margin-top: 0px;
+}
+
+.credit-day-span {
+    margin-top: -25px;
+}

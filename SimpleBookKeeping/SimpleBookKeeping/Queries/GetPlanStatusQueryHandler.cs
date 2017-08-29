@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MediatR;
+using NHibernate;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
 using SimpleBookKeeping.Models;
@@ -37,14 +38,17 @@ namespace SimpleBookKeeping.Queries
                 
                 foreach (var cost in costs.OrderBy(x => x.Name))
                 {
+                    //NHibernateUtil.Initialize(cost.CostDetails);
+
                     int balance = 0;
                     // (That you can spend) - (you spend)
                     foreach (var costDetail in cost.CostDetails.OrderBy(x=>x.Date))
                     {
                         if (costDetail.Date.Date <= DateTime.Now.Date)
                         {
-                            allSpend += costDetail.Spends.Sum(x => x.Value);
-                            balance += costDetail.Value - costDetail.Spends.Sum(x => x.Value);
+                            var sum = costDetail.Spends.Sum(x => x.Value);
+                            allSpend += sum;
+                            balance += costDetail.Value - sum;
                         }
                     }
 

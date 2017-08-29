@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using MediatR;
 using Microsoft.Practices.Unity;
@@ -25,7 +26,7 @@ namespace SimpleBookKeeping.Helpers
             {
                 planCosts = new List<PlanCostsModel>();
             }
-            return planCosts;
+            return planCosts.OrderBy(x=>x.Name).ToList();
         }
     }
 }

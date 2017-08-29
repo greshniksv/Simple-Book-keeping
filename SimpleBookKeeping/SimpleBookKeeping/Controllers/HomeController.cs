@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using MediatR;
 using SimpleBookKeeping.Queries;
 using Microsoft.Practices.Unity;
-using SimpleBookKeeping.Authentication;
 using SimpleBookKeeping.Extensions;
 using SimpleBookKeeping.Models;
 
@@ -35,7 +35,7 @@ namespace SimpleBookKeeping.Controllers
                 planStatusModels.Add(palnStatus);
             }
 
-            return View(planStatusModels);
+            return View(planStatusModels.OrderBy(x=>x.Name).ToList());
         }
     }
 }

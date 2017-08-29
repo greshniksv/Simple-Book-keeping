@@ -30,6 +30,9 @@ namespace SimpleBookKeeping.Controllers
             IList<CostSpendDetailModel> costSpend =
                  _mediator.Send(new GetActiveCostSpendDetailsQuery { UserId = userId, CostId = costId });
 
+            var creditSpands = _mediator.Send(new GetCreditSpends() {UserId = userId, CostId = costId});
+
+            ViewBag.Credits = creditSpands;
             ViewBag.UserId = userId;
             return View(costSpend);
         }

@@ -1,4 +1,5 @@
-﻿@using SimpleBookKeeping.Models
+﻿@using System.Collections
+@using SimpleBookKeeping.Models
 @model IList<CostSpendDetailModel>
 @{
     IList<CostSpendDetailModel> costSpends = Model;
@@ -6,257 +7,281 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     bool fisrt = true;
     var currentDate = DateTime.Now.Date;
+    IList<SpendCreditInfoModel> Credits = ViewBag.Credits;
 }
 
 @*@Styles.Render("~/Content/site/spend")*@
 <link rel="stylesheet" type="text/css" href="/Content/site/spend.css">
 
-<div class="spend-row" data-role="collapsible-set">
 
-    @foreach (CostSpendDetailModel costSpendDetailModel in costSpends.Where(x => x.Date.Date <= currentDate.Date.Date).OrderByDescending(x => x.Date))
-    {
-        string formId = "update-spend-" + costSpendDetailModel.CostId.ToString().Replace("-", "");
-        int spendIterator = 0;
-        bool editable = costSpendDetailModel.Date.Date > currentDate.Date.AddDays(-4).Date && costSpendDetailModel.Date.Date <= currentDate.Date.Date;
 
-        <form id="@formId" action="/Spend/Update" method="POST" data-ajax="false">
-
-            <div class='@(editable ? "editable" : string.Empty) spend-row-detail'
-                 data-collapsed-icon="carat-r" data-expanded-icon="carat-d" data-role='collapsible' @(fisrt ? Html.Raw("data-collapsed='false'") : Html.Raw(""))>
-
+    <div class="spend-row" data-role="collapsible-set">
+        
+        @if (Credits.Any())
+        {
+            <div class='spend-row-detail'
+                 data-collapsed-icon="carat-r" data-expanded-icon="carat-d" data-role='collapsible' data-collapsed='false'>
                 <h3>
-                    @costSpendDetailModel.Date.ToString("dd.MM.yyyy") <span class="ui-li-count ui-body-inherit">@costSpendDetailModel.Spends.Sum(x => x.Value)</span>
+                    Активные кредиты <span class="ui-li-count ui-body-inherit"> @Credits.Count </span>
                 </h3>
 
-                <ul id="@costSpendDetailModel.DetailId" class="@(editable ? "editable" : string.Empty) custom-list" data-role="listview" data-inset="true">
-                    @foreach (var spend in costSpendDetailModel.Spends)
+                <ul class="credit-list custom-list" data-role="listview" data-inset="true">
+                    @foreach (SpendCreditInfoModel credit in Credits)
                     {
-                        if (spend.UserId == ViewBag.UserId)
-                        {
-                            string spendValueId = Guid.NewGuid().ToString().Replace("-", "");
-                            <li>
+                        <li>
+                            @credit.Comment
+                            <span class='credit-daysum-span ui-li-count ui-body-inherit'>@credit.Value Грн</span>
+                            <span class='credit-day-span ui-li-count ui-body-inherit'>Дней: @credit.DaysToFinish</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
 
-                                @(editable ?
+        @foreach (CostSpendDetailModel costSpendDetailModel in costSpends.Where(x => x.Date.Date <= currentDate.Date.Date).OrderByDescending(x => x.Date))
+        {
+            string formId = "update-spend-" + costSpendDetailModel.CostId.ToString().Replace("-", "");
+            int spendIterator = 0;
+            bool editable = costSpendDetailModel.Date.Date > currentDate.Date.AddDays(-4).Date && costSpendDetailModel.Date.Date <= currentDate.Date.Date;
+
+            <form id="@formId" action="/Spend/Update" method="POST" data-ajax="false">
+
+                <div class='@(editable ? "editable" : string.Empty) spend-row-detail'
+                     data-collapsed-icon="carat-r" data-expanded-icon="carat-d" data-role='collapsible' @(fisrt ? Html.Raw("data-collapsed='false'") : Html.Raw(""))>
+
+                    <h3>
+                        @costSpendDetailModel.Date.ToString("dd.MM.yyyy") <span class="ui-li-count ui-body-inherit">@costSpendDetailModel.Spends.Sum(x => x.Value)</span>
+                    </h3>
+
+                    <ul id="@costSpendDetailModel.DetailId" class="@(editable ? "editable" : string.Empty) custom-list" data-role="listview" data-inset="true">
+                        @foreach (var spend in costSpendDetailModel.Spends)
+                        {
+                            if (spend.UserId == ViewBag.UserId)
+                            {
+                                string spendValueId = Guid.NewGuid().ToString().Replace("-", "");
+                                <li>
+
+                                    @(editable ?
                                   Html.Raw($"<input name='addSpendModels[{spendIterator}].Comment' class='comment' type='text' autocomplete='off' value='{spend.Comment}'/>") :
                                   Html.Raw(spend.Comment ?? " "))
 
-                                <input type="hidden" name="addSpendModels[@spendIterator].CostId" value="@costSpends.First().CostId" />
-                                <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
-                                <input type="hidden" name="addSpendModels[@spendIterator].CostDetailId" value="@costSpendDetailModel.DetailId" />
+                                    <input type="hidden" name="addSpendModels[@spendIterator].CostId" value="@costSpends.First().CostId" />
+                                    <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
+                                    <input type="hidden" name="addSpendModels[@spendIterator].CostDetailId" value="@costSpendDetailModel.DetailId" />
 
-                                @(editable ?
+                                    @(editable ?
                                   Html.Raw($" <div class='spend-value'> <input id='{spendValueId}' name='addSpendModels[{spendIterator}].Value' class='sum' type='text' autocomplete='off' value='{spend.Value}'/> </div>") :
                                       Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
 
-                                @if (editable)
-                                {
-                                    <div class="formula-button">
-                                        <span onclick="ShowFormula('@spendValueId')" class="ui-btn-icon-notext ui-icon-plus"> </span>
-                                    </div>
-                                }
+                                    @if (editable)
+                                    {
+                                        <div class="formula-button">
+                                            <span onclick="ShowFormula('@spendValueId')" class="ui-btn-icon-notext ui-icon-plus"> </span>
+                                        </div>
+                                    }
 
-                            </li>
+                                </li>
 
-                            spendIterator++;
-                        }
-                        else
-                        {
-                            <li>
-                                @(editable ?
+                                spendIterator++;
+                            }
+                            else
+                            {
+                                <li>
+                                    @(editable ?
                                   Html.Raw($"<input class='input-readonly comment' type='text' value='{spend.Comment}'/>") :
                                   Html.Raw(spend.Comment ?? " "))
 
-                                @(editable ?
+                                    @(editable ?
                                   Html.Raw($"<input class='input-readonly sum' type='text' value='{spend.Value}'/>") :
                                   Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
-                            </li>
+                                </li>
+                            }
+
                         }
 
+                        <li id="add-button" data-icon="plus" class="add-spend">
+                            <div class="spend-sum">
+                                Сумма: @costSpendDetailModel.Spends.Sum(x => x.Value)
+                            </div>
+                            @if (editable)
+                            {
+                                <div onclick="Add('@costSpendDetailModel.DetailId')" class="spend-add ui-btn ui-input-btn ui-shadow"> Добавить </div>
+                                <div onclick="Credit('@costSpendDetailModel.DetailId')" class="spend-add ui-btn ui-input-btn ui-shadow"> В кредит </div>
+                            }
+                        </li>
+
+                    </ul>
+
+                    @if (editable && costSpendDetailModel.Spends.Any(x => x.UserId == ViewBag.UserId))
+                {
+                        <a data-role="button" class="margin10" data-icon="check" onclick="Update('@formId')">Сохранить</a>
                     }
 
-                    <li id="add-button" data-icon="plus" class="add-spend">
-                        <div class="spend-sum">
-                            Сумма: @costSpendDetailModel.Spends.Sum(x => x.Value)
-                        </div>
-                        @if (editable)
-                        {
-                            <div onclick="Add('@costSpendDetailModel.DetailId')" class="spend-add ui-btn ui-input-btn ui-shadow"> Добавить </div>
-                            <div onclick="Credit('@costSpendDetailModel.DetailId')" class="spend-add ui-btn ui-input-btn ui-shadow"> В кредит </div>
-                        }
-                    </li>
+                </div>
+            </form>
 
-                </ul>
+            fisrt = false;
+        }
 
-                @if (editable && costSpendDetailModel.Spends.Any(x => x.UserId == ViewBag.UserId))
-                {
-                    <a data-role="button" class="margin10" data-icon="check" onclick="Update('@formId')">Сохранить</a>
-                }
+    </div>
 
+
+    <div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="a" style="max-width: 600px;"
+         class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
+        <form id="add-spend" action="/Spend/Add" method="POST" data-ajax="false">
+            <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
+                <h1 class="ui-title" role="heading" aria-level="1">Траты</h1>
+            </div>
+            <div role="main" class="ui-corner-bottom ui-content">
+                <h3 class="ui-title">Добавить траты</h3>
+
+                <input type="hidden" name="CostId" value="@(costSpends.FirstOrDefault()?.CostId)" />
+                <input id="detailId" type="hidden" name="CostDetailId" value="" />
+                <input class='comment' name="Comment" type='text' value='' placeholder="Коментарий" autocomplete='off' />
+                <input class='sum' name="Value" type='text' value='' placeholder="Сумма" autocomplete='off' />
+
+                <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
+                   class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
+                <a href="#" onclick="Submit()" data-role="button" data-inline="true" data-transition="flow"
+                   data-theme="b" class="ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all" role="button">Добавить</a>
             </div>
         </form>
-
-        fisrt = false;
-    }
-
-</div>
+    </div>
 
 
-<div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="a" style="max-width: 600px;"
-     class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
-    <form id="add-spend" action="/Spend/Add" method="POST" data-ajax="false">
-        <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
-            <h1 class="ui-title" role="heading" aria-level="1">Траты</h1>
-        </div>
-        <div role="main" class="ui-corner-bottom ui-content">
-            <h3 class="ui-title">Добавить траты</h3>
+    <div data-role="popup" id="creditPopupDialog" data-overlay-theme="a" data-theme="a" style="max-width: 600px;"
+         class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
+        <form id="add-credit-spend" action="/Spend/AddCredit" method="POST" data-ajax="false">
+            <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
+                <h1 class="ui-title" role="heading" aria-level="1">Траты</h1>
+            </div>
+            <div role="main" class="ui-corner-bottom ui-content">
+                <h3 class="ui-title">Добавить траты</h3>
 
-            <input type="hidden" name="CostId" value="@(costSpends.FirstOrDefault()?.CostId)" />
-            <input id="detailId" type="hidden" name="CostDetailId" value="" />
-            <input class='comment' name="Comment" type='text' value='' placeholder="Коментарий" autocomplete='off' />
-            <input class='sum' name="Value" type='text' value='' placeholder="Сумма" autocomplete='off' />
+                <input type="hidden" name="CostId" value="@(costSpends.FirstOrDefault()?.CostId)" />
+                <input id="detailId" type="hidden" name="CostDetailId" value="" />
+                <input class='comment' name="Comment" type='text' value='' placeholder="Коментарий" autocomplete='off' />
+                <input class='sum' name="Value" type='text' value='' placeholder="Сумма" autocomplete='off' />
+                <input class='days' name="Days" type='text' value='' placeholder="Рассрочка дней" autocomplete='off' />
 
-            <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
-               class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
-            <a href="#" onclick="Submit()" data-role="button" data-inline="true" data-transition="flow"
-               data-theme="b" class="ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all" role="button">Добавить</a>
-        </div>
-    </form>
-</div>
+                <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
+                   class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
+                <a href="#" onclick="SubmitCredit()" data-role="button" data-inline="true" data-transition="flow"
+                   data-theme="b" class="ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all" role="button">Добавить</a>
+            </div>
+        </form>
+    </div>
 
+    <script type="text/javascript">
+        var selectedCostDetail;
+        var formulaInputId;
+        backUrl = "/Home/Index";
 
-<div data-role="popup" id="creditPopupDialog" data-overlay-theme="a" data-theme="a" style="max-width: 600px;"
-     class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
-    <form id="add-credit-spend" action="/Spend/AddCredit" method="POST" data-ajax="false">
-        <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
-            <h1 class="ui-title" role="heading" aria-level="1">Траты</h1>
-        </div>
-        <div role="main" class="ui-corner-bottom ui-content">
-            <h3 class="ui-title">Добавить траты</h3>
+        $(document).ready(function () {
+            $('.input-readonly').textinput('disable');
+        });
 
-            <input type="hidden" name="CostId" value="@(costSpends.FirstOrDefault()?.CostId)" />
-            <input id="detailId" type="hidden" name="CostDetailId" value="" />
-            <input class='comment' name="Comment" type='text' value='' placeholder="Коментарий" autocomplete='off' />
-            <input class='sum' name="Value" type='text' value='' placeholder="Сумма" autocomplete='off' />
-            <input class='days' name="Days" type='text' value='' placeholder="Рассрочка дней" autocomplete='off' />
+        function ShowFormula(id) {
+            $(".formula-input").val("");
+            formulaInputId = id;
 
-            <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
-               class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
-            <a href="#" onclick="SubmitCredit()" data-role="button" data-inline="true" data-transition="flow"
-               data-theme="b" class="ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all" role="button">Добавить</a>
-        </div>
-    </form>
-</div>
+            $("body").inpBox({
+                caption: "Формула",
+                head: "Написать формулу",
+                placeholder: "1 + 1",
+                firstButtonCaption: "Отменить",
+                secondButtonCaption: "Применить",
+                onSecondButton: function (data) {
+                    CalculateFormula(data);
+                }
+            });
+        }
 
-<script type="text/javascript">
-    var selectedCostDetail;
-    var formulaInputId;
-    backUrl = "/Home/Index";
-
-    $(document).ready(function () {
-        $('.input-readonly').textinput('disable');
-    });
-
-    function ShowFormula(id) {
-        $(".formula-input").val("");
-        formulaInputId = id;
-
-        $("body").inpBox({
-            caption: "Формула",
-            head: "Написать формулу",
-            placeholder: "1 + 1",
-            firstButtonCaption: "Отменить",
-            secondButtonCaption: "Применить",
-            onSecondButton: function (data) {
-                CalculateFormula(data);
+        function CalculateFormula(data) {
+            try {
+                $("#" + formulaInputId).val(eval(data));
+                $("#popupDialogFormula").popup("close");
+            } catch (e) {
+                alert("Формула написана не верно!");
             }
-        });
-    }
-
-    function CalculateFormula(data) {
-        try {
-            $("#" + formulaInputId).val(eval(data));
-            $("#popupDialogFormula").popup("close");
-        } catch (e) {
-            alert("Формула написана не верно!");
-        }
-    }
-
-    function Update(id) {
-        showLoading();
-        setTimeout(function () {
-            $("#" + id).submit();
-        }, 500);
-    }
-
-    function Add(id) {
-        $("#popupDialog #detailId").val(id);
-        $("#popupDialog").popup();
-        $("#popupDialog").popup("open", {
-            transition: "pop",
-            positionTo: "window"
-        });
-    }
-
-    function Credit(id) {
-        $("#creditPopupDialog #detailId").val(id);
-        $("#creditPopupDialog").popup();
-        $("#creditPopupDialog").popup("open", {
-            transition: "pop",
-            positionTo: "window"
-        });
-    }
-
-    
-
-    function Submit() {
-        var formula = $("#popupDialog div[role=main] input.sum").val();
-
-        try {
-            var sum = eval(formula);
-            $("#popupDialog div[role=main] input.sum").val(sum);
-        } catch (e) {
-            alert("Формула написана не верно!");
-            return;
         }
 
-        showLoading();
-        $("#popupDialog").fadeOut(300);
-        setTimeout(function () {
-            $("#add-spend").submit();
-        }, 500);
-    }
-
-    function SubmitCredit() {
-        var formula = $("#creditPopupDialog div[role=main] input.sum").val();
-        var daysInput = $("#creditPopupDialog div[role=main] input.days").val();
-        var days = 0;
-
-        try {
-            var sum = eval(formula);
-            days = eval(daysInput);
-            $("#creditPopupDialog div[role=main] input.sum").val(sum);
-        } catch (e) {
-            alert("Формула написана не верно!");
-            return;
-        }
-
-        if (days === undefined || (days > 10 && days < 2)) {
-            alert("Рассрочка дней должна быть больше 2х, и не более 10 дней.");
-            return;
-        }
-
-        var message = "Внимание указанная сумма будет заделана на указанное кол-во дней." +
-            " И эта сумма будет вычитана из суммы указанных дней автоматически. "+
-            " Изменить кредит невозможно! Возможно только изменять суммы указанные на каждый день." +
-            " Вы согласны продолжить ?";
-
-        if (confirm(message)) {
+        function Update(id) {
             showLoading();
-            $("#creditPopupDialog").fadeOut(300);
             setTimeout(function () {
-                $("#add-credit-spend").submit();
+                $("#" + id).submit();
             }, 500);
         }
-    }
 
-</script>
+        function Add(id) {
+            $("#popupDialog #detailId").val(id);
+            $("#popupDialog").popup();
+            $("#popupDialog").popup("open", {
+                transition: "pop",
+                positionTo: "window"
+            });
+        }
+
+        function Credit(id) {
+            $("#creditPopupDialog #detailId").val(id);
+            $("#creditPopupDialog").popup();
+            $("#creditPopupDialog").popup("open", {
+                transition: "pop",
+                positionTo: "window"
+            });
+        }
+
+
+
+        function Submit() {
+            var formula = $("#popupDialog div[role=main] input.sum").val();
+
+            try {
+                var sum = eval(formula);
+                $("#popupDialog div[role=main] input.sum").val(sum);
+            } catch (e) {
+                alert("Формула написана не верно!");
+                return;
+            }
+
+            showLoading();
+            $("#popupDialog").fadeOut(300);
+            setTimeout(function () {
+                $("#add-spend").submit();
+            }, 500);
+        }
+
+        function SubmitCredit() {
+            var formula = $("#creditPopupDialog div[role=main] input.sum").val();
+            var daysInput = $("#creditPopupDialog div[role=main] input.days").val();
+            var days = 0;
+
+            try {
+                var sum = eval(formula);
+                days = eval(daysInput);
+                $("#creditPopupDialog div[role=main] input.sum").val(sum);
+            } catch (e) {
+                alert("Формула написана не верно!");
+                return;
+            }
+
+            if (days === undefined || (days > 10 && days < 2)) {
+                alert("Рассрочка дней должна быть больше 2х, и не более 10 дней.");
+                return;
+            }
+
+            var message = "Внимание указанная сумма будет заделана на указанное кол-во дней." +
+                " И эта сумма будет вычитана из суммы указанных дней автоматически. " +
+                " Изменить кредит невозможно! Возможно только изменять суммы указанные на каждый день." +
+                " Вы согласны продолжить ?";
+
+            if (confirm(message)) {
+                showLoading();
+                $("#creditPopupDialog").fadeOut(300);
+                setTimeout(function () {
+                    $("#add-credit-spend").submit();
+                }, 500);
+            }
+        }
+
+    </script>
