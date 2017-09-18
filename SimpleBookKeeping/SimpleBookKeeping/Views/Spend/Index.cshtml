@@ -11,9 +11,8 @@
 }
 
 @*@Styles.Render("~/Content/site/spend")*@
+
 <link rel="stylesheet" type="text/css" href="/Content/site/spend.css">
-
-
 
     <div class="spend-row" data-role="collapsible-set">
         
@@ -61,9 +60,13 @@
                                 string spendValueId = Guid.NewGuid().ToString().Replace("-", "");
                                 <li>
 
-                                    @(editable ?
+                                    @*@(editable ?
                                   Html.Raw($"<input name='addSpendModels[{spendIterator}].Comment' class='comment' type='text' autocomplete='off' value='{spend.Comment}'/>") :
-                                  Html.Raw(spend.Comment ?? " "))
+                                  Html.Raw(spend.Comment ?? " "))*@
+                                    
+                                    @(editable ?
+                                          Html.Raw($" <textarea name='addSpendModels[{spendIterator}].Comment' class='tacomment' autocomplete='off' >{spend.Comment}</textarea>") :
+                                          Html.Raw($"<p class='comment'>{spend.Comment}</p>" ?? " "))
 
                                     <input type="hidden" name="addSpendModels[@spendIterator].CostId" value="@costSpends.First().CostId" />
                                     <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
@@ -89,7 +92,7 @@
                                 <li>
                                     @(editable ?
                                   Html.Raw($"<input class='input-readonly comment' type='text' value='{spend.Comment}'/>") :
-                                  Html.Raw(spend.Comment ?? " "))
+                                  Html.Raw($"<p>{spend.Comment}</p>" ?? " "))
 
                                     @(editable ?
                                   Html.Raw($"<input class='input-readonly sum' type='text' value='{spend.Value}'/>") :

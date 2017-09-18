@@ -78,3 +78,14 @@ li.add-spend div{
 .credit-day-span {
     margin-top: -25px;
 }
+
+textarea.tacomment {
+    width: 65%;
+    display: table-cell;
+    vertical-align: top;
+}
+
+p.comment {
+    white-space: normal !important; 
+    font-size: 14px !important;
+}

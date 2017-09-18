@@ -18,14 +18,14 @@ namespace SimpleBookKeeping.Helpers
             IReadOnlyCollection<PlanCostsModel> planCosts;
 
             var mediator = MvcApp.Unity.Resolve<IMediator>();
-            try
-            {
+            //try
+            //{
                 planCosts = mediator.Send(new GetActivePlanCostsQuery { UserId = userId });
-            }
-            catch (Exception)
-            {
-                planCosts = new List<PlanCostsModel>();
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    planCosts = new List<PlanCostsModel>();
+            //}
             return planCosts.OrderBy(x=>x.Name).ToList();
         }
     }

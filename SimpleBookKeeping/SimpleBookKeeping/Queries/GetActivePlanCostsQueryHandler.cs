@@ -24,7 +24,7 @@ namespace SimpleBookKeeping.Queries
 
                 plans.AddRange(plansByCreator);
                 plans.AddRange(plansByMember.Where(x=>x.Deleted == false));
-
+                
                 planCostsModels.AddRange(AutoMapperConfig.Mapper.Map<List<PlanCostsModel>>(plans.Distinct()));
             }
             return planCostsModels;

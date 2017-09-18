@@ -408,6 +408,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Database\StoredProcedures\ActivePlans.sql" />
+    <Content Include="Database\StoredProcedures\CostList.sql" />
+    <Content Include="Database\StoredProcedures\SpendsSumByPlan.sql" />
     <Content Include="Global.asax" />
     <Content Include="hibernate.cfg.xml">
       <Generator>ResXFileCodeGenerator</Generator>

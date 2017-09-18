@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MediatR;
 using NHibernate;
+using NHibernate.Transform;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
 using SimpleBookKeeping.Models;
@@ -27,7 +28,7 @@ namespace SimpleBookKeeping.Queries
                 {
                     throw new Exception("GetPlanStatusQuery. Plan not found.");
                 }
-                var costs = plan.Costs.Where(x => x.Deleted == false).ToList();
+                //var costs = plan.Costs.Where(x => x.Deleted == false).ToList();
 
                 var passedDays = (DateTime.Now.Date - plan.Start.Date).Days;
                 var totalDays = (plan.End.Date - plan.Start.Date).Days;
@@ -35,39 +36,16 @@ namespace SimpleBookKeeping.Queries
                 planStatusModel.Id = plan.Id;
                 planStatusModel.Name = plan.Name;
                 planStatusModel.Progress = passedDays * 100 / totalDays;
-                
-                foreach (var cost in costs.OrderBy(x => x.Name))
-                {
-                    //NHibernateUtil.Initialize(cost.CostDetails);
 
-                    int balance = 0;
-                    // (That you can spend) - (you spend)
-                    foreach (var costDetail in cost.CostDetails.OrderBy(x=>x.Date))
-                    {
-                        if (costDetail.Date.Date <= DateTime.Now.Date)
-                        {
-                            var sum = costDetail.Spends.Sum(x => x.Value);
-                            allSpend += sum;
-                            balance += costDetail.Value - sum;
-                        }
-                    }
+                var list = session.CreateSQLQuery($"exec dbo.CostList @Plan='{plan.Id}'")
+                    .SetResultTransformer(Transformers.AliasToBean<CostStatusModel>()).List<CostStatusModel>();
 
-                    costStatusModels.Add(new CostStatusModel
-                    {
-                        Id = cost.Id,
-                        Name = cost.Name,
-                        Balance = balance
-                    });
-                }
+                var allSpends = session.CreateSQLQuery($"exec [dbo].[SpendsSumByPlan] @Plan='{plan.Id}'")
+                    .AddScalar("Sum", NHibernateUtil.Int32).List<int>();
 
+                costStatusModels.AddRange(list.OrderBy(x => x.Name).ToList());
                 // Balance on start minus sum of planed costs
-                planStatusModel.Rest = plan.Balance - allSpend;
-                planStatusModel.BalanceToEnd = plan.Balance - costs.Sum(x => x.CostDetails.Sum(d => d.Value));
-                if (planStatusModel.Rest < 0)
-                {
-                    // If we exceed the plan, we must take away this exceed sum.
-                    planStatusModel.BalanceToEnd += planStatusModel.Rest;
-                }
+                planStatusModel.Rest = plan.Balance - allSpends.First();
                 planStatusModel.Balance = costStatusModels.Sum(x => x.Balance);
             }
 
