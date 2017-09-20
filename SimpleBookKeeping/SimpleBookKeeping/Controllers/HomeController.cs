@@ -42,11 +42,7 @@ namespace SimpleBookKeeping.Controllers
 
         public ActionResult Test()
         {
-            var id = Guid.NewGuid().ToString();
-            var file = @"E:\temp\DC PDF.zip";
-
-            FileStorage storage = new FileStorage();
-            storage.Save(id, System.IO.File.OpenRead(file));
+            
 
             return View();
         }
