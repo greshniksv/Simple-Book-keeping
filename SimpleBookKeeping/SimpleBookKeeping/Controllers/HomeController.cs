@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MediatR;
@@ -6,6 +7,7 @@ using SimpleBookKeeping.Queries;
 using Microsoft.Practices.Unity;
 using SimpleBookKeeping.Extensions;
 using SimpleBookKeeping.Models;
+using SimpleBookKeeping.Unility;
 
 namespace SimpleBookKeeping.Controllers
 {
@@ -37,5 +39,17 @@ namespace SimpleBookKeeping.Controllers
 
             return View(planStatusModels.OrderBy(x=>x.Name).ToList());
         }
+
+        public ActionResult Test()
+        {
+            var id = Guid.NewGuid().ToString();
+            var file = @"E:\temp\DC PDF.zip";
+
+            FileStorage storage = new FileStorage();
+            storage.Save(id, System.IO.File.OpenRead(file));
+
+            return View();
+        }
+
     }
 }
