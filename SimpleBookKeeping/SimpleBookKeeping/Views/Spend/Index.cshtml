@@ -1,4 +1,5 @@
 ﻿@using System.Collections
+@using System.Web.Razor.Generator
 @using SimpleBookKeeping.Models
 @model IList<CostSpendDetailModel>
 @{
@@ -13,6 +14,8 @@
 @*@Styles.Render("~/Content/site/spend")*@
 
 <link rel="stylesheet" type="text/css" href="/Content/site/spend.css">
+<script type="text/javascript" src="../../Scripts/plupload-3.0-beta1/js/plupload.min.js"></script>
+<script type="text/javascript" src="../../Scripts/plupload-3.0-beta1/js/i18n/ru.js"></script>
 
     <div class="spend-row" data-role="collapsible-set">
         
@@ -110,6 +113,10 @@
                             {
                                 <div onclick="Add('@costSpendDetailModel.DetailId')" class="spend-add ui-btn ui-input-btn ui-shadow"> Добавить </div>
                                 <div onclick="Credit('@costSpendDetailModel.DetailId')" class="spend-add ui-btn ui-input-btn ui-shadow"> В кредит </div>
+                                
+                                <div id="browse" class="spend-add ui-btn ui-input-btn ui-shadow"> Фото </div>
+                                <ul id="filelist"></ul>
+                                <div id="start-upload" class="spend-add ui-btn ui-input-btn ui-shadow"> Грузануть </div>
                             }
                         </li>
 
@@ -182,6 +189,44 @@
 
         $(document).ready(function () {
             $('.input-readonly').textinput('disable');
+
+            var uploader = new plupload.Uploader({
+                browse_button: 'browse', // this can be an id of a DOM element or the DOM element itself
+                url: '@Url.Content("~/HttpHandler/UploadFileHandler.ashx")',
+                chunk_size: '200kb',
+                max_retries: 10,
+                multipart_params : {
+                    "spend": "value1",
+                    "name2" : "value2"
+                }
+            });
+
+            uploader.init();
+
+            uploader.bind('FilesAdded', function (up, files) {
+                var html = '';
+                plupload.each(files, function (file) {
+                    html += '<li id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></li>';
+                });
+                document.getElementById('filelist').innerHTML += html;
+            });
+
+            uploader.bind('UploadProgress', function (up, file) {
+                document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + "%</span>";
+            });
+
+            uploader.bind('Error', function (up, err) {
+                alert("\nError #" + err.code + ": " + err.message);
+                //document.getElementById('console').innerHTML += "\nError #" + err.code + ": " + err.message;
+            });
+
+            uploader.bind('BeforeUpload', function(up, files) {
+                up.multipart_params.spend = "bla";
+            });
+
+            document.getElementById('start-upload').onclick = function () {
+                uploader.start();
+            };
         });
 
         function ShowFormula(id) {
@@ -233,8 +278,6 @@
                 positionTo: "window"
             });
         }
-
-
 
         function Submit() {
             var formula = $("#popupDialog div[role=main] input.sum").val();
