@@ -40,12 +40,5 @@ namespace SimpleBookKeeping.Controllers
             return View(planStatusModels.OrderBy(x=>x.Name).ToList());
         }
 
-        public ActionResult Test()
-        {
-            
-
-            return View();
-        }
-
     }
 }

@@ -24,6 +24,57 @@
     display: none;
 }
 
+.load-overlay {
+    background-color: #282828;
+    opacity: 0.9;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1000;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    /*background-image: url('/Content/images/ajax-loader.gif');
+    background-position: center;
+    background-repeat: no-repeat;*/
+    display: none;
+}
+
+.load-overlay > div {
+    padding-top: 80px;
+}
+
+.load-overlay > div > div > p {
+    font-weight: bold;
+    margin: 0px;
+    margin-left: 20px;
+    color: lightgray;
+}
+
+.image-overlay {
+    background-color: lightgrey;
+    opacity: 1;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1000;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    /*background-image: url('/Content/images/ajax-loader.gif');
+    background-position: center;
+    background-repeat: no-repeat;*/
+    display: none;
+}
+
+.image-overlay > div {
+    padding-top: 60px;
+}
+
+.image-overlay > div > img {
+    width: 100%;
+}
+
 .user-name {
     display: inline-block;
     float: right;

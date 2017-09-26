@@ -19,7 +19,7 @@ namespace SimpleBookKeeping.Queries
             using (var session = Db.Session)
             {
                 // Note: Find by creator and by member in plan.
-                var plansByCreator = session.QueryOver<Plan>().Where(x => x.User.Id == message.UserId && x.Deleted == false).List();
+                var plansByCreator = session.QueryOver<Plan>().Where(x => x.User.Id == message.UserId && x.Deleted == false).List<Plan>();
                 var plansByMember = session.QueryOver<PlanMember>().Where(x => x.User.Id == message.UserId).Select(x=>x.Plan).List<Plan>();
 
                 plans.AddRange(plansByCreator);
@@ -27,6 +27,7 @@ namespace SimpleBookKeeping.Queries
                 
                 planCostsModels.AddRange(AutoMapperConfig.Mapper.Map<List<PlanCostsModel>>(plans.Distinct()));
             }
+
             return planCostsModels;
         }
     }

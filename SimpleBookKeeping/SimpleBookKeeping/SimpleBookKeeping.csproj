@@ -125,6 +125,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -421,6 +422,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Content\site\spend_image.css" />
     <Content Include="Database\StoredProcedures\ActivePlans.sql" />
     <Content Include="Database\StoredProcedures\CostList.sql" />
     <Content Include="Database\StoredProcedures\SpendsSumByPlan.sql" />
@@ -459,6 +461,15 @@
     <Content Include="Scripts\jquery.mobile.datepicker.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\PhotoSwipe\default-skin\default-skin.css" />
+    <Content Include="Scripts\PhotoSwipe\default-skin\default-skin.png" />
+    <Content Include="Scripts\PhotoSwipe\default-skin\default-skin.svg" />
+    <Content Include="Scripts\PhotoSwipe\default-skin\preloader.gif" />
+    <Content Include="Scripts\PhotoSwipe\photoswipe-ui-default.js" />
+    <Content Include="Scripts\PhotoSwipe\photoswipe-ui-default.min.js" />
+    <Content Include="Scripts\PhotoSwipe\photoswipe.css" />
+    <Content Include="Scripts\PhotoSwipe\photoswipe.js" />
+    <Content Include="Scripts\PhotoSwipe\photoswipe.min.js" />
     <Content Include="Scripts\plupload-2.3.3\examples\custom.html" />
     <Content Include="Scripts\plupload-2.3.3\examples\events.html" />
     <Content Include="Scripts\plupload-2.3.3\examples\jquery\all_runtimes.html" />
@@ -609,6 +620,7 @@
     <Compile Include="Models\CostStatusModel.cs" />
     <Compile Include="Models\PlanCostsModel.cs" />
     <Compile Include="Models\PlanStatusModel.cs" />
+    <Compile Include="Models\SimpleCostModel.cs" />
     <Compile Include="Models\SpendCreditInfoModel.cs" />
     <Compile Include="Models\SpendModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -621,10 +633,14 @@
     <Compile Include="Queries\GetActiveCostSpendDetailsQueryHandler.cs" />
     <Compile Include="Queries\GetActivePlanCostsQuery.cs" />
     <Compile Include="Queries\GetActivePlanCostsQueryHandler.cs" />
+    <Compile Include="Queries\GetCostBySpendQuery.cs" />
+    <Compile Include="Queries\GetCostBySpendQueryHandler.cs" />
     <Compile Include="Queries\GetCreditSpends.cs" />
     <Compile Include="Queries\GetCreditSpendsHandler.cs" />
     <Compile Include="Queries\GetPlanStatusQuery.cs" />
     <Compile Include="Queries\GetPlanStatusQueryHandler.cs" />
+    <Compile Include="Queries\GetSpendQuery.cs" />
+    <Compile Include="Queries\GetSpendQueryHandler.cs" />
     <Compile Include="Queries\GetSpendsQuery.cs" />
     <Compile Include="Queries\GetSpendsQueryHandler.cs" />
     <Compile Include="Queries\GetCostQuery.cs" />
@@ -659,6 +675,7 @@
     <Content Include="Scripts\plupload-2.3.3\examples\jquery\s3.php" />
     <Content Include="Scripts\plupload-2.3.3\examples\upload.php" />
     <Content Include="Scripts\plupload-2.3.3\readme.md" />
+    <Content Include="Views\Spend\Image.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

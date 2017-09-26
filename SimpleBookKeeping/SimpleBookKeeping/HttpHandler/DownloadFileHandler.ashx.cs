@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
+using SimpleBookKeeping.Unility;
 
 namespace SimpleBookKeeping.HttpHandler
 {
@@ -13,16 +11,15 @@ namespace SimpleBookKeeping.HttpHandler
 
         public void ProcessRequest(HttpContext context)
         {
-            context.Response.ContentType = "text/plain";
-            context.Response.Write("Hello World");
+            var file = context.Request["f"];
+            FileStorage fileStorage = new FileStorage();
+            var fileInfo = fileStorage.Get(file);
+            
+            context.Response.ContentType = "application/octet-stream";
+            context.Response.AddHeader("Content-Disposition", "filename=\""+ file + "\";");
+            context.Response.WriteFile(fileInfo.FullName);
         }
 
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsReusable => false;
     }
 }

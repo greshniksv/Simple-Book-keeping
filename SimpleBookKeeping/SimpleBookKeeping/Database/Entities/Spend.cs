@@ -43,5 +43,11 @@ namespace SimpleBookKeeping.Database.Entities
             get;
             set;
         }
+
+        public virtual string Image
+        {
+            get;
+            set;
+        }
     }
 }

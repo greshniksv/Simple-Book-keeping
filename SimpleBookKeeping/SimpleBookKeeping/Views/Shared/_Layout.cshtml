@@ -66,7 +66,7 @@
     </div>
 
     <div data-role="footer">
-        <a onclick="doBack()" data-icon="back">Назад</a>
+        <a id="goBack" onclick="doBack()" data-icon="back">Назад</a>
         <a href="#" data-icon="user">
            @(HttpContext.Current?.User?.Identity.Name)
         </a>

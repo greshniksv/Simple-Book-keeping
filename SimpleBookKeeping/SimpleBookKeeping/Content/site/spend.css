@@ -110,3 +110,22 @@ div.takephoto-button div.progressbar {
 div.takephoto-carat h3{
     margin-bottom: 0px;
 }
+
+div.photo-row {
+    position: inherit;
+    margin: 5px;
+    padding-bottom: 50px;
+    width: 80%;
+    height: 5px;
+    margin-top: 15px;
+}
+
+div.photo-row div:first-child {
+    position: inherit;
+    margin-left: 100px;
+}
+
+div.photo-row div:last-child {
+    position: inherit;
+    margin-right: 80px;
+}

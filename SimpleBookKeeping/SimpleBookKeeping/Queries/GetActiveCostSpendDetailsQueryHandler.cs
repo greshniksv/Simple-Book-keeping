@@ -58,13 +58,13 @@ namespace SimpleBookKeeping.Queries
                             var spendModels = AutoMapperConfig.Mapper.Map<IList<SpendModel>>(costDetail.Spends.OrderBy(x => x.OrderId));
 
                             // Replace other user comment
-                            foreach (var spendModel in spendModels)
-                            {
-                                if (spendModel.UserId != message.UserId)
-                                {
-                                    spendModel.Comment = GetUser(spendModel.UserId).Name;
-                                }
-                            }
+                            //foreach (var spendModel in spendModels)
+                            //{
+                            //    if (spendModel.UserId != message.UserId)
+                            //    {
+                            //        spendModel.Comment = GetUser(spendModel.UserId).Name;
+                            //    }
+                            //}
 
                             ((List<SpendModel>)item.Spends).AddRange(spendModels);
 

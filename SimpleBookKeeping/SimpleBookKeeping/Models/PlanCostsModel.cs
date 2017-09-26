@@ -18,6 +18,6 @@ namespace SimpleBookKeeping.Models
 
         public IList<Guid> UserMembers { get; set; }
 
-        public IList<Cost> Costs { get; set; }
+        public IList<SimpleCostModel> Costs { get; set; }
     }
 }

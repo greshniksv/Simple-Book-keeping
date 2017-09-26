@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace SimpleBookKeeping.Unility
 {
@@ -11,20 +12,21 @@ namespace SimpleBookKeeping.Unility
         {
             _dbPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/Files/");
         }
-        public FileStream Create(string id)
+        public FileInfo Create(string filename)
         {
-            if (!Directory.Exists(_dbPath))
-            {
-                Directory.CreateDirectory(_dbPath);
-            }
-
-            var file = Path.Combine(_dbPath, id);
-            return File.Open(file, FileMode.Create);
+            var file = GetFilePath(filename);
+            File.Create(file);
+            return new FileInfo(file);
         }
 
-        public void Move(string id, string path)
+        public string GanerateFileName()
         {
-            var file = Path.Combine(_dbPath, id);
+            return Guid.NewGuid().ToString();
+        }
+
+        public void Move(string filename, string path)
+        {
+            var file = GetFilePath(filename);
             if (File.Exists(file))
             {
                 File.Delete(file);
@@ -32,23 +34,53 @@ namespace SimpleBookKeeping.Unility
             File.Move(path, file);
         }
 
-        public FileStream Get(string id)
+        public FileInfo Get(string filename)
         {
-            var file = Path.Combine(_dbPath, id);
+            var file = GetFilePath(filename);
             if (!File.Exists(file))
             {
                 throw new Exception("File not found");
             }
-            return File.Open(file, FileMode.Open);
+            return new FileInfo(file);
         }
 
-        public void Delete(string id)
+        public FileInfo Find(string id)
         {
-            var file = Path.Combine(_dbPath, id);
+            var file = GetFilePath(id);
+
+            var dir = Path.GetDirectoryName(file);
+            if (dir == null)
+            {
+                return null;
+            }
+
+            var fileItem = Directory.GetFiles(dir).FirstOrDefault(x => Path.GetFileNameWithoutExtension(x) == id);
+            if (fileItem == null)
+            {
+                throw new Exception("File not found");
+            }
+
+            return new FileInfo(fileItem);
+        }
+
+        public void Delete(string filename)
+        {
+            var file = GetFilePath(filename);
             if (File.Exists(file))
             {
                 File.Delete(file);
             }
+        }
+
+        private string GetFilePath(string filename)
+        {
+            var item = filename.Trim(' ');
+            var path = Path.Combine(_dbPath, item[0].ToString(), item[1].ToString());
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+            return Path.Combine(path, filename);
         }
     }
 }

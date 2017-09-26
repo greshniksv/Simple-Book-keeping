@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="SimpleBookKeeping" namespace="SimpleBookKeeping.Database.Entities">
 
-  <class name="Plan" table="Plans" lazy="true">
+  <class name="Plan" table="Plans" lazy="false">
     <id name="Id" column="id">
       <generator class="guid" />
     </id>
@@ -19,7 +19,7 @@
       <one-to-many class="Cost" />
     </bag>
 
-    <bag name="PlanMembers" cascade="none" lazy="true">
+    <bag name="PlanMembers" cascade="none" lazy="false">
       <key column="plan_id" />
       <one-to-many class="PlanMember" />
     </bag>
