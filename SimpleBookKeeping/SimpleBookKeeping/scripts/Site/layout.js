@@ -1,4 +1,13 @@
 ﻿
+var Layout = {
+    doBack: function () {
+        if (typeof backUrl != "undefined") {
+            redirect(backUrl);
+        }
+    }
+}
+
+
 var saveFunc;
 var backUrl;
 

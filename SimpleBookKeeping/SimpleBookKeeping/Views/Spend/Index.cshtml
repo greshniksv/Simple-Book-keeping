@@ -250,6 +250,16 @@
 
     $(document).ready(function() {
 
+        Layout.doBack = function () {
+            if ($(".image-overlay").is(":visible")) {
+                $(".image-overlay").fadeOut(500);
+            } else {
+                if (typeof backUrl != "undefined") {
+                    redirect(backUrl);
+                }
+            }
+        };
+
         $('.input-readonly').textinput('disable');
 
         uploader = new plupload.Uploader({
@@ -321,16 +331,6 @@
             }
         });
     });
-
-    function doBack() {
-        if ($(".image-overlay").is(":visible")) {
-            $(".image-overlay").fadeOut(500);
-        } else {
-            if (typeof backUrl != "undefined") {
-                redirect(backUrl);
-            }
-        }
-    }
 
     function ShowImage(control) {
         var image = $(control).attr("image");
