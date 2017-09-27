@@ -92,7 +92,9 @@
 
                                     <div class="photo-row">
                                         <div>
-                                            <span onclick="ShowImage(this)" image="@spend.Image" spend="@spend.Id" class="ui-btn-icon-notext ui-icon-eye"> </span>
+                                            @if (!string.IsNullOrEmpty(spend.Image)) { 
+                                                <span onclick="ShowImage(this)" image="@spend.Image" spend="@spend.Id" class="ui-btn-icon-notext ui-icon-eye"> </span>
+                                            }
                                         </div>
                                         <div>
                                             <span id="browse_@spendValueId" image="@imageId" spend="@spend.Id" class="pickfiles ui-btn-icon-notext ui-icon-camera"> </span>
