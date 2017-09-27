@@ -98,29 +98,7 @@
                                             <span id="browse_@spendValueId" image="@imageId" spend="@spend.Id" class="pickfiles ui-btn-icon-notext ui-icon-camera"> </span>
                                         </div>
                                     </div>
-
-                                    @*<div class='takephoto-carat'
-                                         data-collapsed-icon="carat-r" data-expanded-icon="carat-d" data-role='collapsible' data-collapsed='true'>
-                                        <h3>
-                                            Загрузить фотку
-                                        </h3>
-
-                                        <ul class="credit-list custom-list" data-role="listview" data-inset="true">
-                                            <div class="takephoto-button">
-                                                <span id="browse_@spendValueId" spend="@spend.Id" class="pickfiles ui-btn-icon-notext ui-icon-camera"> </span>
-
-                                                <div class="progressbar">
-                                                    <div class="progress" style="width: 0%;"></div>
-                                                </div>
-                                            </div>
-                                        </ul>
-                                    </div>*@
-
                                 }
-
-                                @*<div id="browse" spend="@spend.Id" class="spend-add ui-btn ui-input-btn ui-shadow"> Фото </div>*@
-                                @*<ul id="filelist"></ul>*@
-                                @*<div id="start-upload" class="spend-add ui-btn ui-input-btn ui-shadow"> Грузануть </div>*@
 
                             </li>
 
@@ -167,6 +145,9 @@
 
 </div>
 
+@{
+    string addImageId = Guid.NewGuid().ToString().Replace("-", "");
+}
 
 <div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="a" style="max-width: 600px;"
      class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
@@ -179,12 +160,32 @@
 
             <input type="hidden" name="CostId" value="@(costSpends.FirstOrDefault()?.CostId)" />
             <input id="detailId" type="hidden" name="CostDetailId" value="" />
-            <input class='comment' name="Comment" type='text' value='' placeholder="Коментарий" autocomplete='off' />
-            <input class='sum' name="Value" type='text' value='' placeholder="Сумма" autocomplete='off' />
+            <textarea name='Comment' class='add_tacomment' autocomplete='off' placeholder="Коментарий"></textarea>
+            <input class='sum add_summ' name="Value" type='text' value='' placeholder="Сумма" autocomplete='off' />
+            <input type="hidden" id="@addImageId" name="Image" value="" />
+            
+            <div class="new-photo-row">
+                <div>
+                    <a id="browse_@addImageId" image="@addImageId" spend="none" 
+                       class="pickfiles" data-role="button" data-icon="camera" data-iconpos="notext">Photo</a>
+                </div>
+                <div>
+                    <input id="selectedFileName" type="text" readonly="readonly" disabled="disabled" />
+                </div>
+                <div>
+                    <a id="del_@addImageId" 
+                       class="delfiles" data-role="button" data-icon="delete" data-iconpos="notext">Photo</a>
+                </div>
+            </div>
+            <div class="add_progressbar">
+                <div class="progressbar">
+                    <div class="progress" style="width: 0%;"></div>
+                </div>
+            </div>
 
             <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="a"
                class="ui-link ui-btn ui-btn-a ui-btn-inline ui-shadow ui-corner-all" role="button">Отменить</a>
-            <a href="#" onclick="Submit()" data-role="button" data-inline="true" data-transition="flow"
+            <a href="#" onclick="SubmitUploader()" data-role="button" data-inline="true" data-transition="flow"
                data-theme="b" class="ui-link ui-btn ui-btn-b ui-btn-inline ui-shadow ui-corner-all" role="button">Добавить</a>
         </div>
     </form>
@@ -237,7 +238,6 @@
     var formulaInputId;
     var currentSpendImage;
     var currentSpendId;
-    //var currentProgressBar;
     var uploader;
     backUrl = "/Home/Index";
 
@@ -245,7 +245,6 @@
         var image = $(this).attr("image");
         currentSpendId = $(this).attr("spend");
         currentSpendImage = $("#" + image);
-        //currentProgressBar = $(this).parent().find("div.progress");
     });
 
     $(document).ready(function() {
@@ -270,6 +269,13 @@
             multipart_params: {
                 "FileName": "",
                 "Spend": ""
+            },
+            filters: {
+                mime_types: [
+                    { title: "Image files", extensions: "jpeg,jpg,gif,png,bmp" }
+                ],
+                max_file_size: "10mb",
+                prevent_duplicates: false
             }
         });
 
@@ -286,12 +292,17 @@
                     var newFileName = oldFileName.lastIndexOf('.') > -1
                         ? oldFileName.substr(0, oldFileName.lastIndexOf('.'))
                         : oldFileName;
-                    currentSpendImage.val(newFileName + extension);
+                    var newName = newFileName + extension;
+                    currentSpendImage.val(newName);
 
                     up.disableBrowse(true);
-                    setTimeout(function() { uploader.start(); }, 100);
 
-                    $("div.load-overlay").fadeIn(500);
+                    if (currentSpendId !== "none") {
+                        setTimeout(function() { uploader.start(); }, 100);
+                        $("div.load-overlay").fadeIn(500);
+                    } else {
+                        $("#selectedFileName").val(fileName);
+                    }
                 }
             });
 
@@ -318,17 +329,32 @@
             function(up, files) {
                 $("div.progress").css("width", "100%");
 
-                setTimeout(function() {
-                        $("div.load-overlay").fadeOut(500);
-                        location.reload();
-                    },
-                    1000);
+                if (currentSpendId !== "none") {
+                    setTimeout(function() {
+                            $("div.load-overlay").fadeOut(500);
+                            location.reload();
+                        },
+                        1000);
+                } else {
+                    $(".wait-overlay").fadeOut(500);
+                    Submit();
+                }
             });
 
         $("span.pickfiles").click(function() {
             if (confirm("Заменить фотографию ?")) {
                 $("#browse").trigger("click");
             }
+        });
+
+        $("a.pickfiles").click(function () {
+            $("#browse").trigger("click");
+        });
+
+        $("a.delfiles").click(function () {
+            uploader.splice(0, 1);
+            uploader.disableBrowse(false);
+            $("#selectedFileName").val("");
         });
     });
 
@@ -380,6 +406,7 @@
     }
 
     function Add(id) {
+        $(".add_progressbar").hide();
         $("#popupDialog #detailId").val(id);
         $("#popupDialog").popup();
         $("#popupDialog").popup("open", {
@@ -395,6 +422,14 @@
             transition: "pop",
             positionTo: "window"
         });
+    }
+
+    function SubmitUploader() {
+        $(".wait-overlay").css("z-index", "5000");
+        $(".wait-overlay").fadeIn(500);
+        $(".add_progressbar").show();
+
+        uploader.start();
     }
 
     function Submit() {

@@ -77,7 +77,7 @@ ul.custom-list a {
 }
 
 #popupDialog div[role=main] div.ui-input-text {
-    min-width: 300px;
+    /*min-width: 300px;*/
 }
 
 #popupDialogInpBox div[role=main] a:last-child {
@@ -85,7 +85,7 @@ ul.custom-list a {
 }
 
 #popupDialogInpBox div[role=main] div.ui-input-text {
-    min-width: 300px;
+    /*min-width: 300px;*/
 }
 
 #popupDialogInputTextDiv {

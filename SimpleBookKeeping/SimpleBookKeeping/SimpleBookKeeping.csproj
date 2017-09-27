@@ -567,6 +567,8 @@
     <Compile Include="Authentication\IAuthentication.cs" />
     <Compile Include="Authentication\UserIndentity.cs" />
     <Compile Include="Authentication\UserProvider.cs" />
+    <Compile Include="Commands\Clear\ClearPlansCommand.cs" />
+    <Compile Include="Commands\Clear\ClearDatabaseCommandHandler.cs" />
     <Compile Include="Commands\RemoveCostCommand.cs" />
     <Compile Include="Commands\RemoveCostCommandHandler.cs" />
     <Compile Include="Commands\SaveCostCommand.cs" />

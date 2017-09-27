@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -12,20 +13,15 @@ namespace SimpleBookKeeping.Unility
         {
             _dbPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/App_Data/Files/");
         }
-        public FileInfo Create(string filename)
-        {
-            var file = GetFilePath(filename);
-            File.Create(file);
-            return new FileInfo(file);
-        }
-
-        public string GanerateFileName()
-        {
-            return Guid.NewGuid().ToString();
-        }
-
+        
         public void Move(string filename, string path)
         {
+            var list = Find(Path.GetFileNameWithoutExtension(filename));
+            foreach (var fileInfo in list)
+            {
+                fileInfo.Delete();
+            }
+
             var file = GetFilePath(filename);
             if (File.Exists(file))
             {
@@ -44,7 +40,7 @@ namespace SimpleBookKeeping.Unility
             return new FileInfo(file);
         }
 
-        public FileInfo Find(string id)
+        public List<FileInfo> Find(string id)
         {
             var file = GetFilePath(id);
 
@@ -54,13 +50,13 @@ namespace SimpleBookKeeping.Unility
                 return null;
             }
 
-            var fileItem = Directory.GetFiles(dir).FirstOrDefault(x => Path.GetFileNameWithoutExtension(x) == id);
+            var fileItem = Directory.GetFiles(dir).Where(x => Path.GetFileNameWithoutExtension(x) == id);
             if (fileItem == null)
             {
                 throw new Exception("File not found");
             }
 
-            return new FileInfo(fileItem);
+            return fileItem.Select(x=> new FileInfo(x)).ToList();
         }
 
         public void Delete(string filename)

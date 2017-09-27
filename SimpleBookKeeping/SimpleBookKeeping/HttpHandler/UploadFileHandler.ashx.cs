@@ -90,24 +90,28 @@ namespace SimpleBookKeeping.HttpHandler
                 // If upload is finished
                 if (chunks > 0 && chunk == chunks - 1)
                 {
-                    using (var session = Db.Session)
-                    using (var transaction = session.BeginTransaction())
+                    if (spendId != "none")
                     {
-                        try
+                        using (var session = Db.Session)
+                        using (var transaction = session.BeginTransaction())
                         {
-                            var spendGuid = Guid.Parse(spendId);
-                            Spend spend = session.QueryOver<Spend>().Where(x => x.Id == spendGuid).List().First() as Spend;
-                            if (spend != null)
+                            try
                             {
-                                spend.Image = imageId;
-                                session.SaveOrUpdate(spend);
+                                var spendGuid = Guid.Parse(spendId);
+                                Spend spend =
+                                    session.QueryOver<Spend>().Where(x => x.Id == spendGuid).List().First() as Spend;
+                                if (spend != null)
+                                {
+                                    spend.Image = imageId;
+                                    session.SaveOrUpdate(spend);
+                                }
+                                transaction.Commit();
                             }
-                            transaction.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            transaction.Rollback();
-                            throw;
+                            catch (Exception)
+                            {
+                                transaction.Rollback();
+                                throw;
+                            }
                         }
                     }
 

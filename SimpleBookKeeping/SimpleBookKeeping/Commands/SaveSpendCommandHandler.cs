@@ -3,6 +3,7 @@ using System.Linq;
 using MediatR;
 using SimpleBookKeeping.Database;
 using SimpleBookKeeping.Database.Entities;
+using SimpleBookKeeping.Unility;
 
 namespace SimpleBookKeeping.Commands
 {
@@ -34,7 +35,8 @@ namespace SimpleBookKeeping.Commands
                             Comment = spendModel.Comment,
                             CostDetail = session.QueryOver<CostDetail>().Where(x => x.Id == spendModel.CostDetailId).List().First(),
                             Value = spendModel.Value,
-                            OrderId = costDetail.Spends.Count
+                            OrderId = costDetail.Spends.Count,
+                            Image = spendModel.Image
                         };
 
                         session.Save(spend);
@@ -45,6 +47,12 @@ namespace SimpleBookKeeping.Commands
 
                         if (spendModel.Value == 0 && spendModel.Comment == null)
                         {
+                            if (!string.IsNullOrEmpty(oldSpend.Image))
+                            {
+                                FileStorage storage = new FileStorage();
+                                storage.Delete(oldSpend.Image);
+                            }
+
                             // Remove Spend
                             session.Delete(oldSpend);
                         }

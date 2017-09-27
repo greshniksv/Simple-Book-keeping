@@ -5,6 +5,8 @@
 
 <a data-role="button" class="margin10" data-icon="check" onclick="CreateDB()">Создать БД</a>
 
+<a data-role="button" class="margin10" data-icon="check" onclick="ClearDB()">Очистить БД</a>
+
 @if (!string.IsNullOrEmpty(ViewBag.Error))
 {
     <div class="timer-fadein bs-callout bs-callout-danger">
@@ -34,6 +36,20 @@
             secondButtonCaption: "Создать",
             onSecondButton: function (data) {
                 redirect('/Database/CreateDatabase?password=' + data);
+            }
+        });
+    }
+
+    function ClearDB() {
+        $("body").inpBox({
+            password: true,
+            caption: "Чистка БД",
+            head: "Если вы хотите очистить БД введите 'clear'",
+            placeholder: "Ключ",
+            firstButtonCaption: "Отмена",
+            secondButtonCaption: "Очистить",
+            onSecondButton: function (data) {
+                redirect('/Database/Clear');
             }
         });
     }
