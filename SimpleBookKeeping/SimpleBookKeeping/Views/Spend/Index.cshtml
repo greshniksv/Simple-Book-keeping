@@ -44,14 +44,14 @@
 
     @foreach (CostSpendDetailModel costSpendDetailModel in costSpends.Where(x => x.Date.Date <= currentDate.Date.Date).OrderByDescending(x => x.Date))
     {
-        string formId = "update-spend-" + costSpendDetailModel.CostId.ToString().Replace("-", "");
+        string formId = "update-spend-" + costSpendDetailModel.CostId.ToString().Replace("-", string.Empty);
         int spendIterator = 0;
         bool editable = costSpendDetailModel.Date.Date > currentDate.Date.AddDays(-4).Date && costSpendDetailModel.Date.Date <= currentDate.Date.Date;
 
         <form id="@formId" action="/Spend/Update" method="POST" data-ajax="false">
 
             <div class='@(editable ? "editable" : string.Empty) spend-row-detail'
-                 data-collapsed-icon="carat-r" data-expanded-icon="carat-d" data-role='collapsible' @(fisrt ? Html.Raw("data-collapsed='false'") : Html.Raw(""))>
+                 data-collapsed-icon="carat-r" data-expanded-icon="carat-d" data-role='collapsible' @(fisrt ? Html.Raw("data-collapsed='false'") : Html.Raw(string.Empty))>
 
                 <h3>
                     @costSpendDetailModel.Date.ToString("dd.MM.yyyy") <span class="ui-li-count ui-body-inherit">@costSpendDetailModel.Spends.Sum(x => x.Value)</span>
@@ -60,65 +60,79 @@
                 <ul id="@costSpendDetailModel.DetailId" class="@(editable ? "editable" : string.Empty) custom-list" data-role="listview" data-inset="true">
                     @foreach (var spend in costSpendDetailModel.Spends)
                     {
-                        if (spend.UserId == ViewBag.UserId)
-                        {
-                            string spendValueId = Guid.NewGuid().ToString().Replace("-", "");
-                            string imageId = Guid.NewGuid().ToString().Replace("-", "");
+                        string spendValueId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+                        bool mySpend = spend.UserId == ViewBag.UserId;
+                        var comment = spend.Comment?.Replace(",", ", ") ?? string.Empty;
+                        string imageId = Guid.NewGuid().ToString().Replace("-", string.Empty);
 
-                            <li>
-
-                                @*@(editable ?
-                                    Html.Raw($"<input name='addSpendModels[{spendIterator}].Comment' class='comment' type='text' autocomplete='off' value='{spend.Comment}'/>") :
-                                    Html.Raw(spend.Comment ?? " "))*@
+                        <li>
+                            <div class="spend-default-row">
 
                                 @(editable ?
-                                          Html.Raw($" <textarea name='addSpendModels[{spendIterator}].Comment' class='tacomment' autocomplete='off' >{spend.Comment}</textarea>") :
-                                          Html.Raw($"<p class='comment'>{spend.Comment}</p>" ?? " "))
+                                      Html.Raw($" <textarea {(mySpend ? $"name='addSpendModels[{spendIterator}].Comment'" : string.Empty)}  " +
+                                               $"class='{(!mySpend ? "ui-disabled" : string.Empty)} tacomment' {(!mySpend ? "readonly:'readonly'" : string.Empty)} " +
+                                               $" autocomplete='off' >{comment}</textarea>") :
+                                      Html.Raw($"<p class='comment'>{comment}</p>"))
 
-                                <input type="hidden" name="addSpendModels[@spendIterator].CostId" value="@costSpends.First().CostId" />
-                                <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
-                                <input type="hidden" name="addSpendModels[@spendIterator].CostDetailId" value="@costSpendDetailModel.DetailId" />
-                                <input type="hidden" id="@imageId" name="addSpendModels[@spendIterator].Image" value="@spend.Image" />
+                                @if (mySpend)
+                                {
+                                    <input type="hidden" name="addSpendModels[@spendIterator].CostId" value="@costSpends.First().CostId" />
+                                    <input type="hidden" name="addSpendModels[@spendIterator].Id" value="@spend.Id" />
+                                    <input type="hidden" name="addSpendModels[@spendIterator].CostDetailId" value="@costSpendDetailModel.DetailId" />
+                                    <input type="hidden" id="@imageId" name="addSpendModels[@spendIterator].Image" value="@spend.Image" />
+                                }
 
                                 @(editable ?
-                                  Html.Raw($" <div class='spend-value'> <input id='{spendValueId}' name='addSpendModels[{spendIterator}].Value' class='sum' type='text' autocomplete='off' value='{spend.Value}'/> </div>") :
-                                      Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
+                                          Html.Raw($" <div class='spend-value'> <input id='{spendValueId}'  {(mySpend ? $"name='addSpendModels[{spendIterator}].Value'" : string.Empty)}  " +
+                                                   $"class='{(!mySpend ? "ui-disabled" : string.Empty)} sum' type='text' {(!mySpend ? "readonly:'readonly'" : string.Empty)} " +
+                                                   $"autocomplete='off' value='{spend.Value}'/> </div>") :
+                                          Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
 
-                                @if (editable)
+                                @if (editable && mySpend)
                                 {
                                     <div class="formula-button">
-                                        <span onclick="ShowFormula('@spendValueId')" class="ui-btn-icon-notext ui-icon-plus"> </span>
-                                    </div>
-
-                                    <div class="photo-row">
-                                        <div>
-                                            @if (!string.IsNullOrEmpty(spend.Image)) { 
-                                                <span onclick="ShowImage(this)" image="@spend.Image" spend="@spend.Id" class="ui-btn-icon-notext ui-icon-eye"> </span>
-                                            }
-                                        </div>
-                                        <div>
-                                            <span id="browse_@spendValueId" image="@imageId" spend="@spend.Id" class="pickfiles ui-btn-icon-notext ui-icon-camera"> </span>
-                                        </div>
+                                        <a onclick="ShowFormula('@spendValueId')" image="@imageId" spend="@spend.Id"
+                                           data-role="button" data-icon="plus" data-iconpos="notext"></a>
                                     </div>
                                 }
 
-                            </li>
+                            </div>
 
-                            spendIterator++;
-                        }
-                        else
-                        {
-                            <li>
-                                @(editable ?
-                                  Html.Raw($"<input class='input-readonly comment' type='text' value='{spend.Comment}'/>") :
-                                  Html.Raw($"<p>{spend.Comment}</p>" ?? " "))
+                            @if (editable)
+                            {
+                                <div class="photo-row">
+                                    <div>
+                                        @if (mySpend)
+                                        {
+                                            <a id="browse_@spendValueId" image="@imageId" spend="@spend.Id"
+                                               class="pickfiles" data-role="button" data-icon="camera" data-iconpos="notext"></a>
+                                        }
+                                    </div>
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(spend.Image))
+                                        {
+                                            <a onclick="ShowImage(this)" image="@spend.Image" spend="@spend.Id"
+                                               data-role="button" data-icon="eye" data-iconpos="notext"></a>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="photo-row">
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(spend.Image))
+                                        {
+                                            <a onclick="ShowImage(this)" image="@spend.Image" spend="@spend.Id"
+                                               data-role="button" data-icon="eye" data-iconpos="notext"></a>
+                                        }
+                                    </div>
+                                </div>
+                            }
 
-                                @(editable ?
-                                  Html.Raw($"<input class='input-readonly sum' type='text' value='{spend.Value}'/>") :
-                                  Html.Raw($"<span class='ui-li-count' ui-body-inherit'>{spend.Value}</span> "))
-                            </li>
-                        }
+                        </li>
 
+                        if (mySpend) { spendIterator++; }
                     }
 
                     <li id="add-button" data-icon="plus" class="add-spend">
@@ -148,7 +162,7 @@
 </div>
 
 @{
-    string addImageId = Guid.NewGuid().ToString().Replace("-", "");
+    string addImageId = Guid.NewGuid().ToString().Replace("-", string.Empty);
 }
 
 <div data-role="popup" id="popupDialog" data-overlay-theme="a" data-theme="a" style="max-width: 600px;"
@@ -165,17 +179,17 @@
             <textarea name='Comment' class='add_tacomment' autocomplete='off' placeholder="Коментарий"></textarea>
             <input class='sum add_summ' name="Value" type='text' value='' placeholder="Сумма" autocomplete='off' />
             <input type="hidden" id="@addImageId" name="Image" value="" />
-            
+
             <div class="new-photo-row">
                 <div>
-                    <a id="browse_@addImageId" image="@addImageId" spend="none" 
+                    <a id="browse_@addImageId" image="@addImageId" spend="none"
                        class="pickfiles" data-role="button" data-icon="camera" data-iconpos="notext">Photo</a>
                 </div>
                 <div>
                     <input id="selectedFileName" type="text" readonly="readonly" disabled="disabled" />
                 </div>
                 <div>
-                    <a id="del_@addImageId" 
+                    <a id="del_@addImageId"
                        class="delfiles" data-role="button" data-icon="delete" data-iconpos="notext">Photo</a>
                 </div>
             </div>
@@ -230,8 +244,8 @@
 
 <div class='image-overlay'>
     <div>
-        <a target="_blank" spend="" > Открыть в отдельном окне </a>
-        <img id="imageSrc" src=""/>
+        <a target="_blank" spend=""> Открыть в отдельном окне </a>
+        <img id="imageSrc" src="" />
     </div>
 </div>
 
@@ -243,13 +257,13 @@
     var uploader;
     backUrl = "/Home/Index";
 
-    $(".pickfiles").click(function() {
+    $(".pickfiles").click(function () {
         var image = $(this).attr("image");
         currentSpendId = $(this).attr("spend");
         currentSpendImage = $("#" + image);
     });
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         Layout.doBack = function () {
             if ($(".image-overlay").is(":visible")) {
@@ -284,7 +298,7 @@
         uploader.init();
 
         uploader.bind('FilesAdded',
-            function(up, files) {
+            function (up, files) {
 
                 if (files.length > 0) {
                     var fileName = files[0].name;
@@ -300,7 +314,7 @@
                     up.disableBrowse(true);
 
                     if (currentSpendId !== "none") {
-                        setTimeout(function() { uploader.start(); }, 100);
+                        setTimeout(function () { uploader.start(); }, 100);
                         $("div.load-overlay").fadeIn(500);
                     } else {
                         $("#selectedFileName").val(fileName);
@@ -309,33 +323,33 @@
             });
 
         uploader.bind('UploadProgress',
-            function(up, file) {
+            function (up, file) {
                 if (file.percent > 0 && file.percent < 100) {
                     $("div.progress").css("width", file.percent + "%");
                 }
             });
 
         uploader.bind('Error',
-            function(up, err) {
+            function (up, err) {
                 alert("\nError #" + err.code + ": " + err.message);
                 $("div.load-overlay").fadeOut(500);
             });
 
         uploader.bind('BeforeUpload',
-            function(up, files) {
+            function (up, files) {
                 up.settings.multipart_params.FileName = currentSpendImage.val();
                 up.settings.multipart_params.Spend = currentSpendId;
             });
 
         uploader.bind('UploadComplete',
-            function(up, files) {
+            function (up, files) {
                 $("div.progress").css("width", "100%");
 
                 if (currentSpendId !== "none") {
-                    setTimeout(function() {
-                            $("div.load-overlay").fadeOut(500);
-                            location.reload();
-                        },
+                    setTimeout(function () {
+                        $("div.load-overlay").fadeOut(500);
+                        location.reload();
+                    },
                         1000);
                 } else {
                     $(".wait-overlay").fadeOut(500);
@@ -343,7 +357,7 @@
                 }
             });
 
-        $("span.pickfiles").click(function() {
+        $("span.pickfiles").click(function () {
             if (confirm("Заменить фотографию ?")) {
                 $("#browse").trigger("click");
             }
@@ -408,6 +422,7 @@
     }
 
     function Add(id) {
+        $("#selectedFileName").val("");
         $(".add_progressbar").hide();
         $("#popupDialog #detailId").val(id);
         $("#popupDialog").popup();
@@ -427,6 +442,12 @@
     }
 
     function SubmitUploader() {
+
+        if ($("#selectedFileName").val() === "") {
+            Submit();
+            return;
+        }
+
         $(".wait-overlay").css("z-index", "5000");
         $(".wait-overlay").fadeIn(500);
         $(".add_progressbar").show();

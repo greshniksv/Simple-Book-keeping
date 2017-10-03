@@ -27,11 +27,12 @@ div.spend-value div{
 }
 
 div.formula-button {
-    display: inline-block;
+    display: inline-flex;
     width: 50px;
     height: 10px;
     position: inherit;
     cursor: pointer;
+    padding-left: 5px !important;
 }
 
 ul.editable div:last-child {
@@ -113,21 +114,22 @@ div.takephoto-carat h3{
 
 div.photo-row {
     position: inherit;
-    margin: 5px;
-    padding-bottom: 50px;
-    width: 80%;
-    height: 5px;
-    margin-top: 15px;
+    height: 35px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 60% !important;
 }
 
 div.photo-row div:first-child {
-    position: inherit;
-    margin-left: 100px;
+    display: inline-block;
+    width: 40px;
 }
 
 div.photo-row div:last-child {
-    position: inherit;
-    margin-right: 80px;
+    display: inline-block;
+    width: 30px;
+    float: right;
 }
 
 .add_tacomment {
