@@ -11,12 +11,13 @@ namespace SimpleBookKeeping.HttpHandler
 
         public void ProcessRequest(HttpContext context)
         {
+            var bigSize = context.Request["b"];
             var file = context.Request["f"];
-            FileStorage fileStorage = new FileStorage();
-            var fileInfo = fileStorage.Get(file);
-            
+            ImageStorage imageStorage = new ImageStorage();
+            var fileInfo = imageStorage.Get(file, bigSize == null);
+
             context.Response.ContentType = "application/octet-stream";
-            context.Response.AddHeader("Content-Disposition", "filename=\""+ file + "\";");
+            context.Response.AddHeader("Content-Disposition", "filename=\"" + file + "\";");
             context.Response.WriteFile(fileInfo.FullName);
         }
 

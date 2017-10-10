@@ -11,14 +11,14 @@
 .wait-overlay {
     background-color: lightgrey;
     opacity: 0.6;
-    position: absolute;
+    position: fixed;
     left: 0px;
     top: 0px;
     z-index: 1000;
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background-image: url('/Content/images/ajax-loader.gif');
+    background-image: url('/Content/images/wait.gif');
     background-position: center;
     background-repeat: no-repeat;
     display: none;
@@ -27,14 +27,14 @@
 .load-overlay {
     background-color: #282828;
     opacity: 0.9;
-    position: absolute;
+    position: fixed;
     left: 0px;
     top: 0px;
     z-index: 1000;
     height: 100%;
     width: 100%;
     overflow: hidden;
-    /*background-image: url('/Content/images/ajax-loader.gif');
+    /*background-image: url('/Content/images/wait.gif');
     background-position: center;
     background-repeat: no-repeat;*/
     display: none;
@@ -54,21 +54,21 @@
 .image-overlay {
     background-color: lightgrey;
     opacity: 1;
-    position: absolute;
+    position: fixed;
     left: 0px;
     top: 0px;
     z-index: 1000;
     height: 100%;
     width: 100%;
     overflow: hidden;
-    /*background-image: url('/Content/images/ajax-loader.gif');
+    background-image: url('/Content/images/wait.gif');
     background-position: center;
-    background-repeat: no-repeat;*/
+    background-repeat: no-repeat;
     display: none;
 }
 
 .image-overlay > div {
-    padding-top: 60px;
+    padding-top: 50px;
 }
 
 .image-overlay > div > img {

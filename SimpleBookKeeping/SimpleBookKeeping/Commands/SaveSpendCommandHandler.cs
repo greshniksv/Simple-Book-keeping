@@ -49,7 +49,7 @@ namespace SimpleBookKeeping.Commands
                         {
                             if (!string.IsNullOrEmpty(oldSpend.Image))
                             {
-                                FileStorage storage = new FileStorage();
+                                ImageStorage storage = new ImageStorage();
                                 storage.Delete(oldSpend.Image);
                             }
 

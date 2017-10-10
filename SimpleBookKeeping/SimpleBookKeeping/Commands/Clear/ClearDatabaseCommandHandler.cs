@@ -58,7 +58,7 @@ namespace SimpleBookKeeping.Commands.Clear
             {
                 try
                 {
-                    FileStorage storage = new FileStorage();
+                    ImageStorage storage = new ImageStorage();
 
                     foreach (var spend in spendToRemove)
                     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.ServiceModel.Channels;
 using System.Threading;
@@ -118,7 +119,9 @@ namespace SimpleBookKeeping.HttpHandler
                     Task.Factory.StartNew(() =>
                     {
                         Thread.Sleep(100);
-                        new FileStorage().Move(imageId, tempFile);
+                        var store = new ImageStorage();
+                        store.Move(imageId, tempFile);
+                        store.CreateSmallView(imageId);
                     });
                 }
 

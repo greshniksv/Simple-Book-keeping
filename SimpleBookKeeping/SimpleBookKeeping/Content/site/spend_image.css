@@ -8,7 +8,7 @@
     height: 100%;
     width: 100%;
     overflow: hidden;
-    background-image: url('/Content/images/ajax-loader.gif');
+    background-image: url('/Content/images/wait.gif');
     background-position: center;
     background-repeat: no-repeat;
     display: none;

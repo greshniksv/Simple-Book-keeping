@@ -82,13 +82,10 @@ namespace SimpleBookKeeping.Controllers
 
             var url = Url.Content("~/HttpHandler/DownloadFileHandler.ashx") + $"?f={spend.Image}";
 
-            FileStorage storage = new FileStorage();
+            ImageStorage storage = new ImageStorage();
             var image = storage.Get(spend.Image);
 
             System.Drawing.Image img = System.Drawing.Image.FromFile(image.FullName);
-            
-            var json =
-                $"[ {{ src: '{url}', w: {img.Width}, h: {img.Height} }} ];";
 
             ViewBag.Url = url;
             ViewBag.Width = img.Width;

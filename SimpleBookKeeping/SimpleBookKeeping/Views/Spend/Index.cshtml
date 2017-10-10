@@ -11,11 +11,12 @@
     IList<SpendCreditInfoModel> Credits = ViewBag.Credits;
 }
 
-@*@Styles.Render("~/Content/site/spend")*@
+
 
 <link rel="stylesheet" type="text/css" href="/Content/site/spend.css">
-<script type="text/javascript" src="../../Scripts/plupload-2.3.3/js/plupload.full.min.js"></script>
-<script type="text/javascript" src="../../Scripts/plupload-2.3.3/js/i18n/ru.js"></script>
+<script type="text/javascript" src="/Scripts/plupload-2.3.3/js/plupload.full.min.js"></script>
+<script type="text/javascript" src="/Scripts/plupload-2.3.3/js/i18n/ru.js"></script>
+<script type="text/javascript" src="/Scripts/hammer.min.js"></script>
 
 <div id="browse" style="display: none"></div>
 
@@ -244,8 +245,8 @@
 
 <div class='image-overlay'>
     <div>
-        <a target="_blank" spend=""> Открыть в отдельном окне </a>
-        <img id="imageSrc" src="" />
+        @*<a target="_blank" spend=""> Открыть в отдельном окне </a>*@
+        <input type="hidden" id="imageAnchor"/>
     </div>
 </div>
 
@@ -298,7 +299,7 @@
         uploader.init();
 
         uploader.bind('FilesAdded',
-            function (up, files) {
+            function(up, files) {
 
                 if (files.length > 0) {
                     var fileName = files[0].name;
@@ -314,7 +315,7 @@
                     up.disableBrowse(true);
 
                     if (currentSpendId !== "none") {
-                        setTimeout(function () { uploader.start(); }, 100);
+                        setTimeout(function() { uploader.start(); }, 100);
                         $("div.load-overlay").fadeIn(500);
                     } else {
                         $("#selectedFileName").val(fileName);
@@ -323,33 +324,33 @@
             });
 
         uploader.bind('UploadProgress',
-            function (up, file) {
+            function(up, file) {
                 if (file.percent > 0 && file.percent < 100) {
                     $("div.progress").css("width", file.percent + "%");
                 }
             });
 
         uploader.bind('Error',
-            function (up, err) {
+            function(up, err) {
                 alert("\nError #" + err.code + ": " + err.message);
                 $("div.load-overlay").fadeOut(500);
             });
 
         uploader.bind('BeforeUpload',
-            function (up, files) {
+            function(up, files) {
                 up.settings.multipart_params.FileName = currentSpendImage.val();
                 up.settings.multipart_params.Spend = currentSpendId;
             });
 
         uploader.bind('UploadComplete',
-            function (up, files) {
+            function(up, files) {
                 $("div.progress").css("width", "100%");
 
                 if (currentSpendId !== "none") {
-                    setTimeout(function () {
-                        $("div.load-overlay").fadeOut(500);
-                        location.reload();
-                    },
+                    setTimeout(function() {
+                            $("div.load-overlay").fadeOut(500);
+                            location.reload();
+                        },
                         1000);
                 } else {
                     $(".wait-overlay").fadeOut(500);
@@ -357,17 +358,17 @@
                 }
             });
 
-        $("span.pickfiles").click(function () {
+        $("span.pickfiles").click(function() {
             if (confirm("Заменить фотографию ?")) {
                 $("#browse").trigger("click");
             }
         });
 
-        $("a.pickfiles").click(function () {
+        $("a.pickfiles").click(function() {
             $("#browse").trigger("click");
         });
 
-        $("a.delfiles").click(function () {
+        $("a.delfiles").click(function() {
             uploader.splice(0, 1);
             uploader.disableBrowse(false);
             $("#selectedFileName").val("");
@@ -377,16 +378,56 @@
     function ShowImage(control) {
         var image = $(control).attr("image");
         var spend = $(control).attr("spend");
+        var url = "@Url.Content("~/HttpHandler/DownloadFileHandler.ashx")?f=" + image;
+        $("#imageAnchor").parent().find("img").remove();
+        $(".image-overlay").css("background-image", "url(/Content/images/wait.gif)");
 
-        $("#imageSrc").attr("src", "@Url.Content("~/HttpHandler/DownloadFileHandler.ashx")?f=" + image);
+        preloadImage(url, function () {
+            $(".image-overlay").css("background-image", "none");
+
+            var size = calculateAspectRatioFit(this.width, this.height, $(window).width(), $(window).height() - 100);
+            this.width = size.width;
+            this.height = size.height;
+            this.id = "image";
+            $("#imageAnchor").after(this);
+
+            var mc = new Hammer(document.getElementById('image'));
+            mc.on("doubletap", function (ev) {
+                OpenImage(spend);
+            });
+        });
+
         $(".image-overlay a").attr("href", "/Spend/Image?spendId=" + spend);
-
         $(".image-overlay").fadeIn(500);
     }
 
-    function OpenImage() {
-        var spend = $(".image-overlay a").attr("spend");
-        redirect("/Spend/Image?spendId=" + spend);
+    /**
+   * Conserve aspect ratio of the orignal region. Useful when shrinking/enlarging
+   * images to fit into a certain area.
+   *
+   * param {Number} srcWidth width of source image
+   * param {Number} srcHeight height of source image
+   * param {Number} maxWidth maximum available width
+   * param {Number} maxHeight maximum available height
+   * return {Object} { width, height }
+   */
+    function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+        var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+        return { width: srcWidth * ratio, height: srcHeight * ratio };
+    }
+
+    function OpenImage(spend) {
+        //var spend = $(".image-overlay a").attr("spend");
+        //redirect("/Spend/Image?spendId=" + spend);
+
+        var win = window.open("/Spend/Image?spendId=" + spend, '_blank');
+        if (win) {
+            //Browser has allowed it to be opened
+            win.focus();
+        } else {
+            //Browser has blocked it
+            alert('Please allow popups for this website');
+        }
     }
 
     function ShowFormula(id) {
@@ -506,4 +547,11 @@
         }
     }
 
+    function preloadImage(url, callback) {
+        var img = new Image();
+        img.src = url;
+        img.onload = callback;
+    }
+
 </script>
+
