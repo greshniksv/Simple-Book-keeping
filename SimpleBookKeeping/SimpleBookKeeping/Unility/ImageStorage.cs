@@ -43,10 +43,7 @@ namespace SimpleBookKeeping.Unility
             try
             {
                 var image = ScaleImage(file, 1024, 768);
-                var smallImagePath = string.Concat(
-                    Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file)),
-                    "_small",
-                    Path.GetExtension(file));
+                var smallImagePath = GetSmallFilePath(filename);
 
                 image.Save(smallImagePath, ImageFormat.Png);
             }
@@ -58,10 +55,7 @@ namespace SimpleBookKeeping.Unility
         public FileInfo Get(string filename, bool small = true)
         {
             var file = GetFilePath(filename);
-            var smallImagePath = string.Concat(
-                Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file)),
-                "_small",
-                Path.GetExtension(file));
+            var smallImagePath = GetSmallFilePath(filename);
 
             if (!File.Exists(file))
             {
@@ -98,9 +92,14 @@ namespace SimpleBookKeeping.Unility
         public void Delete(string filename)
         {
             var file = GetFilePath(filename);
+            var smallImagePath = GetSmallFilePath(filename);
             if (File.Exists(file))
             {
                 File.Delete(file);
+            }
+            if (File.Exists(smallImagePath))
+            {
+                File.Delete(smallImagePath);
             }
         }
 
@@ -115,15 +114,19 @@ namespace SimpleBookKeeping.Unility
             return Path.Combine(path, filename);
         }
 
+        private string GetSmallFilePath(string filename)
+        {
+            var file = GetFilePath(filename);
+            return string.Concat(
+                Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file)),
+                "_small",
+                Path.GetExtension(file));
+        }
+
         public static Image ScaleImage(string imagePath, int maxWidth, int maxHeight)
         {
             using (var image = Image.FromFile(imagePath))
             {
-                //using (var newImage = ScaleImage(image, 300, 400))
-                //{
-                //    newImage.Save(@"c:\test.png", ImageFormat.Png);
-                //}
-
                 var ratioX = (double)maxWidth / image.Width;
                 var ratioY = (double)maxHeight / image.Height;
                 var ratio = Math.Min(ratioX, ratioY);

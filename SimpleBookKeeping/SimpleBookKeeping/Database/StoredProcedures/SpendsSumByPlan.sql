@@ -25,7 +25,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-    select sum(s.value) as Sum from Costs c, CostDetails d, Spends s
+    select ISNULL(sum(ISNULL(s.value, 0)), 0) as Sum from Costs c, CostDetails d, Spends s
 	where c.plan_id = @Plan and c.deleted =0
 	and c.id = d.cost_id and d.id = cost_detail_id
 END
